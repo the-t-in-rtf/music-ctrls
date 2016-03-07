@@ -1,0 +1,38 @@
+<html>
+	<head>
+		<link rel = "stylesheet" href = "../src/sisiliano.css">
+		<script src = "../lib/jquery.js"></script>
+		<script src = "../src/sisiliano.js"></script>
+		
+		<style>
+			.svg {
+			  position: relative;
+			  display: inline-block;
+			  width: 70%;
+			  height: 100%;
+			}
+			
+			.description {
+				display: inline-block;
+			}
+		</style>
+		<script>
+			$(document).on('ready', function() {
+				$('.svg').html(new sisiliano.ringCtrl());
+			});
+		</script>
+	</head>
+	<body>
+		
+		<div class="svg">		
+			
+		</div>
+		<div class="description">
+			<ul>
+				<li>Click or use the tab to focus it</li>
+				<li>Use arrow keys to control</li>
+				<li>resize the window to test the Responsiveness</li>
+			</ul>
+		</div>
+	</body>
+</html>
