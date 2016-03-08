@@ -23,6 +23,7 @@
 			if (!options.value || typeof options.value !== "number" || options.value === NaN || options.value > 100 || options.value < 0) {
 				options.value = 0;
 			}
+			options.value = Math.round(options.value);
 		}
 		
 		var ringCtrl =function(customOptions) {
@@ -119,9 +120,9 @@
 						model.value = options.value;
 					}
 					
-					$(model.innerElement).find('.ctrl-circle-value')[0].innerHTML = Math.round(model.value) + "%";
+					$(model.innerElement).find('.ctrl-circle-value')[0].innerHTML = model.value + "%";
 					
-					var offset = -(model.circumference / 100) * Math.round(model.value) + 'px';
+					var offset = -(model.circumference / 100) * model.value + 'px';
 					$(model.innerElement).find('.ctrl-circle-cover').attr('stroke-dashoffset', offset);
 				}
 				
