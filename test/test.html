@@ -15,11 +15,28 @@
 			.description {
 				display: inline-block;
 			}
+			
+			td {
+				height: 100px;
+				width: 25%;
+			}
+			
+			table {
+				width: 100%;
+			}
 		</style>
 		<script>
 			$(document).on('ready', function() {
-				$('.svg').html(new sisiliano.ringCtrl());
+				$('.svg').ringCtrl();
+				
+				var tds = $('td');
+				
+				for (var i = 0; i < tds.length; i++) {
+					$(tds[i]).ringCtrl();
+				}
 			});
+			
+			
 		</script>
 	</head>
 	<body>
@@ -34,5 +51,26 @@
 				<li>resize the window to test the Responsiveness</li>
 			</ul>
 		</div>
+		
+		<table border="1">
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+		</table>
 	</body>
 </html>
