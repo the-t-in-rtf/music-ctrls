@@ -1,0 +1,72 @@
+<script>
+	<svg 
+		xmlns="http://www.w3.org/2000/svg" 
+		version="1.1"
+		>
+		<defs
+		 id="defs4">
+		<filter
+			 style="color-interpolation-filters:sRGB;"
+			 id="filter6244">
+			<feFlood
+			 flood-opacity="0.4"
+			 flood-color="black"
+			 result="flood"
+			 id="feFlood6246" />
+			<feComposite
+			 in="flood"
+			 in2="SourceGraphic"
+			 operator="in"
+			 result="composite1"
+			 id="feComposite6248" />
+			<feGaussianBlur
+			 in="composite1"
+			 stdDeviation="6"
+			 result="blur"
+			 id="feGaussianBlur6250" />
+			<feOffset
+			 dx="-3"
+			 dy="3.5"
+			 result="offset"
+			 id="feOffset6252" />
+			<feComposite
+			 in="SourceGraphic"
+			 in2="offset"
+			 operator="over"
+			 result="composite2"
+			 id="feComposite6254" />
+		</filter>
+		<filter
+			 style="color-interpolation-filters:sRGB;"
+			 id="filter6245">
+			<feFlood
+			 flood-opacity="0.5"
+			 flood-color="black"
+			 result="flood"
+			 id="feFlood6246" />
+			<feComposite
+			 in="flood"
+			 in2="SourceGraphic"
+			 operator="in"
+			 result="composite1"
+			 id="feComposite6248" />
+			<feGaussianBlur
+			 in="composite1"
+			 stdDeviation="8"
+			 result="blur"
+			 id="feGaussianBlur6250" />
+			<feOffset
+			 dx="-3"
+			 dy="3.5"
+			 result="offset"
+			 id="feOffset6252" />
+			<feComposite
+			 in="SourceGraphic"
+			 in2="offset"
+			 operator="over"
+			 result="composite2"
+			 id="feComposite6254" />
+		</filter>
+		</defs>
+	</svg>
+</script>

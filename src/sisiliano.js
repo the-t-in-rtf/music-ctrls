@@ -1,18 +1,102 @@
-
-(function($, window) {
+(function(config, $, window) {
+	//#################################################
+	//     Browser Compatibility Settings
+	//#################################################
+	
+		// Opera 8.0+
+	var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+		// Firefox 1.0+
+	var isFirefox = typeof InstallTrigger !== 'undefined';
+		// At least Safari 3+: "[object HTMLElementConstructor]"
+	var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
+		// Internet Explorer 6-11
+	var isIE = /*@cc_on!@*/false || !!document.documentMode;
+		// Edge 20+
+	var isEdge = !isIE && !!window.StyleMedia;
+		// Chrome 1+
+	var isChrome = !!window.chrome && !!window.chrome.webstore;
+		// Blink engine detection
+	var isBlink = (isChrome || isOpera) && !!window.CSS;
+	
+	var filterAddedClasses = [
+		{
+			selector: '.sisiliano .ctrl .ctrl-circle.ctrl-circle-background',
+			values: {
+				filter: '#filter6244'
+			}
+		},
+		{
+			selector: '.sisiliano .ctrl .ctrl-circle.ctrl-circle-cover',
+			values: {
+				filter: '#filter6244'
+			}
+		},
+		{
+			selector: '.sisiliano:focus .ctrl .ctrl-circle',
+			values: {
+				filter: '#filter6245'
+			}
+		}
+	];
+	
+	$(document).ready(function() {
+		templates.get('filters.svg').then(function(svgFilters) {
+			var newStyle = "";
+		
+			if (isFirefox) {
+				//A fix for firefox
+				for (var i = 0; i < filterAddedClasses.length; i++) {
+					newStyle += filterAddedClasses[i].selector
+									+ " { filter: url('data:image/svg+xml;utf8," 
+									+ svgFilters.replace(/\n|\r|\t/g, ' ').replace(/ * /g, ' ').replace(/\"/g, '\\"') 
+									+ filterAddedClasses[i].values['filter']
+									+ "'); }\n";
+				}
+				
+				$("head").append('<style type="text/css">\n' + newStyle + '\n</style>');
+			}
+			
+			$('body').append(svgFilters);
+		});
+	});
+	
+	
+	//#################################################
+	//     Template service
+	//#################################################
+	var templates = (function(templatesPath) {
+		//template cache
+		var _templatesMap = {
+			'ringCtrl.svg': null
+		};
+		
+		return {
+			get: function(templateName) {
+				var promise = jQuery.Deferred();
+				
+				if (_templatesMap[templateName]) {
+					promise.resolve(_templatesMap[templateName]);
+				} else {
+					var request = $.get(config.templates + templateName)
+					request.then(function(data) {
+						_templatesMap[templateName] = $(data.firstChild).html();
+						promise.resolve(_templatesMap[templateName]);
+					});
+					request.error(function() {
+						promise.reject("Template [" + templateName + "] cannot be loaded");
+					});
+				}
+				
+				return promise;
+			}
+		};
+	})(config.templates);
+	
+	
+	//#################################################
+	//     Ring Controller
+	//#################################################
 	var ringCtrl = (function() {
-		//HTML template of the ring controller
-		var ringCtrlHtml = '<div class="ringCtrl" tabindex="0" role="slider" aria-label="Ring Slider" aria-valuemax="100" aria-valuemin="0">'
-			+ '<svg width="100%" height="100%">'
-			+ '<circle class="ctrl-circle ctrl-circle-background" r="30%" cx="50%" cy="50%" fill="transparent" stroke-dasharray="0em" stroke-dashoffset="0em"></circle>'
-			+ '<circle class="ctrl-circle ctrl-circle-cover"      r="30%" cx="50%" cy="50%" fill="transparent" stroke-dasharray="0em" stroke-dashoffset="0"></circle>'
-			+ '</svg>'
-			+ '<div class="ctrl-circle-center"><i class="ctrl-circle-value unselectable" role="alert" aria-live="assertive"></i></div>'
-			+ '</div>';
-		
-		var baseElement = '<div class="sisiliano"></div>';
-		
-		
 		function validateOptions(options, input) {
 			for (var key in options) {
 				if (input[key] !== undefined) {
@@ -37,14 +121,14 @@
 			
 			
 			if (model.value <= 100 && model.value >= 0) {
-				$(model.innerElement).find('.ctrl-circle-value')[0].innerHTML = model.value + "%";
+				$(model.element).find('.ctrl-circle-value')[0].innerHTML = model.value + "%";
 				
-				var offset = -(model.circumference / 100) * model.value + 'px';
-				$(model.innerElement).find('.ctrl-circle-cover').attr('stroke-dashoffset', offset);
+				var offset = ((model.circumference / 100) * (100 - model.value)) + 'px';
+				$(model.element).find('.ctrl-circle-cover').attr('stroke-dashoffset', offset);
 			}
 		}
 		
-		var ringCtrl =function(customOptions) {
+		var ringCtrl =function(parent, customOptions) {
 			//Default options which can be overriden by the user
 			var options = {
 				id: null,
@@ -74,7 +158,7 @@
 				//Displaying value of the ring
 				value: null,
 				
-				radius: 1,
+				radius: 130,
 				circumference: null
 			};
 			
@@ -83,58 +167,39 @@
 			/**
 			 * Initialize the DOM
 			 */
-			function draw() {
-				model.element = $(baseElement);
-				model.element.options = options;
-				model.innerElement = $(ringCtrlHtml);
+			function draw(ringCtrlHtml) {
+				model.element = $('<div tabindex="0" class="sisiliano" ' 
+											+ 'role="slider" aria-label="Ring Slider" aria-valuemax="100" aria-valuemin="0"/>')
+											.append(ringCtrlHtml);
+				model.innerElement = model.element.find('.ctrl');
 				
 				$(model.element).on('load', function() {
-					$(model.element).append(model.innerElement);
-					model.innerElement.hide();
-					
-					console.log("resize");
-					var height = $(this).height();
-					var width = $(this).width();
-					var ringWidth = Math.min(width, height);
-					var strokeWidth = ringWidth * 0.21;
-					var fontSize = ringWidth / 5;
-					var elementPosition = $(this).offset();
-					
-					model.radius = (ringWidth / 2) - (strokeWidth / 2);
+					var circleRadius = eval(model.element.find('.ctrl-circle').attr('r'));
+					model.radius = circleRadius;
 					model.circumference = 2 * model.radius * Math.PI; 
-					model.center = {
-						x: (elementPosition.left + (width / 2)),
-						y: (elementPosition.top)
-					};
-					
-					model.innerElement.show();
-
-					$(this).find('.ctrl-circle').css('stroke-width', strokeWidth + "px");
-					$(this).find('.ctrl-circle').attr('r', model.radius + "px");
-					
-					$(this).find('.ringCtrl').css('width', ringWidth + "px");
-					$(this).find('.ringCtrl').css('height', ringWidth + "px");
-					$(this).find('.ctrl-circle-value').css('font-size', fontSize + "px");
 					$(this).find('.ctrl-circle').attr('stroke-dasharray', model.circumference + "px");
 					
 					updateValue(model);
 				});
 				
 				$(model.element).on('load.refresh', function() {
-					if (options.accentColor) {
-						$(model.element).find('.ctrl-circle-background').css('stroke', options.accentColor);
-					}
-					
 					if (options.coverColor) {
-						$(model.element).find('.ctrl-circle-cover').css('stroke', options.coverColor);
+						$(model.element).find('.ctrl-circle-background').css('stroke', options.coverColor);
 					}
 					
-					if (options.textColor) {
-						$(model.element).find('.ctrl-circle-value').css('stroke', options.textColor);
+					if (options.accentColor) {
+						$(model.element).find('.ctrl-circle-cover').css('stroke', options.accentColor);
+						$(model.element).find('.ctrl-circle-background').css('stroke', options.accentColor);
+						$(model.element).find('.ctrl-circle-cover').css('fill', options.accentColor);
+						$(model.element).find('.ctrl-circle-background').css('fill', options.accentColor);
+					}
+					
+					if (options.accentColor) {
+						$(model.element).find('.ctrl-circle-value').css('fill', options.accentColor);
 					}
 				});
 				
-				$(model.innerElement).on('keydown', function(evt) {
+				$(model.element).on('keydown', function(evt) {
 					if (evt.keyCode == 38) {
 						model.value++;
 					} else if (evt.keyCode == 40) {
@@ -148,7 +213,7 @@
 					return false;
 				});
 
-				$(model.innerElement).on('mousemove', function(evt) {
+				$(model.element).on('mousemove', '.ctrl', function(evt) {
 					if (model.status.mousedown) {
 						if (model.status.prev.pageY > evt.pageY) {
 							model.value++;
@@ -168,7 +233,7 @@
 				 */
 				
 				//Firefox
-				$(model.innerElement).on('mousewheel', function(e){
+				$(model.element).on('mousewheel', '.ctrl', function(e){
 					if (model.status.mousedown) {
 						if (e.originalEvent.wheelDelta < 0) {
 							//scroll down
@@ -185,7 +250,7 @@
 				});
 				
 				//IE, Opera, Safari
-				$(model.innerElement).on('DOMMouseScroll', function(e){
+				$(model.element).on('DOMMouseScroll', '.ctrl', function(e){
 					if (e.originalEvent.wheelDelta < 0) {
 						//scroll down
 						model.value--;
@@ -199,14 +264,27 @@
 				});
 
 				
-				$(model.innerElement).on('mousedown', function(evt) {
+				$(model.element).on('mousedown', '.ctrl', function(evt) {
 					model.status.mousedown = true;
 					model.status.prev.pageX = evt.pageX;
 					model.status.prev.pageY = evt.pageY;
 				});
 				
-				$(model.innerElement).on('mouseup mouseleave', function(evt) {
+				$(model.element).on('mouseup mouseleave', '.ctrl', function(evt) {
 					model.status.mousedown = false;
+					$(this).find('.ctrl-circle').css('animation', '');
+					$(this).find('.ctrl-circle').css('animation', 'rotate 0.5s');
+					$(this).find('.ctrl-circle').css('animation', '');
+				});
+				
+				
+				$(model.element).on('focusout blur', function(evt) {
+					$(this).find('.ctrl-circle').css('animation', '');
+					$(this).find('.ctrl-circle').css('animation', 'rotate 0.5s');
+					setTimeout(function() {
+						$(this).find('.ctrl-circle').css('animation', '');
+						console.log("Done");
+					}, 1000);
 				});
 				
 				
@@ -227,24 +305,25 @@
 			};
 			
 			
-			draw();
-			//return model.element;
+			$(document).ready(function() {
+				templates.get('ringCtrl.svg').then(function(ringCtrlHtml) {
+					draw(ringCtrlHtml);
+					parent.html(model.element);
+					model.element.load();
+				});
+			});
 		};
-		
-		$(window).on('resize', function(evt) {
-			//Refreshes all elements to reflect with size changes
-			$('.sisiliano').load();
-		});
 
 		return ringCtrl;
 	})();
 	
 
 	$.fn.ringCtrl = function(options) {
-		var elm = new ringCtrl(options).element();
-        this.html(elm);
-		elm.load();
-    }
-	
-})($,window);
+		var elm = new ringCtrl(this, options).element();
+  }
+})(
+	{ templates: "../dist/templates/" },
+	$,
+	window
+);
 
