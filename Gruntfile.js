@@ -9,7 +9,6 @@ module.exports = function(grunt) {
         },
         options: {
           preserveComments: false,
-          report: "min",
           beautify: {
             ascii_only: true
           }
@@ -23,7 +22,33 @@ module.exports = function(grunt) {
           "dist/sisiliano.min.css": [ "src/**/*.css" ]
         }
       }
-    }
+    },
+		connect: {
+			testserver: {
+				options: {
+					port: 8001,
+					base: './'
+				}
+			}
+		},
+		watch: {
+			testserver: {
+				files: ['./dist'],
+				tasks: ['jshint'],
+				options: {
+					spawn: false,
+				},
+			},
+		},
+		copy: {
+			main: {
+				expand: true,
+				cwd: 'src/templates',
+				src: '**/*',
+				dest: 'dist/templates/',
+			}
+		},
+		clean: ['./dist']
   });
 
   grunt.loadNpmTasks('grunt-contrib-connect');
@@ -31,9 +56,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-qunit');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-release');
+  grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-copy');
 
-  grunt.task.registerTask('test', 'Run unit tests, or just one test.',
+  grunt.task.registerTask('test', 'Run unit test cases.',
   function(testname) {
     if (!!testname) {
       grunt.config('qunit.all', ['test/' + testname + '.html']);
@@ -41,7 +67,7 @@ module.exports = function(grunt) {
     grunt.task.run('qunit:all');
   });
 
-  grunt.registerTask("testserver", ["watch:testserver"]);
-  grunt.registerTask("default", ["uglify", 'less']);
+  grunt.registerTask("testserver", ["connect", "watch:testserver"]);
+  grunt.registerTask("default", ["clean", "copy", "uglify", 'less']);
 };
 
