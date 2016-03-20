@@ -1,0 +1,25 @@
+{
+  "name": "sisiliano",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Dinuka De Silba"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/Dinuka2013513/music-ctrls",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "jquery": "^2.2.1",
+    "qunit": "^1.22.0"
+  },
+  "dependencies": {
+    "jquery-simulate": "^1.0.1"
+  }
+}
