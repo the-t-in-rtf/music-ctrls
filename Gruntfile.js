@@ -23,38 +23,38 @@ module.exports = function(grunt) {
         }
       }
     },
-		connect: {
-			testserver: {
-				options: {
-					port: 8001,
-					base: './'
-				}
-			}
-		},
-		watch: {
-			testserver: {
-				files: ['./dist'],
-				tasks: ['jshint'],
-				options: {
-					spawn: false,
-				},
-			},
-		},
-		copy: {
-			main: {
-				expand: true,
-				cwd: 'src/templates',
-				src: '**/*',
-				dest: 'dist/templates/',
-			}
-		},
-		clean: ['./dist'],
-		html2json: {
-			dist: {
-				 src: ['src/templates/*.html'],
-				 dest: 'dist/templates.json'
-			}
-		},
+    connect: {
+      testserver: {
+        options: {
+          port: 8001,
+          base: './'
+        }
+      }
+    },
+    watch: {
+      testserver: {
+        files: ['./dist'],
+        tasks: ['jshint'],
+        options: {
+          spawn: false,
+        },
+      },
+    },
+    copy: {
+      main: {
+        expand: true,
+        cwd: 'src/templates',
+        src: '**/*',
+        dest: 'dist/templates/',
+      }
+    },
+    clean: ['./dist'],
+    html2json: {
+      dist: {
+         src: ['src/templates/*.html'],
+         dest: 'dist/templates.json'
+      }
+    },
     json: {
       main: {
           options: {
