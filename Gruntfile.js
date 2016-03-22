@@ -5,7 +5,7 @@ module.exports = function(grunt) {
     uglify: {
       all: {
         files: {
-          "dist/sisiliano.min.js": [ "src/**/*.js" ]
+          "dist/sisiliano.min.js": ["dist/templates.js", "src/**/*.js" ]
         },
         options: {
           preserveComments: false,
@@ -48,16 +48,36 @@ module.exports = function(grunt) {
 				dest: 'dist/templates/',
 			}
 		},
-		clean: ['./dist']
+		clean: ['./dist'],
+		html2json: {
+			dist: {
+				 src: ['src/templates/*.html'],
+				 dest: 'dist/templates.json'
+			}
+		},
+    json: {
+      main: {
+          options: {
+              namespace: 'htmlTempl',
+              includePath: false,
+              processName: function(filename) {
+                  return filename.toLowerCase();
+              }
+          },
+          src: ['dist/templates.json'],
+          dest: 'dist/templates.js'
+      }
+    }
   });
 
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-qunit');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-html2json');
+  grunt.loadNpmTasks('grunt-json');
 
   grunt.task.registerTask('test', 'Run unit test cases.',
   function(testname) {
@@ -68,6 +88,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask("testserver", ["connect", "watch:testserver"]);
-  grunt.registerTask("default", ["clean", "copy", "uglify", 'less']);
+  grunt.registerTask("build", ["clean", "copy", "html2json", "json", "uglify", 'less']);
+  grunt.registerTask("default", ["build", "testserver"]);
 };
 
