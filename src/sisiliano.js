@@ -27,7 +27,6 @@
     //template cache
     var _templatesMap = templates;
     
-    
     return {
       get: function(templateName) {
         var promise = jQuery.Deferred();
@@ -82,7 +81,7 @@
       
       
       if (model.value <= 100 && model.value >= 0) {
-        $(model.element).find('.ctrl-circle-value')[0].innerHTML = model.value + "%";
+        $(model.element).find('.ctrl-circle-value').text(model.value + "%");
         
         var offset = ((model.circumference / 100) * (100 - model.value)) + 'px';
         $(model.element).find('.ctrl-circle-cover').attr('stroke-dashoffset', offset);
