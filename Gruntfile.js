@@ -67,6 +67,12 @@ module.exports = function(grunt) {
           src: ['dist/templates.json'],
           dest: 'dist/templates.js'
       }
+    },
+    qunit: {
+      all: ['test/**/*.html']
+    },
+    jshint: {
+      src: ['Gruntfile.js', 'src/**/*.js', 'test/**/*.js', "demo/**/*.js"]
     }
   });
 
@@ -75,20 +81,15 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-html2json');
   grunt.loadNpmTasks('grunt-json');
-
-  grunt.task.registerTask('test', 'Run unit test cases.',
-  function(testname) {
-    if (!!testname) {
-      grunt.config('qunit.all', ['test/' + testname + '.html']);
-    }
-    grunt.task.run('qunit:all');
-  });
+  grunt.loadNpmTasks('grunt-contrib-qunit');
 
   grunt.registerTask("testserver", ["connect", "watch:testserver"]);
   grunt.registerTask("build", ["clean", "copy", "html2json", "json", "uglify", 'less']);
-  grunt.registerTask("default", ["build", "testserver"]);
+  grunt.registerTask("default", ["build", "test", "testserver"]);
+  grunt.registerTask("test", ["jshint", "qunit"]);
 };
 
