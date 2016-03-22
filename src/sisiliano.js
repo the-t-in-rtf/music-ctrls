@@ -18,48 +18,6 @@
 		// Blink engine detection
 	var isBlink = (isChrome || isOpera) && !!window.CSS;
 	
-	var filterAddedClasses = [
-		{
-			selector: '.sisiliano .ctrl .ctrl-circle.ctrl-circle-background',
-			values: {
-				filter: '#filter6244'
-			}
-		},
-		{
-			selector: '.sisiliano .ctrl .ctrl-circle.ctrl-circle-cover',
-			values: {
-				filter: '#filter6244'
-			}
-		},
-		{
-			selector: '.sisiliano:focus .ctrl .ctrl-circle',
-			values: {
-				filter: '#filter6245'
-			}
-		}
-	];
-	
-	$(document).ready(function() {
-		templates.get('filters.svg').then(function(svgFilters) {
-			var newStyle = "";
-		
-			if (isFirefox) {
-				//A fix for firefox
-				for (var i = 0; i < filterAddedClasses.length; i++) {
-					newStyle += filterAddedClasses[i].selector
-									+ " { filter: url('data:image/svg+xml;utf8," 
-									+ svgFilters.replace(/\n|\r|\t/g, ' ').replace(/ * /g, ' ').replace(/\"/g, '\\"') 
-									+ filterAddedClasses[i].values['filter']
-									+ "'); }\n";
-				}
-				
-				$("head").append('<style type="text/css">\n' + newStyle + '\n</style>');
-			}
-			
-			$('body').append(svgFilters);
-		});
-	});
-	
 	
 	//#################################################
 	//     Template service
@@ -168,9 +126,7 @@
 			 * Initialize the DOM
 			 */
 			function draw(ringCtrlHtml) {
-				model.element = $('<div tabindex="0" class="sisiliano" ' 
-											+ 'role="slider" aria-label="Ring Slider" aria-valuemax="100" aria-valuemin="0"/>')
-											.append(ringCtrlHtml);
+				model.element = $(ringCtrlHtml);
 				model.innerElement = model.element.find('.ctrl');
 				
 				$(model.element).on('load', function() {

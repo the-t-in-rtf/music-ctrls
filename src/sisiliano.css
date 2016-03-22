@@ -61,12 +61,6 @@
 				stroke-dashoffset: 0px;
 				fill: white;
 				fill-opacity: 0;
-				
-				-webkit-filter: url('#filter6244');
-				-moz-filter: url('#filter6244');
-				-ms-filter: url('#filter6244');
-				-o-filter: url('#filter6244');
-				filter: url('#filter6244');
 			}
 
 			&.ctrl-circle-cover {
@@ -74,12 +68,6 @@
 				stroke-width: 7;
 				fill: white;
 				fill-opacity: 0;
-				
-				-webkit-filter: url('#filter6244');
-				-moz-filter: url('#filter6244');
-				-ms-filter: url('#filter6244');
-				-o-filter: url('#filter6244');
-				filter: url('#filter6244');
 			}
 		}
 			
@@ -96,11 +84,6 @@
 		
 		.ctrl {
 			.ctrl-circle {
-				-webkit-filter: url('#filter6245');
-				-moz-filter: url('#filter6245');
-				-ms-filter: url('#filter6245');
-				-o-filter: url('#filter6245');
-				filter: url('#filter6245');
 				
 				fill-opacity: 0.15;
 			}
