@@ -31,7 +31,6 @@
       get: function(templateName) {
         var promise = jQuery.Deferred();
         templateName = 'src/templates/' + templateName;
-        debugger;
         if (_templatesMap[templateName]) {
           promise.resolve(_templatesMap[templateName]);
         } else {
@@ -64,7 +63,7 @@
         }
       }
       
-      if (!options.value || typeof options.value !== "number" || options.value === NaN || options.value > 100 || options.value < 0) {
+      if (!options.value || typeof options.value !== "number" || isNaN(options.value) || options.value > 100 || options.value < 0) {
         options.value = 0;
       }
       options.value = Math.round(options.value);
@@ -92,9 +91,7 @@
       //Default options which can be overriden by the user
       var options = {
         id: null,
-        accentColor: "blue",
-        coverColor: null,
-        textColor: null,
+        color: "#009688",
         value: 0
       };
       
@@ -132,7 +129,7 @@
         model.innerElement = model.element.find('.ctrl');
         
         $(model.element).on('load', function() {
-          var circleRadius = eval(model.element.find('.ctrl-circle').attr('r'));
+          var circleRadius = parseInt(model.element.find('.ctrl-circle').attr('r'));
           model.radius = circleRadius;
           model.circumference = 2 * model.radius * Math.PI; 
           $(this).find('.ctrl-circle').attr('stroke-dasharray', model.circumference + "px");
@@ -141,19 +138,12 @@
         });
         
         $(model.element).on('load.refresh', function() {
-          if (options.coverColor) {
-            $(model.element).find('.ctrl-circle-background').css('stroke', options.coverColor);
-          }
-          
-          if (options.accentColor) {
-            $(model.element).find('.ctrl-circle-cover').css('stroke', options.accentColor);
-            $(model.element).find('.ctrl-circle-background').css('stroke', options.accentColor);
-            $(model.element).find('.ctrl-circle-cover').css('fill', options.accentColor);
-            $(model.element).find('.ctrl-circle-background').css('fill', options.accentColor);
-          }
-          
-          if (options.accentColor) {
-            $(model.element).find('.ctrl-circle-value').css('fill', options.accentColor);
+          if (options.color) {
+            $(model.element).find('.ctrl-circle-cover').css('stroke', options.color);
+            $(model.element).find('.ctrl-circle-background').css('stroke', options.color);
+            $(model.element).find('.ctrl-circle-cover').css('fill', options.color);
+            $(model.element).find('.ctrl-circle-background').css('fill', options.color);
+            $(model.element).find('.ctrl-circle-value').css('fill', options.color);
           }
         });
         
@@ -282,7 +272,7 @@
 
   $.fn.ringCtrl = function(options) {
     var elm = new ringCtrl(this, options).element();
-  }
+  };
 })(
   { templates: htmlTempl.templates },
   $,
