@@ -1,10 +1,11 @@
 QUnit.test("basics of ring slider", function( assert ) {
   var done = assert.async();
-  var elm = $('<div style="width:100px; height: 150px"></div>');
+  var elm = $('<div class="test1" style="width:100px; height: 150px"></div>');
   $('body').append(elm);
   assert.equal(elm.html().length, 0, "Element should be empty before the evaluation");
-    
-  elm.ringCtrl({});
+  
+  var ctrl =  new sisiliano.knob('.test1');
+  ctrl.draw();
   
   var defaultColor = '#009688';
   var defaultValue = "0%";
@@ -23,14 +24,15 @@ QUnit.test("basics of ring slider", function( assert ) {
 
 QUnit.test("Custimizations of ring slider", function( assert ) {
   var done = assert.async();
-  var elm = $('<div style="width:100px; height: 150px"></div>');
+  var elm = $('<div class="test2" style="width:100px; height: 150px"></div>');
   $('body').append(elm);
   assert.equal(elm.html().length, 0, "Element should be empty before the evaluation");
-    
-  elm.ringCtrl({
+
+  var ctrl =  new sisiliano.knob('.test2', {
     value: 30,
     color: 'blue'
   });
+  ctrl.draw();
   
   var customizedColor = '#0000FF';
   var customizedValue = '30%';
