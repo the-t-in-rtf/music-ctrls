@@ -2,7 +2,7 @@
   0% { opacity: 1; }
   50% { opacity: 0.5; }
   100% { opacity: 1; }
-} 
+}
 
 @keyframes rotate {
   0% {
@@ -11,23 +11,23 @@
     -ms-transform: rotateZ(0deg);
     -o-transform: rotateZ(0deg);
     transform: rotateZ(0deg);
-    
+
     opacity: 1;
   }
-  
+
   50% {
     stroke: black;
     fill: black;
     opacity: 0.5;
   }
-  
+
   100% {
     -webkit-transform: rotateZ(450deg);
     -moz-transform: rotateZ(450deg);
     -ms-transform: rotateZ(450deg);
     -o-transform: rotateZ(450deg);
     transform: rotateZ(450deg);
-    
+
     opacity: 1;
   }
 }
@@ -35,7 +35,7 @@
 .sisiliano {
   width: 100%;
   height: 100%;
-  
+
   .ctrl {
     .ctrl-circle {
       -webkit-transform-origin: 150px 150px;
@@ -43,17 +43,17 @@
       -ms-transform-origin: 150px 150px;
       -o-transform-origin: 150px 150px;
       transform-origin: 150px 150px;
-      
+
       -webkit-transform: rotateZ(90deg);
       -moz-transform: rotateZ(90deg);
       -ms-transform: rotateZ(90deg);
       -o-transform: rotateZ(90deg);
       transform: rotateZ(90deg);
-      
+
       r: 130;
       cx: 150;
       cy: 150;
-      
+
       &.ctrl-circle-background {
         stroke: white;
         stroke-opacity: 0.2;
@@ -70,7 +70,7 @@
         fill-opacity: 0;
       }
     }
-      
+
     .ctrl-circle-value {
       font-family: inherit;
       fill: #009688;
@@ -78,16 +78,16 @@
       font-size: 80px;
     }
   }
-  
+
   &:focus {
     outline: none;
-    
+
     .ctrl {
       .ctrl-circle {
-        
+
         fill-opacity: 0.15;
       }
-      
+
       .ctrl-circle-value {
         fill: white !important;
       }

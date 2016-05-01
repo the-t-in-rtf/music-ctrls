@@ -5,7 +5,7 @@ module.exports = function(grunt) {
     uglify: {
       all: {
         files: {
-          "dist/sisiliano.min.js": ["dist/templates.js", "src/**/*.js" ]
+          "dist/sisiliano.min.js": ["dist/templates.js", "src/index.js", "src/controllers/*.js" ]
         },
         options: {
           preserveComments: false,
@@ -19,7 +19,7 @@ module.exports = function(grunt) {
       all: {
         options: { compress: true },
         files: {
-          "dist/sisiliano.min.css": [ "src/**/*.css" ]
+          "dist/sisiliano.min.css": [ "src/css/*.less" ]
         }
       }
     },

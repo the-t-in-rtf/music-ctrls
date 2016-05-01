@@ -4,7 +4,7 @@ QUnit.test("basics of ring slider", function( assert ) {
   $('body').append(elm);
   assert.equal(elm.html().length, 0, "Element should be empty before the evaluation");
   
-  var ctrl =  new sisiliano.knob('.test1');
+  var ctrl =  new fluid.sisiliano.knob('.test1');
   ctrl.draw();
   
   var defaultColor = '#009688';
@@ -28,7 +28,7 @@ QUnit.test("Custimizations of ring slider", function( assert ) {
   $('body').append(elm);
   assert.equal(elm.html().length, 0, "Element should be empty before the evaluation");
 
-  var ctrl =  new sisiliano.knob('.test2', {
+  var ctrl =  new fluid.sisiliano.knob('.test2', {
     value: 30,
     color: 'blue'
   });
