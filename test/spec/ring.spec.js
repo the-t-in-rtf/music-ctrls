@@ -5,7 +5,6 @@ QUnit.test("basics of ring slider", function( assert ) {
   assert.equal(elm.html().length, 0, "Element should be empty before the evaluation");
   
   var ctrl =  new fluid.sisiliano.knob('.test1');
-  ctrl.draw();
   
   var defaultColor = '#009688';
   var defaultValue = "0%";
@@ -32,7 +31,6 @@ QUnit.test("Custimizations of ring slider", function( assert ) {
     value: 30,
     color: 'blue'
   });
-  ctrl.draw();
   
   var customizedColor = '#0000FF';
   var customizedValue = '30%';

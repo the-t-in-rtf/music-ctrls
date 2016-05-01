@@ -5,8 +5,6 @@
 (function(config, fluid, $) {
   fluid.defaults("fluid." + config.frameworkName + ".knob", {
     gradeNames: ["fluid.viewComponent", "autoInit", "fluid.eventedComponent"],
-    preInitFunction: "fluid." + config.frameworkName + ".knob.preInitFunction",
-    postInitFunction: "fluid." + config.frameworkName + ".knob.postInitFunction",
     model: {
       color: "#009688",
       value: 0,
@@ -14,124 +12,140 @@
         prev: {}
       }
     },
+    selectors: {
+      knob: ".ctrl-circle",
+      valueLabel: ".ctrl-circle-value",
+      valueRing: ".ctrl-circle-cover",
+      valueRingCover: ".ctrl-circle-background",
+      rings: ".ctrl-circle"
+    },
     events: {
-      change: null,
-      onChange: null,
-      onClick: null
+      onChange: null
+    },
+    listeners: {
+      onCreate: {
+        func: "fluid." + config.frameworkName + ".knob.onCreate",
+        args: ["{that}"]
+      }
+    },
+    modelListeners: {
+      "": {
+        func: "fluid." + config.frameworkName + ".knob.updateUi",
+        args: ["{that}", "{that}.model"]
+      }
     }
   });
 
-  fluid[config.frameworkName].knob.preInitFunction = function (that) {
-    that.container.html(htmlTempl.templates["src/templates/ringCtrl.html"]);
-  };
-
-  fluid[config.frameworkName].knob.postInitFunction = function (that) {
-    function updateValue(model) {
-      if (typeof model.value != "number") {
-        model.value = model.options.value;
-      } else if (model.value > 100) {
-        model.value = 100;
-      } else if (model.value < 0) {
-        model.value = 0;
-      }
-
-      if (model.value <= 100 && model.value >= 0) {
-        that.container.find('.ctrl-circle-value').text(model.value + "%");
-
-        var offset = ((model.circumference / 100) * (100 - model.value)) + 'px';
-        that.container.find('.ctrl-circle-cover').attr('stroke-dashoffset', offset);
-      }
-
-      that.events.onChange.fire(that.model.value);
+  fluid[config.frameworkName].knob.changeValue = function(that, newValue) {
+    if (typeof newValue != "number") {
+      newValue = 0;
+    } else if (newValue > 100) {
+      newValue = 100;
+    } else if (newValue < 0) {
+      newValue = 0;
     }
 
-    function validateOptions(options, input) {
-      for (var key in options) {
-        if (input[key] !== undefined) {
-          options[key] = input[key];
-        }
-      }
+    that.applier.change("value", newValue);
+  };
 
-      if (!options.value || typeof options.value !== "number" || isNaN(options.value) || options.value > 100 || options.value < 0) {
-        options.value = 0;
+  fluid[config.frameworkName].knob.updateUi = function(that) {
+    if (that.model.value <= 100 && that.model.value >= 0) {
+      //Update the value in the UI
+      that.locate("valueLabel").text(that.model.value + "%");
+
+      //Update the ring arc according to the value
+      var offset = ((that.model.circumference / 100) * (100 - that.model.value)) + 'px';
+      that.locate("valueRing").attr('stroke-dashoffset', offset);
+    }
+  };
+
+  fluid[config.frameworkName].knob.initOptions = function(that, model, input) {
+    for (var key in model) {
+      if (input[key] !== undefined) {
+        that.applier.change(key, input[key]);
       }
-      options.value = Math.round(options.value);
+    }
+
+    var value = 0;
+    if (!(!input.value || typeof input.value !== "number" || isNaN(input.value) || input.value > 100 || input.value < 0)) {
+      value = Math.round(input.value);
+    }
+    fluid[config.frameworkName].knob.changeValue(that, value);
+  };
+
+  fluid[config.frameworkName].knob.initKnobUi = function (that) {
+    var circleRadius = parseInt(that.container.find('.ctrl-circle').attr('r'));
+    that.applier.change("radius", circleRadius);
+    that.applier.change("circumference", 2 * that.model.radius * Math.PI);
+    that.locate("rings").attr('stroke-dasharray', that.model.circumference + "px");
+
+    if (that.model.color) {
+      that.locate("valueRing").css('stroke', that.model.color);
+      that.locate("valueRingCover").css('stroke', that.model.color);
+      that.locate("valueRing").css('fill', that.model.color);
+      that.locate("valueRingCover").css('fill', that.model.color);
+      that.locate("valueLabel").css('fill', that.model.color);
+    }
+
+    fluid[config.frameworkName].knob.updateUi(that, that.model);
+  };
+
+  fluid[config.frameworkName].knob.onCreate = function (that) {
+    that.container.html(htmlTempl.templates["src/templates/ringCtrl.html"]);
+    fluid[config.frameworkName].knob.initOptions(that, that.model, that.options);
+    fluid[config.frameworkName].knob.initKnobUi(that);
+
+    function updateValue(newValue) {
+      fluid[config.frameworkName].knob.changeValue(that, newValue);
     }
 
     function endFocus() {
-      that.container.find('.ctrl-circle').css('animation', '');
-      that.container.find('.ctrl-circle').css('animation', 'rotate 0.5s');
+      that.locate("rings").css('animation', '');
+      that.locate("rings").css('animation', 'rotate 0.5s');
       setTimeout(function() {
-        that.container.find('.ctrl-circle').css('animation', '');
+        that.locate("rings").css('animation', '');
       }, 1000);
     }
 
-    validateOptions(that.model, that.options);
-
-    that.draw = function () {
-      var circleRadius = parseInt(that.container.find('.ctrl-circle').attr('r'));
-      that.model.radius = circleRadius;
-      that.model.circumference = 2 * that.model.radius * Math.PI;
-      that.container.find('.ctrl-circle').attr('stroke-dasharray', that.model.circumference + "px");
-
-      if (that.model.color) {
-        that.container.find('.ctrl-circle-cover').css('stroke', that.model.color);
-        that.container.find('.ctrl-circle-background').css('stroke', that.model.color);
-        that.container.find('.ctrl-circle-cover').css('fill', that.model.color);
-        that.container.find('.ctrl-circle-background').css('fill', that.model.color);
-        that.container.find('.ctrl-circle-value').css('fill', that.model.color);
-      }
-
-      updateValue(that.model);
-    };
-
-    that.container.on('keydown', function(evt) {
+    that.container.bind('keydown', function(evt) {
       if (evt.keyCode == 38) {
-        that.model.value++;
-        updateValue(that.model);
+        updateValue(that.model.value + 1);
         return false;
       } else if (evt.keyCode == 40) {
-        that.model.value--;
-        updateValue(that.model);
+        updateValue(that.model.value - 1);
         return false;
       } else {
         return;
       }
     });
 
-    that.container.on('mousemove', '.ctrl', function(evt) {
+    that.container.bind('mousemove', '.ctrl', function(evt) {
       if (that.model.status.mousedown) {
         if (that.model.status.prev.pageY > evt.pageY) {
-          that.model.value++;
+          updateValue(that.model.value + 1);
         } else if(that.model.status.prev.pageY < evt.pageY) {
-          that.model.value--;
+          updateValue(that.model.value - 1);
         }
-
-        updateValue(that.model);
       }
 
-      that.model.status.prev.pageX = evt.pageX;
-      that.model.status.prev.pageY = evt.pageY;
-
+      that.applier.change("status.prev", {pageX: evt.pageX, pageY: evt.pageY});
     });
+
 
     /**
      Mouse wheel event
      Ref : http://stackoverflow.com/questions/8189840/get-mouse-wheel-events-in-jquery
      */
-
     //Firefox
-    that.container.on('mousewheel', '.ctrl', function(e){
+    that.container.bind('mousewheel', '.ctrl', function(e){
       if (that.model.status.mousedown) {
         if (e.originalEvent.wheelDelta < 0) {
           //scroll down
-          that.model.value--;
+          updateValue(that.model.value - 1);
         } else {
           //scroll up
-          that.model.value++;
+          updateValue(that.model.value + 1);
         }
-
-        updateValue(that.model);
       }
 
       //prevent page fom scrolling
@@ -139,32 +153,32 @@
     });
 
     //IE, Opera, Safari
-    that.container.on('DOMMouseScroll', '.ctrl', function(e){
+    that.container.bind('DOMMouseScroll', '.ctrl', function(e){
       if (e.originalEvent.wheelDelta < 0) {
         //scroll down
-        that.model.value--;
+        updateValue(that.model.value - 1);
       } else {
         //scroll up
-        that.model.value++;
+        updateValue(that.model.value + 1);
       }
 
       //prevent page fom scrolling
       return false;
     });
 
-    that.container.on('mousedown', '.ctrl', function(evt) {
-      that.model.status.mousedown = true;
-      that.model.status.prev.pageX = evt.pageX;
-      that.model.status.prev.pageY = evt.pageY;
+
+    that.container.bind('mousedown', '.ctrl', function(evt) {
+      that.applier.change("status.mousedown", true);
+      that.applier.change("status.prev", {pageX: evt.pageX, pageY: evt.pageY});
     });
 
-    that.container.on('mouseup mouseleave', '.ctrl', function(evt) {
-      that.model.status.mousedown = false;
+    that.container.bind('mouseup mouseleave', '.ctrl', function(evt) {
+      that.applier.change("status.mousedown", false);
       endFocus();
     });
 
-    that.container.on('focusout blur', function(evt) {
-      that.model.status.mousedown = false;
+    that.container.bind('focusout blur', function(evt) {
+      that.applier.change("status.mousedown", false);
       endFocus();
     });
   };
