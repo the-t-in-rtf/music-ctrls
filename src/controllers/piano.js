@@ -13,7 +13,21 @@
         blackKeys: [],
         length: 50,
         start: 3,
-        keyCodeListenerMap: {}
+        keyCodeListenerMap: {},
+        whiteKey: {
+          width: 40,
+          height: 150
+        },
+        blackKey: {
+          width: 27,
+          height: 100
+        },
+        padding: {
+          top: 0,
+          bottom: 0,
+          left: 0,
+          right: 0,
+        }
       },
       viewBox: {
         width: 600,
@@ -71,6 +85,7 @@
     fluid[config.frameworkName].piano.appendListeners(that);
     fluid[config.frameworkName].piano.moveTabBy(that, 0);
     fluid[config.frameworkName].piano.refresh(that);
+    fluid[config.frameworkName].piano.updateTheDisabledAreaUI(that);
   };
 
   fluid[config.frameworkName].piano.refresh = function (that) {
@@ -81,14 +96,18 @@
   };
 
   fluid[config.frameworkName].piano.updateTheDisabledAreaUI = function(that) {
-    var disabledAreaContextList = [that.model.disabledArea.left, that.model.disabledArea.right];
-    for (var x = 0; x < 2; x++) {
-      var context = disabledAreaContextList[x];
-      var disabledArea = that.container.find('.fl-sisiliano-piano-disabledArea:eq(' + x + ')');
-      disabledArea.attr('x', context.x);
-      disabledArea.attr('y', context.y);
-      disabledArea.attr('width', context.width);
-      disabledArea.attr('height', context.height);
+    var keyElms = that.container.find('.fl-sisiliano-piano-key');
+    for (var i = 0; i < keyElms.length; i++) {
+      fluid[config.frameworkName].util.removeClass(keyElms[i], 'fl-sisiliano-piano-key-pressed');
+    }
+
+    var whiteKeyElms = that.container.find(".fl-sisiliano-piano-white-key");
+    for (i = 0; i < whiteKeyElms.length; i++) {
+      if (i >= that.model.activeArea.start && i <= that.model.activeArea.end) {
+        fluid[config.frameworkName].util.removeClass(whiteKeyElms[i], 'fl-sisiliano-piano-key-inactive');
+      } else {
+        fluid[config.frameworkName].util.addClass(whiteKeyElms[i], 'fl-sisiliano-piano-key-inactive');
+      }
     }
   };
 
@@ -135,10 +154,10 @@
     }
 
     //Adjust the disabled area
-    that.model.disabledArea.left.width = that.model.activeArea.start * 40;
-    that.model.disabledArea.right.width = (that.model.keyBoard.whiteKeys.length - that.model.activeArea.end) * 40;
+    that.model.disabledArea.left.width = that.model.activeArea.start * that.model.keyBoard.whiteKey.width;
+    that.model.disabledArea.right.width = (that.model.keyBoard.whiteKeys.length - that.model.activeArea.end) * that.model.keyBoard.whiteKey.width;
     if (that.model.activeArea.end < that.model.keyBoard.whiteKeys.length) {
-      that.model.disabledArea.right.x = that.model.keyBoard.whiteKeys[that.model.activeArea.end].x + 40;
+      that.model.disabledArea.right.x = that.model.keyBoard.whiteKeys[that.model.activeArea.end].x + that.model.keyBoard.whiteKey.width;
     }
   };
 
@@ -163,11 +182,11 @@
         case 37:
           fluid[config.frameworkName].piano.moveTabBy(that, -1);
           fluid[config.frameworkName].piano.updateTheDisabledAreaUI(that);
-          break;
+          return false;
         case 39:
           fluid[config.frameworkName].piano.moveTabBy(that, 1);
           fluid[config.frameworkName].piano.updateTheDisabledAreaUI(that);
-          break;
+          return false;
       }
     });
 
@@ -211,6 +230,9 @@
                                                               85, 74, 73, 75, 79, 76, 80, 186, 219, 222, 221];
 
   fluid[config.frameworkName].piano.generateKeyboard = function(that) {
+    that.model.keyBoard.blackKey.width = (((that.model.keyBoard.whiteKey.width - 1) / 3) * 2) + 1;
+    that.model.keyBoard.blackKey.height = (that.model.keyBoard.whiteKey.height / 3) * 2;
+
     that.model.keyBoard.keyCodeListenerMap = {};
     that.model.keyBoard.whiteKeys = [];
     that.model.keyBoard.blackKeys = [];
@@ -225,7 +247,10 @@
       var key;
       if (fluid[config.frameworkName].piano.OCTAVE[octaveIndex].color === "WHITE") {
         key = {
-          x: 5 + (that.model.keyBoard.whiteKeys.length * 40),
+          x: that.model.keyBoard.padding.left + (that.model.keyBoard.whiteKeys.length * that.model.keyBoard.whiteKey.width),
+          y: that.model.keyBoard.padding.top,
+          width: that.model.keyBoard.whiteKey.width - 1,
+          height: that.model.keyBoard.whiteKey.height,
           index: x,
           octaveIndex: octaveIndex,
           class: "fl-sisiliano-piano-key fl-sisiliano-piano-white-key"
@@ -233,7 +258,10 @@
         that.model.keyBoard.whiteKeys.push(key);
       } else if (fluid[config.frameworkName].piano.OCTAVE[octaveIndex].color === "BLACK") {
         key = {
-          x: 5 + ((that.model.keyBoard.whiteKeys.length - 1) * 40) + 24,
+          x: that.model.keyBoard.padding.left + ((that.model.keyBoard.whiteKeys.length - 1) * that.model.keyBoard.whiteKey.width) + ((that.model.keyBoard.whiteKey.width / 3) * 2),
+          y: that.model.keyBoard.padding.top,
+          width: that.model.keyBoard.blackKey.width,
+          height: that.model.keyBoard.blackKey.height,
           index: x,
           octaveIndex: octaveIndex,
           class: "fl-sisiliano-piano-key fl-sisiliano-piano-black-key"
@@ -250,7 +278,8 @@
     }
 
     //Adjust the viewBox to fit with the entire div
-    that.model.viewBox.width = (that.model.keyBoard.whiteKeys.length * 40) + 5;
+    that.model.viewBox.width = (that.model.keyBoard.whiteKeys.length * (that.model.keyBoard.whiteKey.width + 1)) +
+                              that.model.keyBoard.padding.left + that.model.keyBoard.padding.right;
   };
 
 
@@ -267,6 +296,19 @@
     } else {
       callback(template);
     }
+  };
+
+  fluid[config.frameworkName].util.addClass = function(elm, className) {
+    fluid[config.frameworkName].util.removeClass(elm, className);
+    var oldClass = $(elm).attr('class');
+    var newClass = oldClass + ' ' + className;
+    $(elm).attr('class', newClass);
+  };
+
+  fluid[config.frameworkName].util.removeClass = function(elm, className) {
+    var oldClass = $(elm).attr('class');
+    var newClass = oldClass.replace(new RegExp(' ' + className, 'g'), "").replace(new RegExp(className, 'g'), "");
+    $(elm).attr('class', newClass);
   };
 
 })(config, fluid, $);
