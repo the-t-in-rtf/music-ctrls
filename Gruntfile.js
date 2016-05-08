@@ -10,7 +10,7 @@ module.exports = function(grunt) {
         options: {
           preserveComments: false,
           beautify: {
-            ascii_only: true
+            beautify: true
           }
         }
       }
@@ -51,7 +51,7 @@ module.exports = function(grunt) {
     clean: ['./dist'],
     html2json: {
       dist: {
-         src: ['src/templates/*.html'],
+         src: ['src/templates/**/*.html'],
          dest: 'dist/templates.json'
       }
     },
@@ -89,7 +89,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask("testserver", ["connect", "watch:testserver"]);
   grunt.registerTask("build", ["clean", "copy", "html2json", "json", "uglify", 'less']);
-  grunt.registerTask("default", ["build", "test", "testserver"]);
+  grunt.registerTask("default", ["build", "test"]);
   grunt.registerTask("test", ["jshint", "qunit"]);
 };
 
