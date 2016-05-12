@@ -11,8 +11,8 @@
         keys: [],
         whiteKeys: [],
         blackKeys: [],
-        length: 50,
-        start: 3,
+        length: 48,
+        start: 5,
         keyCodeListenerMap: {},
         whiteKey: {
           width: 40,
@@ -23,10 +23,10 @@
           height: 100
         },
         padding: {
-          top: 0,
-          bottom: 0,
-          left: 0,
-          right: 0,
+          top: 10,
+          bottom: 10,
+          left: 10,
+          right: 10,
         }
       },
       viewBox: {
@@ -71,14 +71,16 @@
       }
     },
     modelListeners: {
-      "keyBoard.keyStatus": {
+      "viewBox": {
         func: "fluid." + config.frameworkName + ".piano.onChange",
-        args: ["{that}", "[change}"]
+        args: ["{that}", "{change}"]
       }
     }
   });
 
-  fluid[config.frameworkName].piano.onChange = function() {};
+  fluid[config.frameworkName].piano.onChange = function() {
+    console.log("onChange");
+  };
 
   fluid[config.frameworkName].piano.onCreate = function (that) {
     fluid[config.frameworkName].piano.generateKeyboard(that);
@@ -164,6 +166,38 @@
   fluid[config.frameworkName].piano.appendListeners = function (that) {
     var pianoKeyCodes = fluid[config.frameworkName].piano.COMPUTER_KEYBOARD_CODES_FOR_PIANO;
     var keyCodeListenerMap = that.model.keyBoard.keyCodeListenerMap;
+    
+    //To produce the music
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+    var context = new window.AudioContext();
+    masterGain = context.createGain();
+    nodes = {};
+    masterGain.gain.value = 0.3;
+    masterGain.connect(context.destination);
+    
+    var frequencyMap = [
+      261.626,
+      277.183,
+      293.665,
+      311.127,
+      329.628,
+      349.228,
+      369.994,
+      391.995,
+      415.305,
+      440,
+      466.164,
+      493.883
+    ];
+
+    /*var triangular = function (value) {
+      var abs = Math.abs(value);
+      return ((abs / 2) * (abs + 1)) * (abs / value) || 0;
+    };*/
+
+    var getFreequency = function(octave, octaveIndex) {
+      return Math.pow(2,octave) * frequencyMap[octaveIndex];
+    };
 
     that.container.on('keydown', function(evt) {
       var keyCode = evt.keyCode;
@@ -172,6 +206,14 @@
         if (mappedPianoKey.statusClass !== 'fl-sisiliano-piano-key-pressed') {
           mappedPianoKey.statusClass = 'fl-sisiliano-piano-key-pressed';
           updateKeyStatus(that, mappedPianoKey);
+
+          var oscillator = context.createOscillator();
+          oscillator.type = 'square';
+          oscillator.frequency.value = getFreequency(mappedPianoKey.octave, mappedPianoKey.octaveIndex);
+          console.log("mappedPianoKey.octave : " + mappedPianoKey.octave + " -- mappedPianoKey.octaveIndex : " + mappedPianoKey.octaveIndex);
+          oscillator.connect(masterGain);
+          oscillator.start(0);
+          nodes[mappedPianoKey.index] = oscillator;
         }
       } else {
         console.log("keydown : not found");
@@ -200,6 +242,11 @@
         if (mappedPianoKey.statusClass === 'fl-sisiliano-piano-key-pressed') {
           mappedPianoKey.statusClass = null;
           updateKeyStatus(that, mappedPianoKey);
+
+          var node = nodes[mappedPianoKey.index];
+          nodes[mappedPianoKey.index] = null;
+          node.stop(0);
+          node.disconnect();
         }
       } else {
         console.log("keyup : not found");
@@ -252,6 +299,7 @@
           width: that.model.keyBoard.whiteKey.width - 1,
           height: that.model.keyBoard.whiteKey.height,
           index: x,
+          octave: Math.floor(x/12),
           octaveIndex: octaveIndex,
           class: "fl-sisiliano-piano-key fl-sisiliano-piano-white-key"
         };
@@ -263,6 +311,7 @@
           width: that.model.keyBoard.blackKey.width,
           height: that.model.keyBoard.blackKey.height,
           index: x,
+          octave: Math.floor(x/12),
           octaveIndex: octaveIndex,
           class: "fl-sisiliano-piano-key fl-sisiliano-piano-black-key"
         };
@@ -278,8 +327,10 @@
     }
 
     //Adjust the viewBox to fit with the entire div
-    that.model.viewBox.width = (that.model.keyBoard.whiteKeys.length * (that.model.keyBoard.whiteKey.width + 1)) +
+    that.model.viewBox.width = (that.model.keyBoard.whiteKeys.length * that.model.keyBoard.whiteKey.width) +
                               that.model.keyBoard.padding.left + that.model.keyBoard.padding.right;
+    that.model.viewBox.height = that.model.keyBoard.whiteKey.height +
+                              that.model.keyBoard.padding.top + that.model.keyBoard.padding.bottom;
   };
 
 

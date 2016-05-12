@@ -12,7 +12,6 @@
     .test {
       position: relative;
       height: 20%;
-      padding: 20px;
     }
 
     .description {
@@ -34,7 +33,7 @@
     $(document).on('ready', function() {
       //$('.svg').ringCtrl();
 
-      var tds = $('.test');
+      var tds = $('.test:eq(0)');
       var colors = ['#009688', 'blue', 'yellow', 'red', 'orange', 'blue'];
       for (var i = 0; i < tds.length; i++) {
         var elm = new fluid.sisiliano.piano($('.test')[i], {
