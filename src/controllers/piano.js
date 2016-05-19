@@ -224,12 +224,14 @@
         case 37:
           fluid[config.frameworkName].piano.moveTabBy(that, -1);
           fluid[config.frameworkName].piano.updateTheDisabledAreaUI(that);
-          return false;
+          break;
         case 39:
           fluid[config.frameworkName].piano.moveTabBy(that, 1);
           fluid[config.frameworkName].piano.updateTheDisabledAreaUI(that);
-          return false;
+          break;
       }
+
+      return false;
     });
 
     that.container.on('keypress', function(evt) {
@@ -251,6 +253,8 @@
       } else {
         console.log("keyup : not found");
       }
+
+      return false;
     });
     
     function updateKeyStatus(that, key) {
