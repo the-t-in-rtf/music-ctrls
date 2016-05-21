@@ -101,11 +101,11 @@
         }
 
         function endFocus() {
-            that.locate("rings").css("animation", "");
+            /*that.locate("rings").css("animation", "");
             that.locate("rings").css("animation", "rotate 0.5s");
             setTimeout(function() {
                 that.locate("rings").css("animation", "");
-            }, 1000);
+            }, 1000);*/
         }
 
         that.container.bind("keydown", function(evt) {
