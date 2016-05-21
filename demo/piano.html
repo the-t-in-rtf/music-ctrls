@@ -7,7 +7,7 @@
   <script src = "../lib/handlebars/handlebars-1.0.rc.2.js"></script>
   <script src = "../dist/templates.js"></script>
   <script src = "../src/index.js"></script>
-  <script src = "../src/controllers/piano.js"></script>
+  <script src = "../src/controllers/piano/piano.js"></script>
   <style>
     .test {
       position: relative;
@@ -32,12 +32,15 @@
   <script>
     $(document).on('ready', function() {
       //$('.svg').ringCtrl();
+      window.AudioContext = window.AudioContext || window.webkitAudioContext;
+      var context = new window.AudioContext();
 
       var tds = $('.test:eq(0)');
       var colors = ['#009688', 'blue', 'yellow', 'red', 'orange', 'blue'];
       for (var i = 0; i < tds.length; i++) {
         var elm = new fluid.sisiliano.piano($('.test')[i], {
           color: colors[i],
+          context: context,
           dataModel: {
             f: [1, 2, 3]
           }

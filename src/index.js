@@ -1,15 +1,7 @@
+(function (fluid) {
+    "use strict";
 
-/*global jQuery, fluid*/
+    fluid.registerNamespace("fluid.sisiliano");
 
-
-
-var config = {
-  frameworkName: "sisiliano"
-};
-
-(function(config, fluid, $) {
-  fluid.defaults("fluid." + config.frameworkName, {});
-
-})(config, fluid, $);
-
-
+    fluid.sisiliano.templates = htmlTempl.templates;
+})(fluid);
