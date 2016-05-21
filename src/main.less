@@ -1,7 +1,13 @@
 @keyframes fade {
-  0% { opacity: 1; }
-  50% { opacity: 0.5; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 @keyframes rotate {
@@ -65,7 +71,7 @@
 
       &.ctrl-circle-cover {
         stroke: #009688;
-        stroke-width: 7;
+        stroke-width: 20;
         fill: white;
         fill-opacity: 0;
       }
@@ -81,6 +87,9 @@
 
   &:focus {
     outline: none;
+    border: 2px solid black;
+    border-style: dashed;
+    border-radius: 50%;
 
     .ctrl {
       .ctrl-circle {
