@@ -68,22 +68,42 @@
 
             var tds = $('.test');
             var colors = [
-                "#F44336",
+                "#F44336", ,
+                "#FF9800",
+                "#3F51B5",
                 "#E91E63",
+                "#4CAF50",
+                "#CDDC39",
                 "#009688",
                 "#4CAF50",
                 "#CDDC39",
                 "#673AB7",
-                "#3F51B5",
                 "#FFEB3B",
-                "#FF9800"
+                "#673AB7",
+                "#E91E63",
+                "#FFEB3B",
+                "#673AB7",
+                "#CDDC39",
+                "#009688",
+                "#4CAF50",
+                "#CDDC39",
+                "#673AB7",
+                "#FFEB3B",
             ];
             for (var i = 0; i < tds.length; i++) {
-                var elm = new fluid.sisiliano.knob($('.test')[i], {
-                    color: colors[Math.floor(Math.random() * 5)],
+                var randomColorIndex = Math.floor(Math.random() * colors.length - 1);
+                var elm = new fluid.sisiliano.knob(tds[i], {
+                    color: colors[randomColorIndex],
                     value: Math.random() * 100
                 });
+                $(tds[i]).css("background-color", colors[randomColorIndex - 1]);
             }
+
+            /*$(".test-outer").each(function() {
+             var randomColorIndex = Math.floor(Math.random() * colors.length - 1);
+             $(this).css("background-color", colors[randomColorIndex]);
+             });*/
+
         });
     </script>
 </head>
@@ -122,17 +142,28 @@
         <button class="btn fn-btn">Read more</button>
         <button class="btn fn-btn">Try..</button>
     </div>
-    <div class="col-sm-8 preview">
-        <div class="col-xs-3" style="height: 100%">
-            <div class="col-xs-12 test" style="height: 33%"></div>
-            <div class="col-xs-12 test" style="height: 33%"></div>
-            <div class="col-xs-12 test" style="height: 33%"></div>
-        </div>
-        <div class="col-xs-4" style="height: 100%">
-            <div class="col-xs-12 test" style="height: 50%"></div>
-            <div class="col-xs-12 test" style="height: 50%"></div>
-        </div>
-        <div class="col-xs-5 test" style="height: 100%"></div>
+    <div class="col-sm-8 preview test-outer">
+        <div class="col-xs-6 test" style="height: 50%"></div>
+        <div class="col-xs-3 test" style="height: 50%"></div>
+        <div class="col-xs-3 test" style="height: 50%"></div>
+        <div class="col-xs-2 test" style="height: 50%"></div>
+        <div class="col-xs-2 test" style="height: 50%"></div>
+        <div class="col-xs-2 test" style="height: 50%"></div>
+        <div class="col-xs-2 test" style="height: 50%"></div>
+        <div class="col-xs-2 test" style="height: 50%"></div>
+        <div class="col-xs-2 test" style="height: 50%"></div>
+        <div class="col-xs-1 test" style="height: 50%"></div>
+        <div class="col-xs-1 test" style="height: 50%"></div>
+        <div class="col-xs-1 test" style="height: 50%"></div>
+        <div class="col-xs-1 test" style="height: 50%"></div>
+        <div class="col-xs-1 test" style="height: 50%"></div>
+        <div class="col-xs-1 test" style="height: 50%"></div>
+        <div class="col-xs-1 test" style="height: 50%"></div>
+        <div class="col-xs-1 test" style="height: 50%"></div>
+        <div class="col-xs-1 test" style="height: 50%"></div>
+        <div class="col-xs-1 test" style="height: 50%"></div>
+        <div class="col-xs-1 test" style="height: 50%"></div>
+        <div class="col-xs-1 test" style="height: 50%"></div>
     </div>
 </div>
 
