@@ -28,6 +28,7 @@
     "QUnit": true,
     "fluid": true,
     "htmlTempl": true,
-    "module": true
+    "module": true,
+    "Handlebars": true
   }
 }

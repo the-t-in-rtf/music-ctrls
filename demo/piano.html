@@ -5,8 +5,10 @@
 
     <link href="../dist/sisiliano.min.css" rel="stylesheet"/>
     <script src="../lib/infusion/infusion-all.js"></script>
-    <script src="../dist/sisiliano.min.js"></script>
-
+    <script src="../lib/handlebars/handlebars-1.0.rc.2.js"></script>
+    <script src="../dist/templates.js"></script>
+    <script src="../src/index.js"></script>
+    <script src="../src/controllers/piano/piano.js"></script>
 
     <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="../bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet"/>
@@ -68,42 +70,32 @@
 
             var tds = $('.test');
             var colors = [
-                "#F44336", ,
-                "#FF9800",
+                "#F44336",
+                "#E91E63",
+                "#009688",
+                "#4CAF50",
+                "#CDDC39",
+                "#673AB7",
                 "#3F51B5",
-                "#E91E63",
-                "#4CAF50",
-                "#CDDC39",
-                "#009688",
-                "#4CAF50",
-                "#CDDC39",
-                "#673AB7",
                 "#FFEB3B",
-                "#673AB7",
-                "#E91E63",
-                "#FFEB3B",
-                "#673AB7",
-                "#CDDC39",
-                "#009688",
-                "#4CAF50",
-                "#CDDC39",
-                "#673AB7",
-                "#FFEB3B",
+                "#FF9800"
             ];
+
+            //$('.svg').ringCtrl();
+            window.AudioContext = window.AudioContext || window.webkitAudioContext;
+            var context = new window.AudioContext();
+
+            var tds = $('.test');
+            var colors = ['#009688', 'blue', 'yellow', 'red', 'orange', 'blue'];
             for (var i = 0; i < tds.length; i++) {
-                var randomColorIndex = Math.floor(Math.random() * colors.length - 1);
-                var elm = new fluid.sisiliano.knob(tds[i], {
-                    color: colors[randomColorIndex],
-                    value: Math.random() * 100
+                var elm = new fluid.sisiliano.piano($(tds[i]), {
+                    color: colors[i],
+                    context: context,
+                    dataModel: {
+                        f: [1, 2, 3]
+                    }
                 });
-                $(tds[i]).css("background-color", colors[randomColorIndex - 1]);
             }
-
-            /*$(".test-outer").each(function() {
-             var randomColorIndex = Math.floor(Math.random() * colors.length - 1);
-             $(this).css("background-color", colors[randomColorIndex]);
-             });*/
-
         });
     </script>
 </head>
@@ -129,12 +121,28 @@
 <div class="row demo">
 
     <div class="col-sm-4 description">
-        <h1>Knob</h1>
-        <ul>
-            <li>Click or use the tab to focus it</li>
-            <li>Use arrow keys to control</li>
-            <li>resize the window to test the Responsiveness</li>
-        </ul>
+        <h1>Piano</h1>
+        This component was introduced for the purpose of testing the instruments created using flocking framework. So,
+        the
+        instrument created using the flocking shall be passed as parameter to the component. Also the primary color,
+        starting
+        note and the length of the piano also can be modified through parameters.
+        <br>
+        <br>
+        This component is fully responsive and developed using an SVG. Also this is also accessible via the keyboard.
+        So, the active area which can be controlled by the keyboard is highlighted in the piano. And the highlighted
+        area
+        can be moved to left and right using arrow keys.
+      <pre>
+        new fluid.sisiliano.piano($('#elm'), {
+          instrument: instrument,
+          color: "#009688",
+          keyBoard: {
+            length: 50,
+            start: 3,
+          }
+        });
+      </pre>
 
         <br>
         <br>
@@ -142,28 +150,8 @@
         <button class="btn fn-btn">Read more</button>
         <button class="btn fn-btn">Try..</button>
     </div>
-    <div class="col-sm-8 preview test-outer">
-        <div class="col-xs-6 test" style="height: 50%"></div>
-        <div class="col-xs-3 test" style="height: 50%"></div>
-        <div class="col-xs-3 test" style="height: 50%"></div>
-        <div class="col-xs-2 test" style="height: 50%"></div>
-        <div class="col-xs-2 test" style="height: 50%"></div>
-        <div class="col-xs-2 test" style="height: 50%"></div>
-        <div class="col-xs-2 test" style="height: 50%"></div>
-        <div class="col-xs-2 test" style="height: 50%"></div>
-        <div class="col-xs-2 test" style="height: 50%"></div>
-        <div class="col-xs-1 test" style="height: 50%"></div>
-        <div class="col-xs-1 test" style="height: 50%"></div>
-        <div class="col-xs-1 test" style="height: 50%"></div>
-        <div class="col-xs-1 test" style="height: 50%"></div>
-        <div class="col-xs-1 test" style="height: 50%"></div>
-        <div class="col-xs-1 test" style="height: 50%"></div>
-        <div class="col-xs-1 test" style="height: 50%"></div>
-        <div class="col-xs-1 test" style="height: 50%"></div>
-        <div class="col-xs-1 test" style="height: 50%"></div>
-        <div class="col-xs-1 test" style="height: 50%"></div>
-        <div class="col-xs-1 test" style="height: 50%"></div>
-        <div class="col-xs-1 test" style="height: 50%"></div>
+    <div class="col-sm-8 preview">
+        <div class="col-xs-12 test" style="height: 100%"></div>
     </div>
 </div>
 

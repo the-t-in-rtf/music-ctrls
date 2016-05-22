@@ -122,3 +122,75 @@
   -ms-user-select: none;
   user-select: none;
 }
+
+
+.fl-sisiliano {
+  &:focus {
+    outline: none;
+    border-style: dashed;
+    border-width: 2px;
+  }
+  .fl-sisiliano-piano {
+    fill: #4CAF50;
+
+    .fl-sisiliano-piano-white-key {
+      //width: 39px;
+      opacity: 1;
+      fill: #ffffff;
+      fill-opacity: 1;
+      fill-rule: nonzero;
+      stroke: #ffffff;
+      filter: url('#filter6244');
+      transform-origin: 299px 100px;
+      transform-style: preserve-3d;
+      transform: rotatex(0deg);
+      stroke-linejoin: round;
+      stroke-width: 0;
+
+      &:hover {
+        transform: rotatex(10deg);
+        fill: #4CAF50;
+        stroke: #4CAF50;
+      }
+    }
+
+    .fl-sisiliano-piano-black-key {
+      //width: 27px;
+      opacity:1;
+      fill:#000000;
+      fill-opacity:1;
+      fill-rule:nonzero;
+      stroke:#000000;
+      filter: url('#filter6244');
+      transform-origin: 299px 100px;
+      transform-style: preserve-3d;
+      transform: rotatex(0deg);
+      stroke-linejoin: round;
+      stroke-width: 3;
+
+      &:hover{
+        transform: rotatex(10deg);
+        fill: #4CAF50;
+        stroke: #4CAF50;
+      }
+    }
+
+    .fl-sisiliano-piano-disabledArea {
+      fill: rgba(0, 0, 0, 0.45);
+    }
+
+    .fl-sisiliano-piano-key-inactive {
+      fill: #D1CFCF;
+    }
+
+    .fl-sisiliano-piano-key-pressed {
+      transform: rotatex(10deg);
+      fill: #4CAF50;
+      stroke: #4CAF50;
+    }
+
+    .fl-sisiliano-piano-key-board {
+      display: inline;
+    }
+  }
+}
