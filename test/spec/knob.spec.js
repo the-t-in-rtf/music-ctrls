@@ -18,7 +18,7 @@
         );
         jqUnit.assertEquals("slider color '" + properties.color + "' should have been applied to the slider",
             properties.color,
-            fluid.test.helpers.toHex(knob.locate("valueRingCover").css("stroke"))
+            fluid.test.helpers.toHex(knob.locate("knobBackgroundCircle").css("stroke"))
         );
         jqUnit.assertEquals("slider color '" + properties.color + "' should have been applied to the slider",
             properties.color,
@@ -26,7 +26,7 @@
         );
         jqUnit.assertEquals("slider color '" + properties.color + "' should have been applied to the slider",
             properties.color,
-            fluid.test.helpers.toHex(knob.locate("valueRingCover").css("fill"))
+            fluid.test.helpers.toHex(knob.locate("knobBackgroundCircle").css("fill"))
         );
     };
     jqUnit.test("basics of ring slider", function() {
@@ -46,12 +46,12 @@
 
         var knob = fluid.sisiliano.knob(".test2", {
             value: 30,
-            color: "blue"
+            color: "#0000BB"
         });
 
         fluid.test.knob.verifyStyles(knob, {
             value: 30,
-            color: "blue"
+            color: "#0000BB"
         });
     });
 })(fluid, jqUnit);
