@@ -11,11 +11,11 @@
             }
         },
         selectors: {
-            knob: ".ctrl-circle",
-            valueLabel: ".ctrl-circle-value",
-            valueRing: ".ctrl-circle-cover",
-            valueRingCover: ".ctrl-circle-background",
-            rings: ".ctrl-circle"
+            knob: ".knob-circle",
+            valueLabel: ".knob-value-text",
+            valueRing: ".knob-value-circle",
+            knobBackgroundCircle: ".knob-background-circle",
+            rings: ".knob-circle"
         },
         events: {
             onChange: null
@@ -75,16 +75,17 @@
     };
 
     fluid.sisiliano.knob.initKnobUi = function (that) {
-        var circleRadius = parseInt(that.container.find(".ctrl-circle").attr("r"), "");
+        var circleRadius = parseInt(that.locate("knobBackgroundCircle").attr("r"), "");
+
         that.applier.change("radius", circleRadius);
         that.applier.change("circumference", 2 * that.model.radius * Math.PI);
         that.locate("rings").attr("stroke-dasharray", that.model.circumference + "px");
 
         if (that.model.color) {
             that.locate("valueRing").css("stroke", that.model.color);
-            that.locate("valueRingCover").css("stroke", that.model.color);
+            that.locate("knobBackgroundCircle").css("stroke", that.model.color);
             that.locate("valueRing").css("fill", that.model.color);
-            that.locate("valueRingCover").css("fill", that.model.color);
+            that.locate("knobBackgroundCircle").css("fill", that.model.color);
             that.locate("valueLabel").css("fill", that.model.color);
         }
 

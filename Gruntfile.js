@@ -79,6 +79,16 @@ module.exports = function(grunt) {
             options: {
                 jshintrc: true
             }
+        },
+        handlebars: {
+            compile: {
+                options: {
+                    namespace: "JST"
+                },
+                files: {
+                    "dist/handlebars.js": "src/controllers/**/*.html"
+                }
+            }
         }
     });
 
@@ -92,6 +102,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks("grunt-html2json");
     grunt.loadNpmTasks("grunt-json");
     grunt.loadNpmTasks("grunt-contrib-qunit");
+    grunt.loadNpmTasks("grunt-contrib-handlebars");
 
     grunt.registerTask("testserver", ["connect", "watch:testserver"]);
     grunt.registerTask("build", ["clean:dist", "copy", "html2json", "json", "uglify", "less"]);
