@@ -29,6 +29,7 @@
     "fluid": true,
     "htmlTempl": true,
     "module": true,
-    "Handlebars": true
+    "Handlebars": true,
+    "jqUnit": true
   }
 }
