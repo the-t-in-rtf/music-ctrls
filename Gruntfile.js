@@ -24,10 +24,10 @@ module.exports = function(grunt) {
             }
         },
         connect: {
-            testserver: {
+            "demo-server": {
                 options: {
                     port: 8001,
-                    base: "./"
+                    base: "./demo"
                 }
             }
         },
@@ -46,10 +46,21 @@ module.exports = function(grunt) {
                 cwd: "src/controllers",
                 src: "**/*.html",
                 dest: "dist/templates/"
+            },
+            "demo-public": {
+                expand: true,
+                src: [
+                    "bower_components/bootstrap/dist/**/*.*",
+                    "bower_components/bootstrap/fonts/**/*.*",
+                    "bower_components/jquery/dist/**/*.*",
+                    "lib/**/*.*",
+                    "dist/**/*.*"
+                ],
+                dest: "demo/source"
             }
         },
         clean: {
-            dist: ["./dist"]
+            dist: ["./dist", "./demo/source"]
         },
         html2json: {
             dist: {
@@ -104,8 +115,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks("grunt-contrib-qunit");
     grunt.loadNpmTasks("grunt-contrib-handlebars");
 
-    grunt.registerTask("testserver", ["connect", "watch:testserver"]);
-    grunt.registerTask("build", ["clean:dist", "copy", "html2json", "json", "uglify", "less"]);
+    grunt.registerTask("demo", ["connect:demo-server", "watch:testserver"]);
+    grunt.registerTask("build", ["clean:dist", "copy:main", "html2json", "json", "uglify", "less", "copy:demo-public"]);
     grunt.registerTask("default", ["build", "test"]);
     grunt.registerTask("test", ["jshint", "qunit"]);
 };
