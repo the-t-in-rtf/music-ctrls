@@ -2,10 +2,23 @@ module.exports = function(grunt) {
     "use strict";
 
     grunt.initConfig({
+        pkg: grunt.file.readJSON("package.json"),
+        concat: {
+            options: {
+                stripBanners: true,
+                banner: "/*! <%= pkg.name %> - v<%= pkg.version %> - " +
+                "<%= grunt.template.today('yyyy-mm-dd') %> \n\n*/"
+            },
+            dist: {
+                separator: "\n\n",
+                src: ["dist/templates.js", "src/index.js", "src/controllers/**/*.js"],
+                dest: "dist/sisiliano.js"
+            }
+        },
         uglify: {
             all: {
                 files: {
-                    "dist/sisiliano.min.js": ["dist/templates.js", "src/index.js", "src/controllers/**/*.js" ]
+                    "dist/sisiliano.min.js": ["dist/sisiliano.js"]
                 },
                 options: {
                     preserveComments: false,
@@ -105,6 +118,7 @@ module.exports = function(grunt) {
 
     grunt.loadNpmTasks("grunt-contrib-connect");
     grunt.loadNpmTasks("grunt-contrib-uglify");
+    grunt.loadNpmTasks("grunt-contrib-concat");
     grunt.loadNpmTasks("grunt-contrib-less");
     grunt.loadNpmTasks("grunt-contrib-watch");
     grunt.loadNpmTasks("grunt-contrib-clean");
@@ -116,7 +130,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks("grunt-contrib-handlebars");
 
     grunt.registerTask("demo", ["connect:demo-server", "watch:testserver"]);
-    grunt.registerTask("build", ["clean:dist", "copy:main", "html2json", "json", "uglify", "less", "copy:demo-public"]);
+    grunt.registerTask("build", ["clean:dist", "copy:main", "html2json", "json", "concat", "uglify", "less", "copy:demo-public"]);
     grunt.registerTask("default", ["build", "test"]);
     grunt.registerTask("test", ["jshint", "qunit"]);
 };
