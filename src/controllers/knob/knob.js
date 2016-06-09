@@ -1,4 +1,4 @@
-(function(fluid) {
+(function (fluid) {
     "use strict";
 
     fluid.defaults("fluid.sisiliano.knob", {
@@ -39,7 +39,7 @@
         }
     });
 
-    fluid.sisiliano.knob.onValueChange = function(that, newValue) {
+    fluid.sisiliano.knob.onValueChange = function (that, newValue) {
         if (typeof newValue !== "number") {
             newValue = 0;
             that.applier.change("value", newValue);
@@ -63,7 +63,7 @@
         }
     };
 
-    fluid.sisiliano.knob.onColorChange = function(that, newColor) {
+    fluid.sisiliano.knob.onColorChange = function (that, newColor) {
         that.locate("valueRing").css("stroke", newColor);
         that.locate("knobBackgroundCircle").css("stroke", newColor);
         that.locate("valueRing").css("fill", newColor);
@@ -71,7 +71,7 @@
         that.locate("valueLabel").css("fill", newColor);
     };
 
-    fluid.sisiliano.knob.initOptions = function(that, model, input) {
+    fluid.sisiliano.knob.initOptions = function (that, model, input) {
         for (var key in model) {
             if (input[key] !== undefined) {
                 that.applier.change(key, input[key]);
@@ -95,91 +95,45 @@
         fluid.sisiliano.knob.init(that);
         fluid.sisiliano.knob.initOptions(that, that.model, that.options);
 
-        /**
-         * TODO add touch events
-         * https://developer.mozilla.org/en-US/docs/Web/API/Touch_events
-         *
-         * function startup() {
-              var el = document.getElementsByTagName("canvas")[0];
-              el.addEventListener("touchstart", handleStart, false);
-              el.addEventListener("touchend", handleEnd, false);
-              el.addEventListener("touchcancel", handleCancel, false);
-              el.addEventListener("touchmove", handleMove, false);
-              log("initialized.");
-            }
-         */
-
-        that.container.bind("keydown", function(evt) {
-            if (evt.keyCode === 38) {
-                that.applier.change("value", that.model.value + 1);
-                return false;
-            } else if (evt.keyCode === 40) {
-                that.applier.change("value", that.model.value - 1);
-                return false;
-            } else {
-                return;
-            }
-        });
-
-        that.container.bind("mousemove", ".knob-circle", function(evt) {
-            if (that.model.status.mousedown) {
-                if (that.model.status.prev.pageY > evt.pageY) {
+        d3.select(that.locate("valueRing").get(0))
+            .on("keydown", function () {
+                if (d3.event.keyCode === 38) {
                     that.applier.change("value", that.model.value + 1);
-                } else if(that.model.status.prev.pageY < evt.pageY) {
+                    d3.event.preventDefault();
+                } else if (d3.event.keyCode === 40) {
                     that.applier.change("value", that.model.value - 1);
+                    d3.event.preventDefault();
                 }
-            }
-
-            that.applier.change("status.prev", {pageX: evt.pageX, pageY: evt.pageY});
-        });
-
-
-        /**
-         Mouse wheel event
-         Ref : http://stackoverflow.com/questions/8189840/get-mouse-wheel-events-in-jquery
-         */
-        //Firefox
-        that.container.bind("mousewheel", ".knob-circle", function(e){
-            if (that.model.status.mousedown) {
-                if (e.originalEvent.wheelDelta < 0) {
-                    //scroll down
-                    that.applier.change("value", that.model.value - 1);
-                } else {
-                    //scroll up
-                    that.applier.change("value", that.model.value + 1);
+            })
+            .on("mousemove", function () {
+                var position = d3.mouse($(that.container).get(0));
+                if (that.model.status.mousedown) {
+                    if (that.model.status.prev.pageY > position[1]) {
+                        that.applier.change("value", that.model.value + 1);
+                    } else if (that.model.status.prev.pageY < position[1]) {
+                        that.applier.change("value", that.model.value - 1);
+                    }
                 }
-            }
 
-            //prevent page fom scrolling
-            return false;
-        });
-
-        //IE, Opera, Safari
-        that.container.bind("DOMMouseScroll", ".knob-circle", function(e){
-            if (e.originalEvent.wheelDelta < 0) {
-                //scroll down
-                that.applier.change("value", that.model.value - 1);
-            } else {
-                //scroll up
-                that.applier.change("value", that.model.value + 1);
-            }
-
-            //prevent page fom scrolling
-            return false;
-        });
-
-        that.container.bind("mousedown", ".knob-circle", function(evt) {
-            that.applier.change("status.mousedown", true);
-            that.applier.change("status.prev", {pageX: evt.pageX, pageY: evt.pageY});
-        });
-
-        that.container.bind("mouseup mouseleave", ".knob-circle", function() {
-            that.applier.change("status.mousedown", false);
-        });
-
-        that.container.bind("focusout blur", "knob-circle", function() {
-            that.applier.change("status.mousedown", false);
-        });
+                that.applier.change("status.prev", {pageX: position[0], pageY: position[1]});
+            })
+            .on("mousedown", function () {
+                var position = d3.mouse($(that.container).get(0));
+                that.applier.change("status.mousedown", true);
+                that.applier.change("status.prev", {pageX: position[0], pageY: position[1]});
+            })
+            .on("mouseup", function () {
+                that.applier.change("status.mousedown", false);
+            })
+            .on("mouseleave", function () {
+                that.applier.change("status.mousedown", false);
+            })
+            .on("focusout", function () {
+                that.applier.change("status.mousedown", false);
+            })
+            .on("blur", function () {
+                that.applier.change("status.mousedown", false);
+            });
     };
 
 })(fluid);

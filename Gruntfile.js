@@ -66,6 +66,7 @@ module.exports = function(grunt) {
                     "bower_components/bootstrap/dist/**/*.*",
                     "bower_components/bootstrap/fonts/**/*.*",
                     "bower_components/jquery/dist/**/*.*",
+                    "bower_components/d3/d3.js",
                     "lib/**/*.*",
                     "dist/**/*.*"
                 ],
