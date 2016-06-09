@@ -16,6 +16,7 @@
             valueLabel: ".knob-value-text",
             valueRing: ".knob-value-circle",
             knobBackgroundCircle: ".knob-background-circle",
+            borderCircle: "knob-circle knob-border-circle",
             rings: ".knob-circle"
         },
         events: {
@@ -95,7 +96,7 @@
         fluid.sisiliano.knob.init(that);
         fluid.sisiliano.knob.initOptions(that, that.model, that.options);
 
-        d3.select(that.locate("valueRing").get(0))
+        d3.select($(that.container).get(0))
             .on("keydown", function () {
                 if (d3.event.keyCode === 38) {
                     that.applier.change("value", that.model.value + 1);
@@ -106,28 +107,28 @@
                 }
             })
             .on("mousemove", function () {
-                var position = d3.mouse($(that.container).get(0));
-                if (that.model.status.mousedown) {
-                    if (that.model.status.prev.pageY > position[1]) {
-                        that.applier.change("value", that.model.value + 1);
-                    } else if (that.model.status.prev.pageY < position[1]) {
-                        that.applier.change("value", that.model.value - 1);
+                var position = d3.mouse($(that.container).find("svg").eq(0).get(0));
+                var center = {x: 150, y: 150};
+                var radius = 150;
+                var clickedPosition = {x: position[0], y: position[1]};
+
+                if (that.model.status.mousedown && fluid.sisiliano.util.isInsideTheCircle(center, radius, clickedPosition)) {
+                    var value = (fluid.sisiliano.util.getAngle(center, clickedPosition) / 2) * 100;
+
+                    if (that.model.value !== value) {
+                        that.applier.change("value", value);
                     }
                 }
-
-                that.applier.change("status.prev", {pageX: position[0], pageY: position[1]});
             })
             .on("mousedown", function () {
-                var position = d3.mouse($(that.container).get(0));
                 that.applier.change("status.mousedown", true);
-                that.applier.change("status.prev", {pageX: position[0], pageY: position[1]});
             })
             .on("mouseup", function () {
                 that.applier.change("status.mousedown", false);
             })
-            .on("mouseleave", function () {
+            /*.on("mouseleave", function () {
                 that.applier.change("status.mousedown", false);
-            })
+            })*/
             .on("focusout", function () {
                 that.applier.change("status.mousedown", false);
             })
