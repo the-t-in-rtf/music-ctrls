@@ -12,7 +12,12 @@ This project will involve the creation of a small collection of high-quality, re
 bower install
 npm install
 grunt
-grunt testserver
+grunt demo
 ```
 
-http://localhost:8001/test/
+http://localhost:8001/
+
+#Demo
+http://dinukadesilva.github.io/music-ctrls/demo/knob.html
+
+http://dinukadesilva.github.io/music-ctrls/demo/piano.html

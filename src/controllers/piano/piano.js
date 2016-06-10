@@ -1,4 +1,4 @@
-(function(fluid, $) {
+(function(fluid) {
     "use strict";
 
     fluid.defaults("fluid.sisiliano.piano", {
@@ -331,34 +331,4 @@
         that.model.viewBox.height = that.model.keyBoard.whiteKey.height +
             that.model.keyBoard.padding.top + that.model.keyBoard.padding.bottom;
     };
-
-
-    //TODO move to an external file and generalize to other components
-    fluid.registerNamespace("fluid.sisiliano.util");
-    fluid.sisiliano.util.templateCache = {};
-    fluid.sisiliano.util.getTemplate = function (callback, url) {
-        var template = fluid.sisiliano.util.templateCache[url];
-        if (!template) {
-            var source = htmlTempl.templates["src/controllers/piano/piano.html"];
-            template = Handlebars.compile(source);
-            fluid.sisiliano.util.templateCache[url] = template;
-            callback(template);
-        } else {
-            callback(template);
-        }
-    };
-
-    fluid.sisiliano.util.addClass = function(elm, className) {
-        fluid.sisiliano.util.removeClass(elm, className);
-        var oldClass = $(elm).attr("class");
-        var newClass = oldClass + " " + className;
-        $(elm).attr("class", newClass);
-    };
-
-    fluid.sisiliano.util.removeClass = function(elm, className) {
-        var oldClass = $(elm).attr("class");
-        var newClass = oldClass.replace(new RegExp(" " + className, "g"), "").replace(new RegExp(className, "g"), "");
-        $(elm).attr("class", newClass);
-    };
-
-})(fluid, $);
+})(fluid);
