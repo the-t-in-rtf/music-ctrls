@@ -126,9 +126,6 @@
             .on("mouseup", function () {
                 that.applier.change("status.mousedown", false);
             })
-            /*.on("mouseleave", function () {
-                that.applier.change("status.mousedown", false);
-            })*/
             .on("focusout", function () {
                 that.applier.change("status.mousedown", false);
             })
