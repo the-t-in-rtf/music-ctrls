@@ -38,12 +38,13 @@
   }
 }
 
-.sisiliano {
+.fl-sisiliano {
   width: 100%;
   height: 100%;
+  cursor: pointer;
 
-  .ctrl {
-    .knob-circle {
+  .fl-sisiliano-knob {
+    .fl-sisiliano-knob-circle {
       -webkit-transform-origin: 150px 150px;
       -moz-transform-origin: 150px 150px;
       -ms-transform-origin: 150px 150px;
@@ -60,7 +61,7 @@
       cx: 150;
       cy: 150;
 
-      &.knob-background-circle {
+      &.fl-sisiliano-knob-background-circle {
         stroke: white;
         stroke-opacity: 0.4;
         stroke-width: 10;
@@ -69,14 +70,14 @@
         fill-opacity: 0;
       }
 
-      &.knob-value-circle {
+      &.fl-sisiliano-knob-value-circle {
         stroke: #009688;
         stroke-width: 20;
         fill: white;
         fill-opacity: 0;
       }
 
-      &.knob-border-circle {
+      &.fl-sisiliano-knob-border-circle {
         r: 147;
         fill: none;
         stroke: none;
@@ -84,7 +85,7 @@
       }
     }
 
-    .knob-value-text {
+    .fl-sisiliano-knob-value-text {
       font-family: inherit;
       fill: #009688;
       font-style: italic;
@@ -94,21 +95,18 @@
 
   &:focus {
     outline: none;
-    /*border: 2px solid black;
-    border-style: dashed;
-    border-radius: 50%;*/
 
-    .ctrl {
-      .knob-circle {
+    .fl-sisiliano-knob {
+      .fl-sisiliano-knob-circle {
         fill-opacity: 0.15;
 
-        &.knob-border-circle {
+        &.fl-sisiliano-knob-border-circle {
           stroke: #9E9E9E;
           stroke-width: 2;
         }
       }
 
-      .knob-value-text {
+      .fl-sisiliano-knob-value-text {
         fill: white !important;
       }
     }
@@ -127,9 +125,9 @@
 
 .fl-sisiliano {
   &:focus {
-    outline: none;
+    /*outline: none;
     border-style: dashed;
-    border-width: 2px;
+    border-width: 2px;*/
   }
   .fl-sisiliano-piano {
     fill: #4CAF50;
