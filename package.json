@@ -18,7 +18,7 @@
     "grunt-contrib-handlebars": "^1.0.0",
     "grunt-contrib-jshint": "^1.0.0",
     "grunt-contrib-less": "^1.2.0",
-    "grunt-contrib-qunit": "^1.1.0",
+    "grunt-contrib-qunit": "^1.2.0",
     "grunt-contrib-uglify": "^1.0.1",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-html2json": "git://github.com/Dinuka2013513/grunt-html2json.git",
