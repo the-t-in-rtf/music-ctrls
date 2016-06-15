@@ -37,12 +37,14 @@
             },
             "status.isActive": {
                 func: "fluid.sisiliano.knob.onStatusChange",
-                args: "{that}.model.status.isActive"
+                args: ["{that}", "{that}.model.status.isActive"]
             }
         }
     });
 
-    fluid.sisiliano.knob.onStatusChange = function () {
+    fluid.sisiliano.knob.onStatusChange = function (that, isActive) {
+        var className = "fl-sisiliano-knob" + (isActive ? " fl-sisiliano-active" : "");
+        d3.select(that.container.get(0)).select(".fl-sisiliano-knob").attr("class", className);
     };
 
     fluid.sisiliano.knob.onValueChange = function (that, newValue) {
@@ -97,12 +99,26 @@
     };
 
     fluid.sisiliano.knob.onCreate = function (that) {
-        that.container.html(fluid.sisiliano.templates["src/controllers/knob/knob.html"]);
-        fluid.sisiliano.knob.init(that);
-        fluid.sisiliano.knob.initOptions(that, that.model, that.options);
+        fluid.sisiliano.util.getTemplate(function (template) {
+            var html = template(that.model);
+            that.container.html(html);
+            fluid.sisiliano.knob.init(that);
+            fluid.sisiliano.knob.initOptions(that, that.model, that.options);
+            fluid.sisiliano.knob.addListeners(that);
+        }, "src/controllers/knob/knob.html");
+    };
+
+    fluid.sisiliano.knob.addListeners = function (that) {
+        d3.select(document)
+            .on("mouseup", function () {
+                that.applier.change("status.isActive", false);
+            })
+            .on("click", function () {
+                that.applier.change("status.isActive", false);
+            });
 
         d3.select(that.container.get(0))
-            .on("keydown", function () {console.log("\n#####################################\n" + d3.event.keyCode);
+            .on("keydown", function () {
                 if (d3.event.keyCode === 38) {
                     that.applier.change("value", that.model.value + 1);
                     d3.event.preventDefault();
@@ -110,6 +126,13 @@
                     that.applier.change("value", that.model.value - 1);
                     d3.event.preventDefault();
                 }
+
+                return false;
+            });
+
+        d3.select(that.container.get(0)).selectAll(".fl-sisiliano-knob")
+            .on("mousedown", function () {
+                that.applier.change("status.isActive", true);
             })
             .on("mousemove", function () {
                 var position = d3.mouse(that.container.find("svg").eq(0).get(0));
@@ -125,29 +148,11 @@
                     }
                 }
             })
-            .on("mousedown", function () {
-                that.applier.change("status.isActive", true);
-            })
             .on("mouseup", function () {
                 that.applier.change("status.isActive", false);
             })
-            .on("focusout", function () {
-                that.applier.change("status.isActive", false);
-            })
-            .on("blur", function () {
-                that.applier.change("status.isActive", false);
-            });
-
-        d3.select("body")
-            .on("mouseup", function () {
-                that.applier.change("status.isActive", false);
-            })
-            .on("focusout", function () {
-                that.applier.change("status.isActive", false);
-            })
-            .on("blur", function () {
+            .on("mouseleave", function () {
                 that.applier.change("status.isActive", false);
             });
     };
-
 })(fluid);
