@@ -43,6 +43,12 @@
   height: 100%;
   cursor: pointer;
 
+  .fl-sisiliano-border {
+    fill: none;
+    stroke: none;
+    stroke-dasharray: 10px;
+  }
+
   .fl-sisiliano-knob {
     .fl-sisiliano-knob-circle {
       -webkit-transform-origin: 150px 150px;
@@ -57,7 +63,7 @@
       -o-transform: rotateZ(90deg);
       transform: rotateZ(90deg);
 
-      r: 130;
+      //r: 130;
       cx: 150;
       cy: 150;
 
@@ -76,13 +82,6 @@
         fill: white;
         fill-opacity: 0;
       }
-
-      &.fl-sisiliano-knob-border-circle {
-        r: 147;
-        fill: none;
-        stroke: none;
-        stroke-dasharray: 10px;
-      }
     }
 
     .fl-sisiliano-knob-value-text {
@@ -91,24 +90,24 @@
       font-style: italic;
       font-size: 80px;
     }
-  }
 
-  &:focus {
-    outline: none;
-
-    .fl-sisiliano-knob {
+    &.fl-sisiliano-active {
       .fl-sisiliano-knob-circle {
         fill-opacity: 0.15;
-
-        &.fl-sisiliano-knob-border-circle {
-          stroke: #9E9E9E;
-          stroke-width: 2;
-        }
       }
 
       .fl-sisiliano-knob-value-text {
         fill: white !important;
       }
+    }
+  }
+
+  &:focus {
+    outline: none;
+
+    .fl-sisiliano-border {
+      stroke: #9E9E9E;
+      stroke-width: 2;
     }
   }
 }
@@ -122,13 +121,7 @@
   user-select: none;
 }
 
-
 .fl-sisiliano {
-  &:focus {
-    /*outline: none;
-    border-style: dashed;
-    border-width: 2px;*/
-  }
   .fl-sisiliano-piano {
     fill: #4CAF50;
 
@@ -155,22 +148,26 @@
 
     .fl-sisiliano-piano-black-key {
       //width: 27px;
-      opacity:1;
-      fill:#000000;
-      fill-opacity:1;
-      fill-rule:nonzero;
-      stroke:#000000;
+      opacity: 1;
+      fill: #000000;
+      fill-opacity: 1;
+      fill-rule: nonzero;
+      stroke: #000000;
       filter: url('#filter6244');
       transform-origin: 299px 100px;
       transform-style: preserve-3d;
       transform: rotatex(0deg);
       stroke-linejoin: round;
-      stroke-width: 3;
+      stroke-width: 0;
 
-      &:hover{
+      &:hover, &.fl-sisiliano-piano-key-inactive:hover {
         transform: rotatex(10deg);
         fill: #4CAF50;
         stroke: #4CAF50;
+      }
+
+      &.fl-sisiliano-piano-key-inactive {
+        fill: #504c4c;
       }
     }
 
