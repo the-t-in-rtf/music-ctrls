@@ -12,7 +12,7 @@
     fluid.sisiliano.util.getTemplate = function (callback, url) {
         var template = fluid.sisiliano.util.templateCache[url];
         if (!template) {
-            var source = htmlTempl.templates["src/controllers/piano/piano.html"];
+            var source = htmlTempl.templates[url];
             template = Handlebars.compile(source);
             fluid.sisiliano.util.templateCache[url] = template;
             callback(template);
