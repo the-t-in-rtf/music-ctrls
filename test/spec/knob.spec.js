@@ -9,6 +9,7 @@
 
     //Verifying styles and inouts
     jqUnit.test("knob: default styles and inputs", function () {
+        $(".test").empty();
         var knob = fluid.sisiliano.knob(".test");
 
         fluid.test.knob.verifyStyles(knob, {
@@ -18,6 +19,7 @@
     });
 
     jqUnit.test("knob: customized styles and inputs", function () {
+        $(".test").empty();
         var knob = fluid.sisiliano.knob(".test", {
             value: 30,
             color: "#0000BB"
@@ -59,7 +61,7 @@
     //Verifying key events
     jqUnit.test("knob : key events", function () {
         var knob = fluid.sisiliano.knob(".test");
-
+        $(".test").empty();
         fluid.test.knob.verifyKeyEvents(knob);
     });
     fluid.test.knob.verifyKeyEvents = function (knob) {
