@@ -45,7 +45,7 @@
                 /*Gap of start and end should be 11 to make make
                  the piano accessible to the computer keyboard*/
                 start: 1,
-                end: 19
+                end: 11
             },
             disabledArea: {
                 left: {
@@ -101,38 +101,47 @@
         var allocatedComputerKeysForThePiano = [81, 65, 87, 83, 69, 68, 82, 70, 84, 71, 89, 72,
             85, 74, 73, 75, 79, 76, 80, 186, 219, 222, 221];
 
-        var allocatedKeyIndex = 0;
-        var activeWhiteKeys = 0;
-        var MAX_ACTIVE_WHITE_KEYS = 11;
-        for (var i = 0; i < keys.length; i++) {
-            var key = keys[i];
+        var whiteKeys = fluid.sisiliano.piano.getWhiteKeys(keys);
 
-            key.isActive = fluid.sisiliano.piano.isKeyWithinTheActiveArea(key, activeArea);
+        if (whiteKeys.length > 0) {
+            var activeStartIndex = whiteKeys[activeArea.start].index;
+            var activeEndIndex = whiteKeys[activeArea.end].index;
 
-            if (key.isActive) {
-                if (key.color === "WHITE" && activeWhiteKeys < MAX_ACTIVE_WHITE_KEYS) {
-                    activeWhiteKeys++;
-                } else if (key.color === "BLACK" && activeWhiteKeys === MAX_ACTIVE_WHITE_KEYS) {
-                    activeWhiteKeys++;
-                } else if (activeWhiteKeys >= MAX_ACTIVE_WHITE_KEYS) {
-                    key.isActive = false;
+            if (activeStartIndex > 0) {
+                var previousKey = keys[activeStartIndex - 1];
+                if (previousKey.color === "BLACK") {
+                    activeStartIndex--;
                 }
             }
 
-            if (key.isActive && allocatedKeyIndex === 0 && key.color === "WHITE") {
-                allocatedKeyIndex++;
+            if (activeEndIndex < keys.length - 1) {
+                var nextKey = keys[activeEndIndex + 1];
+                if (nextKey.color === "BLACK") {
+                    activeEndIndex++;
+                }
             }
 
-            if (allocatedKeyIndex > 1 && key.color === "WHITE" && keys[i - 1].color === "WHITE") {
-                allocatedKeyIndex++;
+            var allocatedKeyIndex = 0;
+            for (var i = 0; i < keys.length; i++) {
+                var key = keys[i];
+                key.isActive = i >= activeStartIndex && i <= activeEndIndex;
+
+                if (key.isActive && allocatedKeyIndex === 0 && key.color === "WHITE") {
+                    allocatedKeyIndex++;
+                }
+
+                if (allocatedKeyIndex > 1 && key.color === "WHITE" && keys[i - 1].color === "WHITE") {
+                    allocatedKeyIndex++;
+                }
+
+                if (key.isActive) {
+                    key.keyCode = allocatedComputerKeysForThePiano[allocatedKeyIndex];
+                    allocatedKeyIndex++;
+                } else {
+                    key.keyCode = null;
+                }
             }
 
-            if (key.isActive) {
-                key.keyCode = allocatedComputerKeysForThePiano[allocatedKeyIndex];
-                allocatedKeyIndex++;
-            } else {
-                key.keyCode = null;
-            }
         }
 
         //TODO fix
@@ -150,11 +159,6 @@
 
     fluid.sisiliano.piano.getElementKey = function (element, keys) {
         return keys[element.attr("index")];
-    };
-
-    fluid.sisiliano.piano.isKeyWithinTheActiveArea = function (key, activeArea) {
-        var index = key.index;
-        return index >= activeArea.start && index <= activeArea.end;
     };
 
     fluid.sisiliano.piano.onCreate = function (that) {
@@ -180,16 +184,14 @@
                 start: that.model.activeArea.start + increaseBy,
                 end: that.model.activeArea.end + increaseBy
             };
-            var isValid = newActiveArea.start >= 0 && newActiveArea.start < that.model.keyBoard.keys.length &&
-                newActiveArea.end >= 0 && newActiveArea.end < that.model.keyBoard.keys.length &&
+            var whiteKeys = fluid.sisiliano.piano.getWhiteKeys(that.model.keyBoard.keys);
+            var isValid = newActiveArea.start >= 0 && newActiveArea.start < whiteKeys.length &&
+                newActiveArea.end >= 0 && newActiveArea.end < whiteKeys.length &&
                 newActiveArea.start < newActiveArea.end;
-
             if (isValid) {
                 that.applier.change("activeArea", newActiveArea);
             }
         }
-
-        that.applier.change("activeArea", that.model.activeArea);
     };
 
     fluid.sisiliano.piano.clearPressedNodes = function (that) {
