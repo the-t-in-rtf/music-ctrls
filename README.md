@@ -11,7 +11,7 @@ This project will involve the creation of a small collection of high-quality, re
 ```
 bower install
 npm install
-grunt
+grunt build
 grunt demo
 ```
 
