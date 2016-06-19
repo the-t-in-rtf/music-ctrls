@@ -302,13 +302,13 @@
             switch (keyCode) {
                 case 37:
                     fluid.sisiliano.piano.moveTabBy(that, -1);
+                    d3.event.preventDefault();
                     break;
                 case 39:
                     fluid.sisiliano.piano.moveTabBy(that, 1);
+                    d3.event.preventDefault();
                     break;
             }
-
-            return false;
         });
 
         that.container.on("keyup", function (evt) {
@@ -323,10 +323,8 @@
                     node.disconnect();
                     nodes[mappedPianoKey.index] = null;
                 }
-            } else {
+                d3.event.preventDefault();
             }
-
-            return false;
         });
     };
 
