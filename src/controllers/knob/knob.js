@@ -2,7 +2,7 @@
     "use strict";
 
     fluid.defaults("fluid.sisiliano.knob", {
-        gradeNames: ["fluid.viewComponent", "autoInit", "fluid.eventedComponent"],
+        gradeNames: ["fluid.viewComponent"],
         model: {
             color: "#009688",
             value: 0,
