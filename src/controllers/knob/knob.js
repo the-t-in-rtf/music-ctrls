@@ -141,7 +141,7 @@
                 var clickedPosition = {x: position[0], y: position[1]};
 
                 if (that.model.status.isActive && fluid.sisiliano.util.isInsideTheCircle(center, radius, clickedPosition)) {
-                    var value = (fluid.sisiliano.util.getAngle(center, clickedPosition) / 2) * 100;
+                    var value = fluid.sisiliano.util.getAngle(center, clickedPosition) * 100;
 
                     if (that.model.value !== value) {
                         that.applier.change("value", value);
