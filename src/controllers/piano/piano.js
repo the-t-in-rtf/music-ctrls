@@ -9,7 +9,6 @@
                 keys: [],
                 length: 48,
                 start: 5,
-                pianoKeyListenerMap: {},
                 whiteKey: {
                     width: 40,
                     height: 150
@@ -42,24 +41,8 @@
                 height: 170
             },
             activeArea: {
-                /*Gap of start and end should be 11 to make make
-                 the piano accessible to the computer keyboard*/
                 start: 1,
                 end: 11
-            },
-            disabledArea: {
-                left: {
-                    x: 0,
-                    y: 5,
-                    width: 100,
-                    height: 160
-                },
-                right: {
-                    x: 300,
-                    y: 5,
-                    width: 300,
-                    height: 160
-                }
             }
         },
         events: {
@@ -171,6 +154,7 @@
 
     fluid.sisiliano.piano.refresh = function (that) {
         fluid.sisiliano.util.getTemplate(function (template) {
+            that.model.id = "fluid-sisiliano-id-" + that.id;
             that.model.keyBoard.whiteKeys = fluid.sisiliano.piano.getWhiteKeys(that.model.keyBoard.keys);
             that.model.keyBoard.blackKeys = fluid.sisiliano.piano.getBlackKeys(that.model.keyBoard.keys);
             var html = template(that.model);
@@ -250,8 +234,8 @@
                 fluid.sisiliano.piano.releaseKey(that, clickedKey);
             });
 
-        that.container.on("keydown", function (evt) {
-            var keyCode = evt.keyCode;
+        d3.select(that.container.get(0)).on("keydown", function () {
+            var keyCode = d3.event.keyCode;
             var mappedPianoKey = fluid.sisiliano.piano.getKeyByComputerKeyCode(keyCode, that.model.keyBoard.keys);
             if (mappedPianoKey && !mappedPianoKey.isPressed) {
                 mappedPianoKey.isPressed = true;
@@ -273,15 +257,15 @@
             }
         });
 
-        that.container.on("keyup", function (evt) {
-            var keyCode = evt.keyCode;
+        d3.select(that.container.get(0)).on("keyup", function () {
+            var keyCode = d3.event.keyCode;
             var mappedPianoKey = fluid.sisiliano.piano.getKeyByComputerKeyCode(keyCode, that.model.keyBoard.keys);
             if (mappedPianoKey) {
                 mappedPianoKey.isPressed = false;
                 fluid.sisiliano.piano.updateKey(that, mappedPianoKey);
                 fluid.sisiliano.piano.releaseKey(that, mappedPianoKey);
-                
-                return false;
+
+                d3.event.preventDefault();
             }
         });
     };
