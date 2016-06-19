@@ -35,17 +35,17 @@
     };
 
     fluid.sisiliano.util.getAngle = function(center, point) {
-        var angle = (Math.atan(Math.pow(point.x - center.x, 2) / Math.pow(point.y - center.y, 2)) /Math.PI);
+        var angle = Math.atan(Math.abs((point.x - center.x) / (point.y - center.y))) / (2 * Math.PI);
         if (center.x > point.x) {
             if (center.y > point.y) {
-                angle = 1 - angle;
+                angle = 0.5 - angle;
             }
         } else {
             if (center.y < point.y) {
-                angle = 1 - angle;
+                angle = 0.5 - angle;
             }
 
-            angle += 1;
+            angle += 0.5;
         }
 
         return angle;

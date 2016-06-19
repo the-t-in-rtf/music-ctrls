@@ -2,7 +2,7 @@
     "use strict";
 
     fluid.defaults("fluid.sisiliano.knob", {
-        gradeNames: ["fluid.viewComponent", "autoInit", "fluid.eventedComponent"],
+        gradeNames: ["fluid.viewComponent"],
         model: {
             color: "#009688",
             value: 0,
@@ -126,8 +126,6 @@
                     that.applier.change("value", that.model.value - 1);
                     d3.event.preventDefault();
                 }
-
-                return false;
             });
 
         d3.select(that.container.get(0)).selectAll(".fl-sisiliano-knob")
@@ -141,7 +139,7 @@
                 var clickedPosition = {x: position[0], y: position[1]};
 
                 if (that.model.status.isActive && fluid.sisiliano.util.isInsideTheCircle(center, radius, clickedPosition)) {
-                    var value = (fluid.sisiliano.util.getAngle(center, clickedPosition) / 2) * 100;
+                    var value = fluid.sisiliano.util.getAngle(center, clickedPosition) * 100;
 
                     if (that.model.value !== value) {
                         that.applier.change("value", value);
