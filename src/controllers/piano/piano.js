@@ -287,8 +287,8 @@
                 }
             });
 
-        that.container.on("keydown", function (evt) {
-            var keyCode = evt.keyCode;
+        d3.select(that.container.get(0)).on("keydown", function () {
+            var keyCode = d3.event.keyCode;
             var mappedPianoKey = fluid.sisiliano.piano.getKeyByComputerKeyCode(keyCode, that.model.keyBoard.keys);
             if (mappedPianoKey && !mappedPianoKey.isPressed) {
                 mappedPianoKey.isPressed = true;
@@ -311,8 +311,8 @@
             }
         });
 
-        that.container.on("keyup", function (evt) {
-            var keyCode = evt.keyCode;
+        d3.select(that.container.get(0)).on("keyup", function () {
+            var keyCode = d3.event.keyCode;
             var mappedPianoKey = fluid.sisiliano.piano.getKeyByComputerKeyCode(keyCode, that.model.keyBoard.keys);
             if (mappedPianoKey) {
                 mappedPianoKey.isPressed = false;
