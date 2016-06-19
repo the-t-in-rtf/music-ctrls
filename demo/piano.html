@@ -62,13 +62,6 @@
             var colors = ['#FF0000', 'blue', 'yellow', 'red', 'orange', 'blue'];
             for (var i = 0; i < tds.length; i++) {
                 fluid.sisiliano.piano($(tds[i]), {
-                    model: {
-                        color: colors[i],
-                        viewBox: {
-                            width: 600,
-                            height: 170
-                        }
-                    },
                     listeners: {
                         onKeyPress: function (key, frequency) {
                             playKey(key, frequency);
