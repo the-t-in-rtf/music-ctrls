@@ -4,11 +4,11 @@
     fluid.defaults("fluid.sisiliano.piano", {
         gradeNames: ["fluid.viewComponent"],
         model: {
-            color: "#009688",
+            color: "",
             keyBoard: {
                 keys: [],
-                length: 48,
-                start: 5,
+                length: 36,
+                start: 0,
                 whiteKey: {
                     width: 40,
                     height: 150
@@ -41,8 +41,8 @@
                 height: 170
             },
             activeArea: {
-                start: 1,
-                end: 11
+                start: 0,
+                end: 10
             }
         },
         events: {
