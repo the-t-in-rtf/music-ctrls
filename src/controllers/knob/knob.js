@@ -126,8 +126,6 @@
                     that.applier.change("value", that.model.value - 1);
                     d3.event.preventDefault();
                 }
-
-                return false;
             });
 
         d3.select(that.container.get(0)).selectAll(".fl-sisiliano-knob")
