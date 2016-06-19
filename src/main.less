@@ -160,7 +160,7 @@
       stroke-linejoin: round;
       stroke-width: 0;
 
-      &:hover, &.fl-sisiliano-piano-key-inactive:hover {
+      &:hover {
         transform: rotatex(10deg);
         fill: #4CAF50;
         stroke: #4CAF50;
@@ -168,6 +168,12 @@
 
       &.fl-sisiliano-piano-key-inactive {
         fill: #504c4c;
+      }
+
+      &.fl-sisiliano-piano-key-pressed {
+        transform: rotatex(10deg);
+        fill: #4CAF50;
+        stroke: #4CAF50;
       }
     }
 
