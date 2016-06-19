@@ -9,7 +9,6 @@
                 keys: [],
                 length: 48,
                 start: 5,
-                pianoKeyListenerMap: {},
                 whiteKey: {
                     width: 40,
                     height: 150
@@ -42,28 +41,14 @@
                 height: 170
             },
             activeArea: {
-                /*Gap of start and end should be 11 to make make
-                 the piano accessible to the computer keyboard*/
                 start: 1,
-                end: 19
-            },
-            disabledArea: {
-                left: {
-                    x: 0,
-                    y: 5,
-                    width: 100,
-                    height: 160
-                },
-                right: {
-                    x: 300,
-                    y: 5,
-                    width: 300,
-                    height: 160
-                }
+                end: 11
             }
         },
         events: {
-            onChange: null
+            onChange: null,
+            onKeyPress: null,
+            onKeyRelease: null
         },
         selectors: {
             root: ".sisiliano",
@@ -101,38 +86,47 @@
         var allocatedComputerKeysForThePiano = [81, 65, 87, 83, 69, 68, 82, 70, 84, 71, 89, 72,
             85, 74, 73, 75, 79, 76, 80, 186, 219, 222, 221];
 
-        var allocatedKeyIndex = 0;
-        var activeWhiteKeys = 0;
-        var MAX_ACTIVE_WHITE_KEYS = 11;
-        for (var i = 0; i < keys.length; i++) {
-            var key = keys[i];
+        var whiteKeys = fluid.sisiliano.piano.getWhiteKeys(keys);
 
-            key.isActive = fluid.sisiliano.piano.isKeyWithinTheActiveArea(key, activeArea);
+        if (whiteKeys.length > 0) {
+            var activeStartIndex = whiteKeys[activeArea.start].index;
+            var activeEndIndex = whiteKeys[activeArea.end].index;
 
-            if (key.isActive) {
-                if (key.color === "WHITE" && activeWhiteKeys < MAX_ACTIVE_WHITE_KEYS) {
-                    activeWhiteKeys++;
-                } else if (key.color === "BLACK" && activeWhiteKeys === MAX_ACTIVE_WHITE_KEYS) {
-                    activeWhiteKeys++;
-                } else if (activeWhiteKeys >= MAX_ACTIVE_WHITE_KEYS) {
-                    key.isActive = false;
+            if (activeStartIndex > 0) {
+                var previousKey = keys[activeStartIndex - 1];
+                if (previousKey.color === "BLACK") {
+                    activeStartIndex--;
                 }
             }
 
-            if (key.isActive && allocatedKeyIndex === 0 && key.color === "WHITE") {
-                allocatedKeyIndex++;
+            if (activeEndIndex < keys.length - 1) {
+                var nextKey = keys[activeEndIndex + 1];
+                if (nextKey.color === "BLACK") {
+                    activeEndIndex++;
+                }
             }
 
-            if (allocatedKeyIndex > 1 && key.color === "WHITE" && keys[i - 1].color === "WHITE") {
-                allocatedKeyIndex++;
+            var allocatedKeyIndex = 0;
+            for (var i = 0; i < keys.length; i++) {
+                var key = keys[i];
+                key.isActive = i >= activeStartIndex && i <= activeEndIndex;
+
+                if (key.isActive && allocatedKeyIndex === 0 && key.color === "WHITE") {
+                    allocatedKeyIndex++;
+                }
+
+                if (allocatedKeyIndex > 1 && key.color === "WHITE" && keys[i - 1].color === "WHITE") {
+                    allocatedKeyIndex++;
+                }
+
+                if (key.isActive) {
+                    key.keyCode = allocatedComputerKeysForThePiano[allocatedKeyIndex];
+                    allocatedKeyIndex++;
+                } else {
+                    key.keyCode = null;
+                }
             }
 
-            if (key.isActive) {
-                key.keyCode = allocatedComputerKeysForThePiano[allocatedKeyIndex];
-                allocatedKeyIndex++;
-            } else {
-                key.keyCode = null;
-            }
         }
 
         //TODO fix
@@ -152,11 +146,6 @@
         return keys[element.attr("index")];
     };
 
-    fluid.sisiliano.piano.isKeyWithinTheActiveArea = function (key, activeArea) {
-        var index = key.index;
-        return index >= activeArea.start && index <= activeArea.end;
-    };
-
     fluid.sisiliano.piano.onCreate = function (that) {
         fluid.sisiliano.piano.generateKeyboard(that);
         fluid.sisiliano.piano.refresh(that);
@@ -165,6 +154,7 @@
 
     fluid.sisiliano.piano.refresh = function (that) {
         fluid.sisiliano.util.getTemplate(function (template) {
+            that.model.id = "fluid-sisiliano-id-" + that.id;
             that.model.keyBoard.whiteKeys = fluid.sisiliano.piano.getWhiteKeys(that.model.keyBoard.keys);
             that.model.keyBoard.blackKeys = fluid.sisiliano.piano.getBlackKeys(that.model.keyBoard.keys);
             var html = template(that.model);
@@ -180,56 +170,26 @@
                 start: that.model.activeArea.start + increaseBy,
                 end: that.model.activeArea.end + increaseBy
             };
-            var isValid = newActiveArea.start >= 0 && newActiveArea.start < that.model.keyBoard.keys.length &&
-                newActiveArea.end >= 0 && newActiveArea.end < that.model.keyBoard.keys.length &&
+            var whiteKeys = fluid.sisiliano.piano.getWhiteKeys(that.model.keyBoard.keys);
+            var isValid = newActiveArea.start >= 0 && newActiveArea.start < whiteKeys.length &&
+                newActiveArea.end >= 0 && newActiveArea.end < whiteKeys.length &&
                 newActiveArea.start < newActiveArea.end;
-
             if (isValid) {
                 that.applier.change("activeArea", newActiveArea);
             }
         }
-
-        that.applier.change("activeArea", that.model.activeArea);
     };
 
     fluid.sisiliano.piano.clearPressedNodes = function (that) {
-        var nodes = fluid.sisiliano.piano.collectionOfNodes[that.id];
-        if (nodes) {
-            for (var keyIndex in nodes) {
-                var key = that.model.keyBoard.keys[keyIndex];
-                key.isPressed = false;
-                fluid.sisiliano.piano.updateKey(that, key);
-                var node = nodes[keyIndex];
-                if (node) {
-                    node.stop(0);
-                    node.disconnect();
-                }
-            }
+        for (var i = 0; i < that.model.keyBoard.keys.length; i++) {
+            var key = that.model.keyBoard.keys[i];
+            key.isPressed = false;
+            fluid.sisiliano.piano.updateKey(that, key);
+            fluid.sisiliano.piano.releaseKey(that, key);
         }
     };
 
-    fluid.sisiliano.piano.collectionOfNodes = {};
     fluid.sisiliano.piano.appendListeners = function (that) {
-        var nodes = {};
-        fluid.sisiliano.piano.collectionOfNodes[that.id] = nodes;
-
-        //To produce the music
-        var context = that.options.context;
-        if (context) {
-            var masterGain = context.createGain();
-            masterGain.gain.value = 0.3;
-            masterGain.connect(context.destination);
-        }
-
-        var playKey = function (key) {
-            var oscillator = context.createOscillator();
-            oscillator.type = "square";
-            oscillator.frequency.value = fluid.sisiliano.piano.getFreequency(key.octave, key.octaveIndex);
-            oscillator.connect(masterGain);
-            oscillator.start(0);
-            nodes[key.index] = oscillator;
-        };
-
         var mouseDown = false;
 
         d3.select(document).on("mouseup", function () {
@@ -244,7 +204,7 @@
                 if (mouseDown && !clickedKey.isPressed) {
                     clickedKey.isPressed = true;
                     fluid.sisiliano.piano.updateKey(that, clickedKey);
-                    playKey(clickedKey);
+                    fluid.sisiliano.piano.playKey(that, clickedKey);
                 }
             })
             .on("mouseover", function () {
@@ -253,8 +213,7 @@
                 if (mouseDown && !clickedKey.isPressed) {
                     clickedKey.isPressed = true;
                     fluid.sisiliano.piano.updateKey(that, clickedKey);
-
-                    playKey(clickedKey);
+                    fluid.sisiliano.piano.playKey(that, clickedKey);
                 }
             })
             .on("mouseup", function () {
@@ -264,12 +223,7 @@
 
                 clickedKey.isPressed = false;
                 fluid.sisiliano.piano.updateKey(that, clickedKey);
-                var node = nodes[clickedKey.index];
-                if (node) {
-                    node.stop(0);
-                    node.disconnect();
-                    nodes[clickedKey.index] = null;
-                }
+                fluid.sisiliano.piano.releaseKey(that, clickedKey);
             })
             .on("mouseleave", function () {
                 var clickedIndex = d3.select(this).attr("index");
@@ -277,22 +231,16 @@
 
                 clickedKey.isPressed = false;
                 fluid.sisiliano.piano.updateKey(that, clickedKey);
-                var node = nodes[clickedKey.index];
-                if (node) {
-                    node.stop(0);
-                    node.disconnect();
-                    nodes[clickedKey.index] = null;
-                }
+                fluid.sisiliano.piano.releaseKey(that, clickedKey);
             });
 
-        that.container.on("keydown", function (evt) {
-            var keyCode = evt.keyCode;
+        d3.select(that.container.get(0)).on("keydown", function () {
+            var keyCode = d3.event.keyCode;
             var mappedPianoKey = fluid.sisiliano.piano.getKeyByComputerKeyCode(keyCode, that.model.keyBoard.keys);
             if (mappedPianoKey && !mappedPianoKey.isPressed) {
                 mappedPianoKey.isPressed = true;
                 fluid.sisiliano.piano.updateKey(that, mappedPianoKey);
-
-                playKey(mappedPianoKey);
+                fluid.sisiliano.piano.playKey(that, mappedPianoKey);
             } else {
             }
 
@@ -300,32 +248,34 @@
             switch (keyCode) {
                 case 37:
                     fluid.sisiliano.piano.moveTabBy(that, -1);
+                    d3.event.preventDefault();
                     break;
                 case 39:
                     fluid.sisiliano.piano.moveTabBy(that, 1);
+                    d3.event.preventDefault();
                     break;
             }
-
-            return false;
         });
 
-        that.container.on("keyup", function (evt) {
-            var keyCode = evt.keyCode;
+        d3.select(that.container.get(0)).on("keyup", function () {
+            var keyCode = d3.event.keyCode;
             var mappedPianoKey = fluid.sisiliano.piano.getKeyByComputerKeyCode(keyCode, that.model.keyBoard.keys);
             if (mappedPianoKey) {
                 mappedPianoKey.isPressed = false;
                 fluid.sisiliano.piano.updateKey(that, mappedPianoKey);
-                var node = nodes[mappedPianoKey.index];
-                if (node) {
-                    node.stop(0);
-                    node.disconnect();
-                    nodes[mappedPianoKey.index] = null;
-                }
-            } else {
-            }
+                fluid.sisiliano.piano.releaseKey(that, mappedPianoKey);
 
-            return false;
+                d3.event.preventDefault();
+            }
         });
+    };
+
+    fluid.sisiliano.piano.playKey = function (that, key) {
+        that.events.onKeyPress.fire(key.index, fluid.sisiliano.piano.getFreequency(key.octave, key.octaveIndex));
+    };
+
+    fluid.sisiliano.piano.releaseKey = function (that, key) {
+        that.events.onKeyRelease.fire(key.index);
     };
 
     fluid.sisiliano.piano.updateKey = function (that, key, element) {

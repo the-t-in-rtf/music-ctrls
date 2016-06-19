@@ -21,6 +21,8 @@
   },
   "dependencies": {
     "bootstrap": "^3.3.6",
-    "d3": "^3.5.17"
+    "d3": "^3.5.17",
+    "ace-builds": "^1.2.3",
+    "font-awesome": "^4.6.3"
   }
 }
