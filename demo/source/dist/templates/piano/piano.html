@@ -1,4 +1,4 @@
-<div tabindex="0" class="fl-sisiliano" role="slider" aria-label="Piano">
+<div tabindex="0" class="fl-sisiliano" role="slider" aria-label="Piano" id="{{id}}">
     <svg
             xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
             xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -110,16 +110,24 @@
 
         <style>
             /* These styles have been added seperately as a fix for firefox and IE */
-            .fl-sisiliano .fl-sisiliano-piano .fl-sisiliano-piano-white-key {
+            #{{id}}.fl-sisiliano .fl-sisiliano-piano .fl-sisiliano-piano-white-key {
                 filter: url('#filter6244');
             }
 
-            .fl-sisiliano .fl-sisiliano-piano .fl-sisiliano-piano-black-key {
+            #{{id}}.fl-sisiliano .fl-sisiliano-piano .fl-sisiliano-piano-black-key {
                 filter: url('#filter6244');
             }
 
-            .fl-sisiliano-border {
+            #{{id}}.fl-sisiliano-border {
                 filter: url("#filter6245");
+            }
+
+            #{{id}}.fl-sisiliano .fl-sisiliano-piano .fl-sisiliano-piano-key-pressed,
+            #{{id}}.fl-sisiliano .fl-sisiliano-piano .fl-sisiliano-piano-white-key:hover,
+            #{{id}}.fl-sisiliano .fl-sisiliano-piano .fl-sisiliano-piano-black-key:hover,
+            #{{id}}.fl-sisiliano .fl-sisiliano-piano .fl-sisiliano-piano-key-inactive:hover {
+                fill: {{color}};
+                stroke: {{color}};
             }
         </style>
         <g style="display:inline">
