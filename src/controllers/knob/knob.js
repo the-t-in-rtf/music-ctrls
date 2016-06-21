@@ -129,7 +129,6 @@
             });
 
         var mouseMoveHandler = function () {
-            d3.event.preventDefault();
             var position = d3.mouse(that.container.find("svg").eq(0).get(0));
             var center = {x: 150, y: 150};
             var radius = 150;
@@ -139,12 +138,12 @@
 
                 if (that.model.value !== value) {
                     that.applier.change("value", value);
+                    d3.event.preventDefault();
                 }
             }
         };
 
         var mouseDownHandler = function () {
-            d3.event.preventDefault();
             that.applier.change("status.isActive", true);
         };
 
