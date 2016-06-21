@@ -128,29 +128,37 @@
                 }
             });
 
-        d3.select(that.container.get(0)).selectAll(".fl-sisiliano-knob")
-            .on("mousedown", function () {
-                that.applier.change("status.isActive", true);
-            })
-            .on("mousemove", function () {
-                var position = d3.mouse(that.container.find("svg").eq(0).get(0));
-                var center = {x: 150, y: 150};
-                var radius = 150;
-                var clickedPosition = {x: position[0], y: position[1]};
+        var mouseMoveHandler = function () {
+            d3.event.preventDefault();
+            var position = d3.mouse(that.container.find("svg").eq(0).get(0));
+            var center = {x: 150, y: 150};
+            var radius = 150;
+            var clickedPosition = {x: position[0], y: position[1]};
+            if (that.model.status.isActive && fluid.sisiliano.util.isInsideTheCircle(center, radius, clickedPosition)) {
+                var value = fluid.sisiliano.util.getAngle(center, clickedPosition) * 100;
 
-                if (that.model.status.isActive && fluid.sisiliano.util.isInsideTheCircle(center, radius, clickedPosition)) {
-                    var value = fluid.sisiliano.util.getAngle(center, clickedPosition) * 100;
-
-                    if (that.model.value !== value) {
-                        that.applier.change("value", value);
-                    }
+                if (that.model.value !== value) {
+                    that.applier.change("value", value);
                 }
-            })
-            .on("mouseup", function () {
-                that.applier.change("status.isActive", false);
-            })
-            .on("mouseleave", function () {
-                that.applier.change("status.isActive", false);
-            });
+            }
+        };
+
+        var mouseDownHandler = function () {
+            d3.event.preventDefault();
+            that.applier.change("status.isActive", true);
+        };
+
+        var moveOutHandler = function () {
+            that.applier.change("status.isActive", false);
+        };
+
+        d3.select(that.container.get(0)).selectAll(".fl-sisiliano-knob")
+            .on("mousedown", mouseDownHandler)
+            .on("touchstart", mouseDownHandler)
+            .on("mousemove", mouseMoveHandler)
+            .on("touchmove", mouseMoveHandler)
+            .on("mouseup", moveOutHandler)
+            .on("touchend", moveOutHandler)
+            .on("mouseleave", moveOutHandler);
     };
 })(fluid);
