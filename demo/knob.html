@@ -45,7 +45,7 @@
             ];
             for (var i = 0; i < tds.length; i++) {
                 var randomColorIndex = Math.floor(Math.random() * colors.length - 1);
-                fluid.sisiliano.knob(tds[i], {
+                sisiliano.knob(tds[i], {
                     color: colors[randomColorIndex],
                     value: Math.random() * 100
                 });
@@ -124,7 +124,7 @@
     <div class="col-sm-12 try-example" style="min-height: 300px">
         <div class="col-xs-6" style="min-height: 300px">
             <div id="editor" class="col-sm-12" style="min-height: 400px">
-fluid.sisiliano.knob($('#preview'), {
+sisiliano.knob($('#preview'), {
     color: "white",
     value: 23
 });

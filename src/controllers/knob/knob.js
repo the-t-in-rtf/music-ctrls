@@ -1,7 +1,7 @@
 (function (fluid) {
     "use strict";
 
-    fluid.defaults("fluid.sisiliano.knob", {
+    fluid.defaults("sisiliano.knob", {
         gradeNames: ["fluid.viewComponent"],
         model: {
             color: "#009688",
@@ -11,43 +11,43 @@
             }
         },
         selectors: {
-            valueLabel: ".fl-sisiliano-knob-value-text",
-            valueCircle: ".fl-sisiliano-knob-value-circle",
-            knobBackgroundCircle: ".fl-sisiliano-knob-background-circle",
-            borderCircle: "fl-sisiliano-knob-circle fl-sisiliano-knob-border-circle",
-            circles: ".fl-sisiliano-knob-circle"
+            valueLabel: ".sisiliano-knob-value-text",
+            valueCircle: ".sisiliano-knob-value-circle",
+            knobBackgroundCircle: ".sisiliano-knob-background-circle",
+            borderCircle: "sisiliano-knob-circle sisiliano-knob-border-circle",
+            circles: ".sisiliano-knob-circle"
         },
         events: {
             onChange: null
         },
         listeners: {
             onCreate: {
-                func: "fluid.sisiliano.knob.onCreate",
+                func: "sisiliano.knob.onCreate",
                 args: ["{that}"]
             }
         },
         modelListeners: {
             "value": {
-                func: "fluid.sisiliano.knob.onValueChange",
+                func: "sisiliano.knob.onValueChange",
                 args: ["{that}", "{that}.model.value"]
             },
             "color": {
-                func: "fluid.sisiliano.knob.onColorChange",
+                func: "sisiliano.knob.onColorChange",
                 args: ["{that}", "{that}.model.color"]
             },
             "status.isActive": {
-                func: "fluid.sisiliano.knob.onStatusChange",
+                func: "sisiliano.knob.onStatusChange",
                 args: ["{that}", "{that}.model.status.isActive"]
             }
         }
     });
 
-    fluid.sisiliano.knob.onStatusChange = function (that, isActive) {
-        var className = "fl-sisiliano-knob" + (isActive ? " fl-sisiliano-active" : "");
-        d3.select(that.container.get(0)).select(".fl-sisiliano-knob").attr("class", className);
+    sisiliano.knob.onStatusChange = function (that, isActive) {
+        var className = "sisiliano-knob" + (isActive ? " sisiliano-active" : "");
+        d3.select(that.container.get(0)).select(".sisiliano-knob").attr("class", className);
     };
 
-    fluid.sisiliano.knob.onValueChange = function (that, newValue) {
+    sisiliano.knob.onValueChange = function (that, newValue) {
         if (typeof newValue !== "number") {
             newValue = 0;
             that.applier.change("value", newValue);
@@ -71,7 +71,7 @@
         }
     };
 
-    fluid.sisiliano.knob.onColorChange = function (that, newColor) {
+    sisiliano.knob.onColorChange = function (that, newColor) {
         that.locate("valueCircle").css("stroke", newColor);
         that.locate("knobBackgroundCircle").css("stroke", newColor);
         that.locate("valueCircle").css("fill", newColor);
@@ -79,18 +79,18 @@
         that.locate("valueLabel").css("fill", newColor);
     };
 
-    fluid.sisiliano.knob.initOptions = function (that, model, input) {
+    sisiliano.knob.initOptions = function (that, model, input) {
         for (var key in model) {
             if (input[key] !== undefined) {
                 that.applier.change(key, input[key]);
             }
         }
 
-        fluid.sisiliano.knob.onColorChange(that, that.model.color);
-        fluid.sisiliano.knob.onValueChange(that, that.model.value);
+        sisiliano.knob.onColorChange(that, that.model.color);
+        sisiliano.knob.onValueChange(that, that.model.value);
     };
 
-    fluid.sisiliano.knob.init = function (that) {
+    sisiliano.knob.init = function (that) {
         var circleRadius = parseInt(that.locate("knobBackgroundCircle").attr("r"), "");
 
         that.applier.change("radius", circleRadius);
@@ -98,17 +98,17 @@
         that.locate("circles").attr("stroke-dasharray", that.model.circumference + "px");
     };
 
-    fluid.sisiliano.knob.onCreate = function (that) {
-        fluid.sisiliano.util.getTemplate(function (template) {
+    sisiliano.knob.onCreate = function (that) {
+        sisiliano.util.getTemplate(function (template) {
             var html = template(that.model);
             that.container.html(html);
-            fluid.sisiliano.knob.init(that);
-            fluid.sisiliano.knob.initOptions(that, that.model, that.options);
-            fluid.sisiliano.knob.addListeners(that);
+            sisiliano.knob.init(that);
+            sisiliano.knob.initOptions(that, that.model, that.options);
+            sisiliano.knob.addListeners(that);
         }, "src/controllers/knob/knob.html");
     };
 
-    fluid.sisiliano.knob.addListeners = function (that) {
+    sisiliano.knob.addListeners = function (that) {
         d3.select(document)
             .on("mouseup", function () {
                 that.applier.change("status.isActive", false);
@@ -134,8 +134,8 @@
             var center = {x: 150, y: 150};
             var radius = 150;
             var clickedPosition = {x: position[0], y: position[1]};
-            if (that.model.status.isActive && fluid.sisiliano.util.isInsideTheCircle(center, radius, clickedPosition)) {
-                var value = fluid.sisiliano.util.getAngle(center, clickedPosition) * 100;
+            if (that.model.status.isActive && sisiliano.util.isInsideTheCircle(center, radius, clickedPosition)) {
+                var value = sisiliano.util.getAngle(center, clickedPosition) * 100;
 
                 if (that.model.value !== value) {
                     that.applier.change("value", value);
@@ -152,7 +152,7 @@
             that.applier.change("status.isActive", false);
         };
 
-        d3.select(that.container.get(0)).selectAll(".fl-sisiliano-knob")
+        d3.select(that.container.get(0)).selectAll(".sisiliano-knob")
             .on("mousedown", mouseDownHandler)
             .on("touchstart", mouseDownHandler)
             .on("mousemove", mouseMoveHandler)

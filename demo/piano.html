@@ -61,7 +61,7 @@
             var tds = $('.test');
             var colors = ['#FF0000', 'blue', 'yellow', 'red', 'orange', 'blue'];
             for (var i = 0; i < tds.length; i++) {
-                fluid.sisiliano.piano($(tds[i]), {
+                sisiliano.piano($(tds[i]), {
                     listeners: {
                         onKeyPress: function (key, frequency) {
                             playKey(key, frequency);
@@ -133,7 +133,7 @@
     <div class="col-sm-12 try-example" style="min-height: 300px">
         <div class="col-xs-6" style="min-height: 300px">
             <div id="editor" class="col-sm-12" style="min-height: 300px">
-fluid.sisiliano.piano($('#preview'), {
+sisiliano.piano($('#preview'), {
     model: {
         color: "#FF0000"
     },
