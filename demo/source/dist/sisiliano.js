@@ -422,43 +422,59 @@ htmlTempl["templates"] = {"src/controllers/knob/knob.html":"<div tabindex=\"0\" 
             mouseDown = false;
         });
 
+        var keyPressHandler = function () {
+            mouseDown = true;
+            var clickedIndex = d3.select(this).attr("index");
+            var clickedKey = that.model.keyBoard.keys[clickedIndex];
+            if (mouseDown && !clickedKey.isPressed) {
+                clickedKey.isPressed = true;
+                sisiliano.piano.updateKey(that, clickedKey);
+                sisiliano.piano.playKey(that, clickedKey);
+            }
+        };
+
+        var keyOverHandler = function () {
+            var clickedIndex = d3.select(this).attr("index");
+            var clickedKey = that.model.keyBoard.keys[clickedIndex];
+            if (mouseDown && !clickedKey.isPressed) {
+                clickedKey.isPressed = true;
+                sisiliano.piano.updateKey(that, clickedKey);
+                sisiliano.piano.playKey(that, clickedKey);
+            }
+
+            d3.event.preventDefault();
+        };
+
+        var keyUpHandler = function () {
+            mouseDown = false;
+            var clickedIndex = d3.select(this).attr("index");
+            var clickedKey = that.model.keyBoard.keys[clickedIndex];
+
+            clickedKey.isPressed = false;
+            sisiliano.piano.updateKey(that, clickedKey);
+            sisiliano.piano.releaseKey(that, clickedKey);
+        };
+
+        var keyMoveOutHndler = function () {
+            var clickedIndex = d3.select(this).attr("index");
+            var clickedKey = that.model.keyBoard.keys[clickedIndex];
+
+            clickedKey.isPressed = false;
+            sisiliano.piano.updateKey(that, clickedKey);
+            sisiliano.piano.releaseKey(that, clickedKey);
+
+            d3.event.preventDefault();
+        };
+
         d3.select(that.container.get(0)).selectAll(".sisiliano-piano-key")
-            .on("mousedown", function () {
-                mouseDown = true;
-                var clickedIndex = d3.select(this).attr("index");
-                var clickedKey = that.model.keyBoard.keys[clickedIndex];
-                if (mouseDown && !clickedKey.isPressed) {
-                    clickedKey.isPressed = true;
-                    sisiliano.piano.updateKey(that, clickedKey);
-                    sisiliano.piano.playKey(that, clickedKey);
-                }
-            })
-            .on("mouseover", function () {
-                var clickedIndex = d3.select(this).attr("index");
-                var clickedKey = that.model.keyBoard.keys[clickedIndex];
-                if (mouseDown && !clickedKey.isPressed) {
-                    clickedKey.isPressed = true;
-                    sisiliano.piano.updateKey(that, clickedKey);
-                    sisiliano.piano.playKey(that, clickedKey);
-                }
-            })
-            .on("mouseup", function () {
-                mouseDown = false;
-                var clickedIndex = d3.select(this).attr("index");
-                var clickedKey = that.model.keyBoard.keys[clickedIndex];
-
-                clickedKey.isPressed = false;
-                sisiliano.piano.updateKey(that, clickedKey);
-                sisiliano.piano.releaseKey(that, clickedKey);
-            })
-            .on("mouseleave", function () {
-                var clickedIndex = d3.select(this).attr("index");
-                var clickedKey = that.model.keyBoard.keys[clickedIndex];
-
-                clickedKey.isPressed = false;
-                sisiliano.piano.updateKey(that, clickedKey);
-                sisiliano.piano.releaseKey(that, clickedKey);
-            });
+            .on("mousedown", keyPressHandler)
+            .on("touchstart", keyPressHandler)
+            .on("mouseover", keyOverHandler)
+            .on("touchmove", keyOverHandler)
+            .on("mouseup", keyUpHandler)
+            .on("touchend", keyUpHandler)
+            .on("touchcancel", keyMoveOutHndler)
+            .on("mouseleave", keyMoveOutHndler);
 
         d3.select(that.container.get(0)).on("keydown", function () {
             var keyCode = d3.event.keyCode;
