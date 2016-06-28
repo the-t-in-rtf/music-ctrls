@@ -21,8 +21,10 @@
     jqUnit.test("knob: customized styles and inputs", function () {
         $(".test").empty();
         var knob = sisiliano.knob(".test", {
-            value: 30,
-            color: "#0000BB"
+            model: {
+                value: 30,
+                color: "#0000BB"
+            }
         });
 
         sisiliano.tests.knob.verifyStyles(knob, {
