@@ -8,7 +8,9 @@
             value: 0,
             status: {
                 isActive: false
-            }
+            },
+            title: "Knob Controoler",
+            description: "Use up and down keys to increase and decrease the value. If you are using the mouse, Drag around the center to adjust the value"
         },
         selectors: {
             valueLabel: ".sisiliano-knob-value-text",
@@ -79,17 +81,6 @@
         that.locate("valueLabel").css("fill", newColor);
     };
 
-    sisiliano.knob.initOptions = function (that, model, input) {
-        for (var key in model) {
-            if (input[key] !== undefined) {
-                that.applier.change(key, input[key]);
-            }
-        }
-
-        sisiliano.knob.onColorChange(that, that.model.color);
-        sisiliano.knob.onValueChange(that, that.model.value);
-    };
-
     sisiliano.knob.init = function (that) {
         var circleRadius = parseInt(that.locate("knobBackgroundCircle").attr("r"), "");
 
@@ -103,7 +94,8 @@
             var html = template(that.model);
             that.container.html(html);
             sisiliano.knob.init(that);
-            sisiliano.knob.initOptions(that, that.model, that.options);
+            sisiliano.knob.onColorChange(that, that.model.color);
+            sisiliano.knob.onValueChange(that, that.model.value);
             sisiliano.knob.addListeners(that);
         }, "src/controllers/knob/knob.html");
     };
