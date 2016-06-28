@@ -46,8 +46,10 @@
             for (var i = 0; i < tds.length; i++) {
                 var randomColorIndex = Math.floor(Math.random() * colors.length - 1);
                 sisiliano.knob(tds[i], {
-                    color: colors[randomColorIndex],
-                    value: Math.random() * 100
+                    model: {
+                        color: colors[randomColorIndex],
+                        value: Math.random() * 100
+                    }
                 });
             }
 
