@@ -1,4 +1,4 @@
-<div tabindex="0" class="sisiliano" role="slider" aria-label="Piano" id="{{id}}">
+<div tabindex="0" class="sisiliano" aria-label="{{title}} ,{{description}}" id="{{id}}">
     <svg
             xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
             xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -131,6 +131,13 @@
             }
         </style>
         <g style="display:inline">
+            <text
+                    x="{{keyBoard.border.x}}"
+                    y="{{keyBoard.border.y}}"
+                    aria-live="assertive"
+                    class="sisiliano-piano-active-area-status">
+                Piano is active from G to C
+            </text>
             <rect
                     class="sisiliano-border"
                     height="{{keyBoard.border.height}}"
