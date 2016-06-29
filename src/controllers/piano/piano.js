@@ -4,6 +4,8 @@
     fluid.defaults("sisiliano.piano", {
         gradeNames: ["fluid.viewComponent"],
         model: {
+            title: "Piano Controller",
+            description: "The keys are accessible by mouse and the keyboad as well. Only the active area of the piano is accessible by the keyboard. If you want to move the active area, use left and right keys.",
             color: "",
             keyBoard: {
                 keys: [],
@@ -55,7 +57,8 @@
             keyBoard: ".key-board",
             whiteKeys: ".white-key",
             blackKeys: ".black-key",
-            key: ".key"
+            key: ".key",
+            activeAreaStatus: ".sisiliano-piano-active-area-status"
         },
         listeners: {
             onCreate: {
@@ -89,8 +92,12 @@
         var whiteKeys = sisiliano.piano.getWhiteKeys(keys);
 
         if (whiteKeys.length > 0) {
-            var activeStartIndex = whiteKeys[activeArea.start].index;
-            var activeEndIndex = whiteKeys[activeArea.end].index;
+            var activeStartKey = whiteKeys[activeArea.start];
+            var activeEndKey = whiteKeys[Math.min(activeArea.end, that.model.keyBoard.length - 1)];
+            var activeStartIndex = activeStartKey.index;
+            var activeEndIndex = activeEndKey.index;
+            var activeAreaStatusMessage = "The piano is active from " + sisiliano.piano.getMusicNote(activeStartKey) + " to " + sisiliano.piano.getMusicNote(activeEndKey);
+            that.locate("activeAreaStatus").text(activeAreaStatusMessage);
 
             if (activeStartIndex > 0) {
                 var previousKey = keys[activeStartIndex - 1];
@@ -356,6 +363,17 @@
         9: {color: "WHITE", note: "a"},
         10: {color: "BLACK", note: "a#"},
         11: {color: "WHITE", note: "b"}
+    };
+
+    sisiliano.piano.getPianoKey = function (key) {
+        return sisiliano.piano.OCTAVE[key.octaveIndex];
+    };
+
+
+    sisiliano.piano.getMusicNote = function (key) {
+        var pianoKey = sisiliano.piano.getPianoKey(key);
+
+        return pianoKey.note + " in octave " + (key.octave + 1);
     };
 
     sisiliano.piano.getWhiteKeys = function (keys) {
