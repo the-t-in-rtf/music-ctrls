@@ -101,31 +101,11 @@
     };
 
     sisiliano.knob.addListeners = function (that) {
-        d3.select(document)
-            .on("mouseup", function () {
-                that.applier.change("status.isActive", false);
-            })
-            .on("click", function () {
-                that.applier.change("status.isActive", false);
-            });
-
-        d3.select(that.container.get(0))
-            .on("keydown", function () {
-                if (d3.event.keyCode === 38) {
-                    that.applier.change("value", that.model.value + 1);
-                    d3.event.preventDefault();
-                } else if (d3.event.keyCode === 40) {
-                    that.applier.change("value", that.model.value - 1);
-                    d3.event.preventDefault();
-                }
-            });
-
         var mouseMoveHandler = function () {
             var position = d3.mouse(that.container.find("svg").eq(0).get(0));
             var center = {x: 150, y: 150};
-            var radius = 150;
             var clickedPosition = {x: position[0], y: position[1]};
-            if (that.model.status.isActive && sisiliano.util.isInsideTheCircle(center, radius, clickedPosition)) {
+            if (that.model.status.isActive) {
                 var value = sisiliano.util.getAngle(center, clickedPosition) * 100;
 
                 if (that.model.value !== value) {
@@ -143,13 +123,40 @@
             that.applier.change("status.isActive", false);
         };
 
+        document.addEventListener("mousemove", function (evt) {
+            var svgElm = that.container.find("svg");
+            var svgPosition = svgElm.position();
+            var width = Math.min(svgElm.width(), svgElm.height());
+            var center = {x: svgPosition.left + (width / 2), y: svgPosition.top + (width / 2)};
+            var clickedPosition = {x: evt.pageX, y: evt.pageY};
+            if (that.model.status.isActive) {
+                var value = sisiliano.util.getAngle(center, clickedPosition) * 100;
+                if (that.model.value !== value) {
+                    that.applier.change("value", value);
+
+                    return false;
+                }
+            }
+        });
+        document.addEventListener("mouseup", moveOutHandler);
+
+        d3.select(that.container.get(0))
+            .on("keydown", function () {
+                if (d3.event.keyCode === 38) {
+                    that.applier.change("value", that.model.value + 1);
+                    d3.event.preventDefault();
+                } else if (d3.event.keyCode === 40) {
+                    that.applier.change("value", that.model.value - 1);
+                    d3.event.preventDefault();
+                }
+            });
+
         d3.select(that.container.get(0)).selectAll(".sisiliano-knob")
             .on("mousedown", mouseDownHandler)
             .on("touchstart", mouseDownHandler)
             .on("mousemove", mouseMoveHandler)
             .on("touchmove", mouseMoveHandler)
             .on("mouseup", moveOutHandler)
-            .on("touchend", moveOutHandler)
-            .on("mouseleave", moveOutHandler);
+            .on("touchend", moveOutHandler);
     };
 })(fluid);
