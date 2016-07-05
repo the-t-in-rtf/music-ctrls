@@ -7,6 +7,10 @@
         return d3.select(knob.container.selector).node();
     };
 
+    sisiliano.tests.knob.verifyValue = function (knob, message, expectedValue) {
+        jqUnit.assertEquals(message, expectedValue, knob.model.value);
+    };
+
     //Verifying styles and inouts
     jqUnit.test("knob: default styles and inputs", function () {
         $(".test").empty();
