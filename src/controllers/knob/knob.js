@@ -126,8 +126,7 @@
         document.addEventListener("mousemove", function (evt) {
             var svgElm = that.container.find("svg");
             var svgPosition = svgElm.position();
-            var width = Math.min(svgElm.width(), svgElm.height());
-            var center = {x: svgPosition.left + (width / 2), y: svgPosition.top + (width / 2)};
+            var center = {x: svgPosition.left + (svgElm.width() / 2), y: svgPosition.top + (svgElm.height() / 2)};
             var clickedPosition = {x: evt.pageX, y: evt.pageY};
             if (that.model.status.isActive) {
                 var value = sisiliano.util.getAngle(center, clickedPosition) * 100;
@@ -149,9 +148,7 @@
                     that.applier.change("value", that.model.value - 1);
                     d3.event.preventDefault();
                 }
-            });
-
-        d3.select(that.container.get(0)).selectAll(".sisiliano-knob")
+            })
             .on("mousedown", mouseDownHandler)
             .on("touchstart", mouseDownHandler)
             .on("mousemove", mouseMoveHandler)
