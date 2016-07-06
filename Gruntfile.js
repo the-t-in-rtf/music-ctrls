@@ -99,7 +99,7 @@ module.exports = function(grunt) {
             }
         },
         qunit: {
-            all: ["test/html/index-console.html"]
+            all: ["test/html/index.html"]
         },
         jshint: {
             all: ["**/*.js"],
