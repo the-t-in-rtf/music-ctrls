@@ -1,4 +1,9 @@
-<div tabindex="0" class="sisiliano" role="slider" aria-label="{{title}} ,{{description}}" aria-valuemax="100" aria-valuemin="0">
+<div tabindex="0"
+     class="sisiliano"
+     role="slider"
+     aria-label="{{title}} ,{{description}}"
+     aria-valuemax="{{min}}"
+     aria-valuemin="{{max}}">
     <svg
             xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
             xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -98,10 +103,10 @@
                     r="130"
                     cx="150"
                     cy="150"/>
+            <title class="sisiliano-knob-value-text-title" role="alert" aria-live="assertive">100</title>
             <text xmlns="http://www.w3.org/2000/svg" x="40" y="170"
-                  role="alert" aria-live="assertive"
                   class="unselectable sisiliano-knob-value-text">
-                100%
+                100
             </text>
             <circle
                     class="sisiliano-knob-circle sisiliano-knob-value-circle"
