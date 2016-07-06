@@ -78,16 +78,16 @@
         svgPosition.left += (knob.container.width() - d) / 2;
         svgPosition.top += (knob.container.height() - d) / 2;
 
-        sisiliano.tests.knob.mouseEvents.moveMouseTo(knob, -1000, svgPosition.top + d / 2);
+        sisiliano.tests.knob.mouseEvents.moveMouseToOutside(-1000, svgPosition.top + d / 2);
         sisiliano.tests.knob.verifyValue(knob, "when the mouse pointer has made an angle of 90 degrees", 25);
 
-        sisiliano.tests.knob.mouseEvents.moveMouseTo(knob, svgPosition.left + d / 2, -1000);
+        sisiliano.tests.knob.mouseEvents.moveMouseToOutside(svgPosition.left + d / 2, -1000);
         sisiliano.tests.knob.verifyValue(knob, "when the mouse pointer has made an angle of 180 degrees", 50);
 
-        sisiliano.tests.knob.mouseEvents.moveMouseTo(knob, 1000, svgPosition.top + d / 2);
+        sisiliano.tests.knob.mouseEvents.moveMouseToOutside(1000, svgPosition.top + d / 2);
         sisiliano.tests.knob.verifyValue(knob, "when the mouse pointer has made an angle of 270 degrees", 75);
 
-        sisiliano.tests.knob.mouseEvents.moveMouseTo(knob, svgPosition.left + d / 2, 1000);
+        sisiliano.tests.knob.mouseEvents.moveMouseToOutside(svgPosition.left + d / 2, 1000);
         sisiliano.tests.knob.verifyValue(knob, "when the mouse pointer has made an angle of 360 degrees", 100);
     };
 
@@ -104,7 +104,42 @@
         });
     };
 
+    sisiliano.tests.knob.mouseEvents.moveMouseToOutside = function (x, y) {
+        $(document).simulate("mousemove", {
+            clientX : x,
+            clientY: y
+        });
+    };
+
     sisiliano.tests.knob.mouseEvents.pressMouseDown = function (knob) {
         knob.container.simulate("mousedown");
+    };
+
+
+    /////////////////////////////////////////////////////////
+    /////           Verifying min and max values
+    /////////////////////////////////////////////////////////
+    jqUnit.test("knob : min max", function () {
+        sisiliano.tests.knob.verifyMinMaxValues(10, 50);
+    });
+
+    sisiliano.tests.knob.verifyMinMaxValues = function (min, max) {
+        var knob = sisiliano.knob(".test", {
+            model: {
+                min: min,
+                max: max
+            }
+        });
+
+        jqUnit.assertEquals("aria-valuemax label should have been added", max + "",
+            knob.container.find(".sisiliano").attr("aria-valuemax"));
+        jqUnit.assertEquals("aria-valuemin label should have been added", min + "",
+            knob.container.find(".sisiliano").attr("aria-valuemin"));
+
+        sisiliano.tests.knob.verifyValue(knob, "Default value should be the min value", min);
+
+        sisiliano.tests.knob.keyEvents.pressKeyDown(knob);
+        sisiliano.tests.knob.keyEvents.pressKeyDown(knob);
+        sisiliano.tests.knob.verifyValue(knob, "Value should be not able to reduced than the min value", min);
     };
 })(fluid, jqUnit);
