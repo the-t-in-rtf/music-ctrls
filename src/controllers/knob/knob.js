@@ -15,8 +15,8 @@
             description: "Use up and down keys to increase and decrease the value. If you are using the mouse, Drag around the center to adjust the value"
         },
         selectors: {
+            controller: ".sisiliano",
             valueLabel: ".sisiliano-knob-value-text",
-            valueLabelTitle: ".sisiliano-knob-value-text-title",
             valueCircle: ".sisiliano-knob-value-circle",
             knobBackgroundCircle: ".sisiliano-knob-background-circle",
             borderCircle: "sisiliano-knob-circle sisiliano-knob-border-circle",
@@ -61,9 +61,11 @@
             that.applier.change("value", newValue);
         } else {
             if (that.model.value <= that.model.max && that.model.value >= that.model.min) {
+                //Update the aria-valuenow
+                that.locate("controller").attr("aria-valuenow", Math.round((newValue * 100.0) / 100));
+
                 //Update the value in the UI
                 that.locate("valueLabel").text(Math.round(newValue) + "%");
-                that.locate("valueLabelTitle").html(Math.round(newValue * 100.0) / 100);
 
                 //Update the ring arc according to the value
                 var valueRange = sisiliano.knob.getSize(that);
