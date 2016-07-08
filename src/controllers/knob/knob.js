@@ -8,6 +8,7 @@
             max: 100,
             color: "#009688",
             value: null,
+            tickValue: 1,
             status: {
                 isActive: false
             },
@@ -122,10 +123,10 @@
         };
         var keyDownHandler = function () {
             if (d3.event.keyCode === 38) {
-                that.applier.change("value", that.model.value + 1);
+                that.applier.change("value", that.model.value + that.model.tickValue);
                 d3.event.preventDefault();
             } else if (d3.event.keyCode === 40) {
-                that.applier.change("value", that.model.value - 1);
+                that.applier.change("value", that.model.value - that.model.tickValue);
                 d3.event.preventDefault();
             }
         };
