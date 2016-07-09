@@ -174,17 +174,10 @@
         var min = knob.model.min;
         var max = knob.model.max;
 
-        sisiliano.tests.knob.verifyValue(knob, "Default value should be the min value", min);
         jqUnit.assertEquals("aria-valuemax label should have been added", max + "",
             knob.container.find(".sisiliano").attr("aria-valuemax"));
         jqUnit.assertEquals("aria-valuemin label should have been added", min + "",
             knob.container.find(".sisiliano").attr("aria-valuemin"));
-
-        sisiliano.tests.knob.verifyValue(knob, "Default value should be the min value", min);
-
-        //Verifying whether key events and mouse events are working when the min and max values are defined
-        sisiliano.tests.knob.keyEvents.verifyKeyEvents(knob);
-        sisiliano.tests.knob.mouseEvents.verifyMouseEvents(knob);
     };
 
     /////////////////////////////////////////////////////////
