@@ -12,6 +12,9 @@
             status: {
                 isActive: false
             },
+            formatValue: function (value) {
+                return Math.round(value * 100) / 100.0;
+            },
             title: "Knob Controoler",
             description: "Use up and down keys to increase and decrease the value. If you are using the mouse, Drag around the center to adjust the value"
         },
@@ -35,6 +38,10 @@
         },
         modelListeners: {
             "value": {
+                func: "sisiliano.knob.onValueChange",
+                args: ["{that}", "{that}.model.value"]
+            },
+            "formatValue": {
                 func: "sisiliano.knob.onValueChange",
                 args: ["{that}", "{that}.model.value"]
             },
@@ -87,11 +94,16 @@
     };
 
     sisiliano.knob.updateTheValueInUI = function (that, newValue) {
+        var formatedValue = newValue;
+        if (that.model.formatValue && typeof that.model.formatValue === "function") {
+            formatedValue = that.model.formatValue(newValue);
+        }
+
         //Update the aria-valuenow
-        that.locate("controller").attr("aria-valuenow", Math.round((newValue * 100.0) / 100));
+        that.locate("controller").attr("aria-valuenow", formatedValue);
 
         //Update the value in the UI
-        that.locate("valueLabel").text(Math.round(newValue) + "%");
+        that.locate("valueLabel").text(formatedValue);
 
         //Update the ring arc according to the value
         var valueRange = sisiliano.knob.getSize(that);
