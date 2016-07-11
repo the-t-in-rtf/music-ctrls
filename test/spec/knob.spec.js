@@ -8,7 +8,9 @@
     };
 
     sisiliano.tests.knob.verifyValue = function (knob, message, expectedValue) {
-        jqUnit.assertEquals(message, expectedValue, knob.model.value);
+        jqUnit.assertEquals(message + " : value", expectedValue, knob.model.value);
+        var formattedValue = knob.model.formatValue ? knob.model.formatValue(expectedValue) : expectedValue;
+        jqUnit.assertEquals(message + " : label", knob.locate("valueLabel").text(), formattedValue + "");
     };
 
     //Verifying styles and inouts
@@ -39,7 +41,7 @@
 
     sisiliano.tests.knob.verifyStyles = function (knob, properties) {
         jqUnit.assertEquals("value '" + properties.value + "' should have been applied to the slider",
-            properties.value + "%",
+            properties.value + "",
             knob.locate("valueLabel").text()
         );
         jqUnit.assertEquals("text color '" + properties.color + "' should have been applied to the slider",

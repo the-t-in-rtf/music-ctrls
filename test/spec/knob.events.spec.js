@@ -7,7 +7,6 @@
     fluid.registerNamespace("sisiliano.tests.knob.keyEvents");
     jqUnit.test("knob : key events", function () {
         var knob = sisiliano.knob(".test");
-        $(".test").empty();
         sisiliano.tests.knob.keyEvents.verifyKeyEvents(knob);
     });
     sisiliano.tests.knob.keyEvents.verifyKeyEvents = function (knob) {
@@ -198,5 +197,25 @@
     sisiliano.tests.knob.verifyTickValue = function (knob) {
         sisiliano.tests.knob.keyEvents.verifyKeyEvents(knob);
         sisiliano.tests.knob.mouseEvents.verifyMouseEvents(knob);
+    };
+
+
+    /////////////////////////////////////////////////////////
+    /////           Verifying format value
+    /////////////////////////////////////////////////////////
+    jqUnit.test("knob : format value", function () {
+        var knob = sisiliano.knob(".test", {
+            model: {
+                formatValue: function (value) {
+                    return "#### " + value;
+                }
+            }
+        });
+        sisiliano.tests.knob.verifyFormatValue(knob);
+    });
+
+    sisiliano.tests.knob.verifyFormatValue = function (knob) {
+        knob.applier.change("value", 54);
+        sisiliano.tests.knob.verifyValue(knob, "Value should have been formatted", 54);
     };
 })(fluid, jqUnit);
