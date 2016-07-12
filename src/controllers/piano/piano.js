@@ -6,7 +6,7 @@
         model: {
             title: "Piano Controller",
             description: "The keys are accessible by mouse and the keyboad as well. Only the active area of the piano is accessible by the keyboard. If you want to move the active area, use left and right keys.",
-            color: "",
+            color: "#4CAF50",
             keyBoard: {
                 keys: [],
                 length: 36,
@@ -54,10 +54,10 @@
         },
         selectors: {
             root: ".sisiliano",
-            keyBoard: ".key-board",
-            whiteKeys: ".white-key",
-            blackKeys: ".black-key",
-            key: ".key",
+            keyBoard: ".sisiliano-piano-key-board",
+            whiteKeys: ".sisiliano-piano-white-key",
+            blackKeys: ".sisiliano-piano-black-key",
+            keys: ".sisiliano-piano-key",
             activeAreaStatus: ".sisiliano-piano-active-area-status"
         },
         listeners: {
