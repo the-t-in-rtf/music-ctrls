@@ -100,7 +100,7 @@
         }
 
         //Update the aria-valuenow
-        that.locate("controller").attr("aria-valuenow", formatedValue);
+        that.container.attr("aria-valuenow", formatedValue);
 
         //Update the value in the UI
         that.locate("valueLabel").text(formatedValue);
@@ -121,22 +121,147 @@
     };
 
     sisiliano.knob.init = function (that) {
-        var circleRadius = parseInt(that.locate("knobBackgroundCircle").attr("r"), "");
+        var circleRadius = 130;
         that.applier.change("radius", circleRadius);
         that.applier.change("circumference", 2 * that.model.radius * Math.PI);
-        that.locate("circles").attr("stroke-dasharray", that.model.circumference + "px");
+
+        that.container.empty();
+        that.container.addClass("sisiliano");
+        that.container.attr("tabindex", "0");
+        that.container.attr("role", "slider");
+        that.container.attr("aria-label", that.model.title);
+        that.container.attr("aria-describedby", that.model.description);
+        that.container.attr("aria-valuenow", "");
+        that.container.attr("aria-valuemax", that.model.max);
+        that.container.attr("aria-valuemin", that.model.min);
+
+        var svg = d3.select(that.container.get(0)).append("svg")
+            .attr("viewBox", "0 0 300 300")
+            .attr("width", "100%")
+            .attr("height", "100%")
+            .attr("class", "sisiliano-knob");
+
+        var defs = svg.append("defs");
+
+        var filter6244 = defs.append("filter")
+            .attr("id", "filter6244")
+            .attr("style", "color-interpolation-filters:sRGB;");
+
+        filter6244.append("feFlood")
+            .attr("flood-opacity", "0.4")
+            .attr("flood-color", "black")
+            .attr("result", "flood")
+            .attr("id", "feFlood6246");
+
+        filter6244.append("feComposite")
+            .attr("in", "flood")
+            .attr("in2", "SourceGraphic")
+            .attr("operator", "in")
+            .attr("result", "composite1")
+            .attr("id", "feComposite6248");
+
+        filter6244.append("feGaussianBlur")
+            .attr("in", "composite1")
+            .attr("stdDeviation", "3")
+            .attr("result", "blur")
+            .attr("id", "feGaussianBlur6250");
+
+        filter6244.append("feOffset")
+            .attr("dx", "-1")
+            .attr("dy", "1")
+            .attr("result", "offset")
+            .attr("id", "feOffset6252");
+
+        filter6244.append("feComposite")
+            .attr("in", "SourceGraphic")
+            .attr("in2", "offset")
+            .attr("operator", "over")
+            .attr("result", "composite2")
+            .attr("id", "feComposite6254");
+
+        var filter6245 = defs.append("filter")
+            .attr("id", "filter6245")
+            .attr("style", "color-interpolation-filters:sRGB;");
+
+        filter6245.append("feFlood")
+            .attr("flood-opacity", "0.5")
+            .attr("flood-color", "black")
+            .attr("result", "flood")
+            .attr("id", "feFlood6246");
+
+        filter6245.append("feComposite")
+            .attr("in", "flood")
+            .attr("in2", "SourceGraphic")
+            .attr("operator", "in")
+            .attr("result", "composite1")
+            .attr("id", "feComposite6248");
+
+        filter6245.append("feGaussianBlur")
+            .attr("in", "composite1")
+            .attr("stdDeviation", "3.5")
+            .attr("result", "blur")
+            .attr("id", "feGaussianBlur6250");
+
+        filter6245.append("feOffset")
+            .attr("dx", "2")
+            .attr("dy", "-2")
+            .attr("result", "offset")
+            .attr("id", "feOffset6252");
+
+        filter6245.append("feComposite")
+            .attr("in", "SourceGraphic")
+            .attr("in2", "offset")
+            .attr("operator", "over")
+            .attr("result", "composite2")
+            .attr("id", "feComposite6254");
+
+        //Style
+        svg.append("style")
+            .text(".sisiliano-knob-circle { filter: url('#filter6244'); } " +
+                ".sisiliano-border, .sisiliano:focus .sisiliano-knob-circle { filter: url('#filter6245'); });");
+
+        //borderCircle
+        svg.append("circle")
+            .attr("class", "sisiliano-border")
+            .attr("r", "147")
+            .attr("cx", "150")
+            .attr("cy", "150")
+            .attr("stroke-dasharray", that.model.circumference + "px");
+
+        //backgroundCircle
+        svg.append("circle")
+            .attr("class", "sisiliano-knob-circle sisiliano-knob-background-circle")
+            .attr("id", "circle5634")
+            .attr("r", "130")
+            .attr("cx", "150")
+            .attr("cy", "150")
+            .attr("stroke-dasharray", that.model.circumference + "px");
+
+        //valueLabel
+        svg.append("text")
+            .attr("x", "40")
+            .attr("y", "170")
+            .attr("class", "unselectable sisiliano-knob-value-text");
+
+        //valueCircle
+        svg.append("circle")
+            .attr("class", "sisiliano-knob-circle sisiliano-knob-value-circle")
+            .attr("fill", "transparent")
+            .attr("id", "circle5636")
+            .attr("r", "130")
+            .attr("cx", "150")
+            .attr("cy", "150")
+            .attr("transform", "rotate(90, 150, 150)")
+            .attr("stroke-width", "20")
+            .attr("stroke-dasharray", that.model.circumference + "px");
     };
 
     sisiliano.knob.onCreate = function (that) {
         sisiliano.knob.validateInputs(that);
-        sisiliano.util.getTemplate(function (template) {
-            var html = template(that.model);
-            that.container.html(html);
-            sisiliano.knob.init(that);
-            sisiliano.knob.onColorChange(that, that.model.color);
-            sisiliano.knob.onValueChange(that, that.model.value);
-            sisiliano.knob.addListeners(that);
-        }, "src/controllers/knob/knob.html");
+        sisiliano.knob.init(that);
+        sisiliano.knob.onColorChange(that, that.model.color);
+        sisiliano.knob.onValueChange(that, that.model.value);
+        sisiliano.knob.addListeners(that);
     };
 
     sisiliano.knob.validateInputs = function (that) {

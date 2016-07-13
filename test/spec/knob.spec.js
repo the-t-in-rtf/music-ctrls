@@ -11,6 +11,7 @@
         jqUnit.assertEquals(message + " : value", expectedValue, knob.model.value);
         var formattedValue = knob.model.formatValue ? knob.model.formatValue(expectedValue) : expectedValue;
         jqUnit.assertEquals(message + " : label", knob.locate("valueLabel").text(), formattedValue + "");
+        jqUnit.assertEquals(message + " : aria-valuenow", knob.container.attr("aria-valuenow"), formattedValue + "");
     };
 
     //Verifying styles and inouts

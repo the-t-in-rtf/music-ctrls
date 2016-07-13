@@ -6,6 +6,7 @@
     /////////////////////////////////////////////////////////
     fluid.registerNamespace("sisiliano.tests.knob.keyEvents");
     jqUnit.test("knob : key events", function () {
+        $(".test").empty();
         var knob = sisiliano.knob(".test");
         sisiliano.tests.knob.keyEvents.verifyKeyEvents(knob);
     });
@@ -57,8 +58,8 @@
     /////           Verifying mouse events
     /////////////////////////////////////////////////////////
     jqUnit.test("knob : mouse events", function () {
+        $(".test").empty();
         var knob = sisiliano.knob(".test");
-
         sisiliano.tests.knob.mouseEvents.verifyMouseEvents(knob);
     });
 
@@ -159,6 +160,7 @@
             {min: -140, max: -20}
         ];
         fluid.each(testCases, function (testCase) {
+            $(".test").empty();
             var knob = sisiliano.knob(".test", {
                 model: {
                     min: testCase.min,
@@ -174,9 +176,9 @@
         var max = knob.model.max;
 
         jqUnit.assertEquals("aria-valuemax label should have been added", max + "",
-            knob.container.find(".sisiliano").attr("aria-valuemax"));
+            knob.container.attr("aria-valuemax"));
         jqUnit.assertEquals("aria-valuemin label should have been added", min + "",
-            knob.container.find(".sisiliano").attr("aria-valuemin"));
+            knob.container.attr("aria-valuemin"));
     };
 
     /////////////////////////////////////////////////////////
@@ -185,6 +187,7 @@
     jqUnit.test("knob : tick value", function () {
         var testingTickValues = [1, 2, 5, 7, 10];
         fluid.each(testingTickValues, function (tickValue) {
+            $(".test").empty();
             var knob = sisiliano.knob(".test", {
                 model: {
                     tickValue: tickValue
@@ -204,6 +207,7 @@
     /////           Verifying format value
     /////////////////////////////////////////////////////////
     jqUnit.test("knob : format value", function () {
+        $(".test").empty();
         var knob = sisiliano.knob(".test", {
             model: {
                 formatValue: function (value) {
