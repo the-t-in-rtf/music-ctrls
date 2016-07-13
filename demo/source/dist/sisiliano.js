@@ -1,7 +1,7 @@
-/*! sisiliano - v1.0.0 - 2016-07-07 
+/*! sisiliano - v1.0.0 - 2016-07-13 
 
 */var htmlTempl = htmlTempl || {};
-htmlTempl["templates"] = {"src/controllers/knob/knob.html":"<div tabindex=\"0\"\r\n     class=\"sisiliano\"\r\n     role=\"slider\"\r\n     aria-label=\"{{title}}\"\r\n     aria-describedby=\"{{description}}\"\r\n     aria-valuenow=\"\"\r\n     aria-valuemax=\"{{max}}\"\r\n     aria-valuemin=\"{{min}}\">\r\n    <svg\r\n            xmlns:osb=\"http://www.openswatchbook.org/uri/2009/osb\"\r\n            xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\r\n            xmlns:cc=\"http://creativecommons.org/ns#\"\r\n            xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\r\n            xmlns:svg=\"http://www.w3.org/2000/svg\"\r\n            xmlns=\"http://www.w3.org/2000/svg\"\r\n            xmlns:sodipodi=\"http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd\"\r\n            viewBox=\"0 0 300 300\"\r\n            width=\"100%\"\r\n            height=\"100%\"\r\n            class=\"sisiliano-knob\">\r\n        <defs\r\n                id=\"defs4\">\r\n            <filter\r\n                    style=\"color-interpolation-filters:sRGB;\"\r\n                    id=\"filter6244\">\r\n                <feFlood\r\n                        flood-opacity=\"0.4\"\r\n                        flood-color=\"black\"\r\n                        result=\"flood\"\r\n                        id=\"feFlood6246\" />\r\n                <feComposite\r\n                        in=\"flood\"\r\n                        in2=\"SourceGraphic\"\r\n                        operator=\"in\"\r\n                        result=\"composite1\"\r\n                        id=\"feComposite6248\" />\r\n                <feGaussianBlur\r\n                        in=\"composite1\"\r\n                        stdDeviation=\"3\"\r\n                        result=\"blur\"\r\n                        id=\"feGaussianBlur6250\" />\r\n                <feOffset\r\n                        dx=\"-1\"\r\n                        dy=\"1\"\r\n                        result=\"offset\"\r\n                        id=\"feOffset6252\" />\r\n                <feComposite\r\n                        in=\"SourceGraphic\"\r\n                        in2=\"offset\"\r\n                        operator=\"over\"\r\n                        result=\"composite2\"\r\n                        id=\"feComposite6254\" />\r\n            </filter>\r\n            <filter\r\n                    style=\"color-interpolation-filters:sRGB;\"\r\n                    id=\"filter6245\">\r\n                <feFlood\r\n                        flood-opacity=\"0.5\"\r\n                        flood-color=\"black\"\r\n                        result=\"flood\"\r\n                        id=\"feFlood6246\" />\r\n                <feComposite\r\n                        in=\"flood\"\r\n                        in2=\"SourceGraphic\"\r\n                        operator=\"in\"\r\n                        result=\"composite1\"\r\n                        id=\"feComposite6248\" />\r\n                <feGaussianBlur\r\n                        in=\"composite1\"\r\n                        stdDeviation=\"3.5\"\r\n                        result=\"blur\"\r\n                        id=\"feGaussianBlur6250\" />\r\n                <feOffset\r\n                        dx=\"2\"\r\n                        dy=\"-2\"\r\n                        result=\"offset\"\r\n                        id=\"feOffset6252\" />\r\n                <feComposite\r\n                        in=\"SourceGraphic\"\r\n                        in2=\"offset\"\r\n                        operator=\"over\"\r\n                        result=\"composite2\"\r\n                        id=\"feComposite6254\" />\r\n            </filter>\r\n        </defs>\r\n\r\n        <style>\r\n            .sisiliano-knob-circle {\r\n                filter: url(\"#filter6244\");\r\n            }\r\n            .sisiliano-border, .sisiliano:focus .sisiliano-knob-circle {\r\n                filter: url(\"#filter6245\");\r\n            }\r\n        </style>\r\n\r\n        <g style=\"display:inline\">\r\n            <circle\r\n                    class=\"sisiliano-border\"\r\n                    r=\"147\" cx=\"150\"\r\n                    cy=\"150\">\r\n            </circle>\r\n            <circle\r\n                    class=\"sisiliano-knob-circle sisiliano-knob-background-circle\"\r\n                    id=\"circle5634\"\r\n                    r=\"130\"\r\n                    cx=\"150\"\r\n                    cy=\"150\"/>\r\n            <text xmlns=\"http://www.w3.org/2000/svg\" x=\"40\" y=\"170\"\r\n                  class=\"unselectable sisiliano-knob-value-text\">\r\n                100\r\n            </text>\r\n            <circle\r\n                    class=\"sisiliano-knob-circle sisiliano-knob-value-circle\"\r\n                    fill=\"transparent\"\r\n                    id=\"circle5636\"\r\n                    r=\"130\"\r\n                    cx=\"150\"\r\n                    cy=\"150\"\r\n                    stroke-width=\"20\"/>\r\n        </g>\r\n    </svg>\r\n</div>","src/controllers/piano/piano.html":"<div tabindex=\"0\" class=\"sisiliano\" aria-label=\"{{title}} ,{{description}}\" id=\"{{id}}\">\r\n    <svg\r\n            xmlns:osb=\"http://www.openswatchbook.org/uri/2009/osb\"\r\n            xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\r\n            xmlns:cc=\"http://creativecommons.org/ns#\"\r\n            xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\r\n            xmlns:svg=\"http://www.w3.org/2000/svg\"\r\n            xmlns=\"http://www.w3.org/2000/svg\"\r\n            xmlns:sodipodi=\"http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd\"\r\n            class=\"sisiliano-piano\"\r\n            width=\"100%\"\r\n            height=\"100%\"\r\n            viewBox=\"0 0 {{viewBox.width}} {{viewBox.height}}\">\r\n        <defs\r\n                id=\"defs4\">\r\n            <filter\r\n                    style=\"color-interpolation-filters:sRGB;\"\r\n                    id=\"filter6244\">\r\n                <feFlood\r\n                        flood-opacity=\"0.5\"\r\n                        flood-color=\"black\"\r\n                        result=\"flood\"\r\n                        id=\"feFlood6246\"/>\r\n                <feComposite\r\n                        in=\"flood\"\r\n                        in2=\"SourceGraphic\"\r\n                        operator=\"in\"\r\n                        result=\"composite1\"\r\n                        id=\"feComposite6248\"/>\r\n                <feGaussianBlur\r\n                        in=\"composite1\"\r\n                        stdDeviation=\"3\"\r\n                        result=\"blur\"\r\n                        id=\"feGaussianBlur6250\"/>\r\n                <feOffset\r\n                        dx=\"0\"\r\n                        dy=\"1\"\r\n                        result=\"offset\"\r\n                        id=\"feOffset6252\"/>\r\n                <feComposite\r\n                        in=\"SourceGraphic\"\r\n                        in2=\"offset\"\r\n                        operator=\"over\"\r\n                        result=\"composite2\"\r\n                        id=\"feComposite6254\"/>\r\n            </filter>\r\n            <filter\r\n                    style=\"color-interpolation-filters:sRGB;\"\r\n                    id=\"filter6245\">\r\n                <feFlood\r\n                        flood-opacity=\"0.5\"\r\n                        flood-color=\"black\"\r\n                        result=\"flood\"\r\n                        id=\"feFlood6246\"/>\r\n                <feComposite\r\n                        in=\"flood\"\r\n                        in2=\"SourceGraphic\"\r\n                        operator=\"in\"\r\n                        result=\"composite1\"\r\n                        id=\"feComposite6248\"/>\r\n                <feGaussianBlur\r\n                        in=\"composite1\"\r\n                        stdDeviation=\"8\"\r\n                        result=\"blur\"\r\n                        id=\"feGaussianBlur6250\"/>\r\n                <feOffset\r\n                        dx=\"-3\"\r\n                        dy=\"3.5\"\r\n                        result=\"offset\"\r\n                        id=\"feOffset6252\"/>\r\n                <feComposite\r\n                        in=\"SourceGraphic\"\r\n                        in2=\"offset\"\r\n                        operator=\"over\"\r\n                        result=\"composite2\"\r\n                        id=\"feComposite6254\"/>\r\n            </filter>\r\n            <filter\r\n                    style=\"color-interpolation-filters:sRGB;\"\r\n                    id=\"filter6245\">\r\n                <feFlood\r\n                        flood-opacity=\"0.5\"\r\n                        flood-color=\"black\"\r\n                        result=\"flood\"\r\n                        id=\"feFlood6246\"/>\r\n                <feComposite\r\n                        in=\"flood\"\r\n                        in2=\"SourceGraphic\"\r\n                        operator=\"in\"\r\n                        result=\"composite1\"\r\n                        id=\"feComposite6248\"/>\r\n                <feGaussianBlur\r\n                        in=\"composite1\"\r\n                        stdDeviation=\"3.5\"\r\n                        result=\"blur\"\r\n                        id=\"feGaussianBlur6250\"/>\r\n                <feOffset\r\n                        dx=\"2\"\r\n                        dy=\"-2\"\r\n                        result=\"offset\"\r\n                        id=\"feOffset6252\"/>\r\n                <feComposite\r\n                        in=\"SourceGraphic\"\r\n                        in2=\"offset\"\r\n                        operator=\"over\"\r\n                        result=\"composite2\"\r\n                        id=\"feComposite6254\"/>\r\n            </filter>\r\n        </defs>\r\n\r\n        <style>\r\n            /* These styles have been added seperately as a fix for firefox and IE */\r\n            #{{id}}.sisiliano .sisiliano-piano .sisiliano-piano-white-key {\r\n                filter: url('#filter6244');\r\n            }\r\n\r\n            #{{id}}.sisiliano .sisiliano-piano .sisiliano-piano-black-key {\r\n                filter: url('#filter6244');\r\n            }\r\n\r\n            #{{id}}.sisiliano-border {\r\n                filter: url(\"#filter6245\");\r\n            }\r\n\r\n            #{{id}}.sisiliano .sisiliano-piano .sisiliano-piano-key-pressed,\r\n            #{{id}}.sisiliano .sisiliano-piano .sisiliano-piano-white-key:hover,\r\n            #{{id}}.sisiliano .sisiliano-piano .sisiliano-piano-black-key:hover,\r\n            #{{id}}.sisiliano .sisiliano-piano .sisiliano-piano-key-inactive:hover {\r\n                fill: {{color}};\r\n                stroke: {{color}};\r\n            }\r\n        </style>\r\n        <g style=\"display:inline\">\r\n            <text\r\n                    x=\"{{keyBoard.border.x}}\"\r\n                    y=\"{{keyBoard.border.y}}\"\r\n                    aria-live=\"assertive\"\r\n                    class=\"sisiliano-piano-active-area-status\">\r\n                Piano is active from G to C\r\n            </text>\r\n            <rect\r\n                    class=\"sisiliano-border\"\r\n                    height=\"{{keyBoard.border.height}}\"\r\n                    width=\"{{keyBoard.border.width}}\"\r\n                    x=\"{{keyBoard.border.x}}\"\r\n                    y=\"{{keyBoard.border.y}}\"/>\r\n            {{#each keyBoard.whiteKeys}}\r\n            <rect\r\n                    index=\"{{index}}\"\r\n                    class=\"sisiliano-piano-key sisiliano-piano-white-key\"\r\n                    height=\"{{height}}\"\r\n                    width=\"{{width}}\"\r\n                    x=\"{{x}}\"\r\n                    y=\"{{y}}\"/>\r\n            {{/each}}\r\n            {{#each keyBoard.blackKeys}}\r\n            <rect\r\n                    index=\"{{index}}\"\r\n                    class=\"sisiliano-piano-key sisiliano-piano-black-key\"\r\n                    height=\"{{height}}\"\r\n                    width=\"{{width}}\"\r\n                    x=\"{{x}}\"\r\n                    y=\"{{y}}\"/>\r\n            {{/each}}\r\n        </g>\r\n\r\n        <!--<g style=\"display:inline\">\r\n          <rect\r\n            class=\"sisiliano-piano-key sisiliano-piano-disabledArea\"\r\n            height=\"{{disabledArea.left.height}}\"\r\n            width=\"{{disabledArea.left.width}}\"\r\n            x=\"{{disabledArea.left.x}}\"\r\n            y=\"{{disabledArea.left.y}}\" />\r\n          <rect\r\n            class=\"sisiliano-piano-key sisiliano-piano-disabledArea\"\r\n            height=\"{{disabledArea.right.height}}\"\r\n            width=\"{{disabledArea.right.width}}\"\r\n            x=\"{{disabledArea.right.x}}\"\r\n            y=\"{{disabledArea.right.y}}\" />\r\n        </g>-->\r\n    </svg>\r\n</div>\r\n"};
+htmlTempl["templates"] = {"src/controllers/knob/knob.html":"<div tabindex=\"0\"\r\n     class=\"sisiliano\"\r\n     role=\"slider\"\r\n     aria-label=\"{{title}}\"\r\n     aria-describedby=\"{{description}}\"\r\n     aria-valuenow=\"\"\r\n     aria-valuemax=\"{{max}}\"\r\n     aria-valuemin=\"{{min}}\">\r\n    <svg\r\n            xmlns:osb=\"http://www.openswatchbook.org/uri/2009/osb\"\r\n            xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\r\n            xmlns:cc=\"http://creativecommons.org/ns#\"\r\n            xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\r\n            xmlns:svg=\"http://www.w3.org/2000/svg\"\r\n            xmlns=\"http://www.w3.org/2000/svg\"\r\n            xmlns:sodipodi=\"http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd\"\r\n            viewBox=\"0 0 300 300\"\r\n            width=\"100%\"\r\n            height=\"100%\"\r\n            class=\"sisiliano-knob\">\r\n        <defs\r\n                id=\"defs4\">\r\n            <filter\r\n                    style=\"color-interpolation-filters:sRGB;\"\r\n                    id=\"filter6244\">\r\n                <feFlood\r\n                        flood-opacity=\"0.4\"\r\n                        flood-color=\"black\"\r\n                        result=\"flood\"\r\n                        id=\"feFlood6246\" />\r\n                <feComposite\r\n                        in=\"flood\"\r\n                        in2=\"SourceGraphic\"\r\n                        operator=\"in\"\r\n                        result=\"composite1\"\r\n                        id=\"feComposite6248\" />\r\n                <feGaussianBlur\r\n                        in=\"composite1\"\r\n                        stdDeviation=\"3\"\r\n                        result=\"blur\"\r\n                        id=\"feGaussianBlur6250\" />\r\n                <feOffset\r\n                        dx=\"-1\"\r\n                        dy=\"1\"\r\n                        result=\"offset\"\r\n                        id=\"feOffset6252\" />\r\n                <feComposite\r\n                        in=\"SourceGraphic\"\r\n                        in2=\"offset\"\r\n                        operator=\"over\"\r\n                        result=\"composite2\"\r\n                        id=\"feComposite6254\" />\r\n            </filter>\r\n            <filter\r\n                    style=\"color-interpolation-filters:sRGB;\"\r\n                    id=\"filter6245\">\r\n                <feFlood\r\n                        flood-opacity=\"0.5\"\r\n                        flood-color=\"black\"\r\n                        result=\"flood\"\r\n                        id=\"feFlood6246\" />\r\n                <feComposite\r\n                        in=\"flood\"\r\n                        in2=\"SourceGraphic\"\r\n                        operator=\"in\"\r\n                        result=\"composite1\"\r\n                        id=\"feComposite6248\" />\r\n                <feGaussianBlur\r\n                        in=\"composite1\"\r\n                        stdDeviation=\"3.5\"\r\n                        result=\"blur\"\r\n                        id=\"feGaussianBlur6250\" />\r\n                <feOffset\r\n                        dx=\"2\"\r\n                        dy=\"-2\"\r\n                        result=\"offset\"\r\n                        id=\"feOffset6252\" />\r\n                <feComposite\r\n                        in=\"SourceGraphic\"\r\n                        in2=\"offset\"\r\n                        operator=\"over\"\r\n                        result=\"composite2\"\r\n                        id=\"feComposite6254\" />\r\n            </filter>\r\n        </defs>\r\n\r\n        <style>\r\n            .sisiliano-knob-circle {\r\n                filter: url(\"#filter6244\");\r\n            }\r\n            .sisiliano-border, .sisiliano:focus .sisiliano-knob-circle {\r\n                filter: url(\"#filter6245\");\r\n            }\r\n        </style>\r\n\r\n        <g style=\"display:inline\">\r\n            <circle\r\n                    class=\"sisiliano-border\"\r\n                    r=\"147\" cx=\"150\"\r\n                    cy=\"150\">\r\n            </circle>\r\n            <circle\r\n                    class=\"sisiliano-knob-circle sisiliano-knob-background-circle\"\r\n                    id=\"circle5634\"\r\n                    r=\"130\"\r\n                    cx=\"150\"\r\n                    cy=\"150\"/>\r\n            <text xmlns=\"http://www.w3.org/2000/svg\" x=\"40\" y=\"170\"\r\n                  class=\"unselectable sisiliano-knob-value-text\">\r\n                100\r\n            </text>\r\n            <circle\r\n                    class=\"sisiliano-knob-circle sisiliano-knob-value-circle\"\r\n                    fill=\"transparent\"\r\n                    id=\"circle5636\"\r\n                    r=\"130\"\r\n                    cx=\"150\"\r\n                    cy=\"150\"\r\n                    transform=\"rotate(90, 150, 150)\"\r\n                    stroke-width=\"20\"/>\r\n        </g>\r\n    </svg>\r\n</div>","src/controllers/piano/piano.html":"<div tabindex=\"0\" class=\"sisiliano\" aria-label=\"{{title}} ,{{description}}\" id=\"{{id}}\">\r\n    <svg\r\n            xmlns:osb=\"http://www.openswatchbook.org/uri/2009/osb\"\r\n            xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\r\n            xmlns:cc=\"http://creativecommons.org/ns#\"\r\n            xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\r\n            xmlns:svg=\"http://www.w3.org/2000/svg\"\r\n            xmlns=\"http://www.w3.org/2000/svg\"\r\n            xmlns:sodipodi=\"http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd\"\r\n            class=\"sisiliano-piano\"\r\n            width=\"100%\"\r\n            height=\"100%\"\r\n            viewBox=\"0 0 {{viewBox.width}} {{viewBox.height}}\">\r\n        <defs\r\n                id=\"defs4\">\r\n            <filter\r\n                    style=\"color-interpolation-filters:sRGB;\"\r\n                    id=\"filter6244\">\r\n                <feFlood\r\n                        flood-opacity=\"0.5\"\r\n                        flood-color=\"black\"\r\n                        result=\"flood\"\r\n                        id=\"feFlood6246\"/>\r\n                <feComposite\r\n                        in=\"flood\"\r\n                        in2=\"SourceGraphic\"\r\n                        operator=\"in\"\r\n                        result=\"composite1\"\r\n                        id=\"feComposite6248\"/>\r\n                <feGaussianBlur\r\n                        in=\"composite1\"\r\n                        stdDeviation=\"3\"\r\n                        result=\"blur\"\r\n                        id=\"feGaussianBlur6250\"/>\r\n                <feOffset\r\n                        dx=\"0\"\r\n                        dy=\"1\"\r\n                        result=\"offset\"\r\n                        id=\"feOffset6252\"/>\r\n                <feComposite\r\n                        in=\"SourceGraphic\"\r\n                        in2=\"offset\"\r\n                        operator=\"over\"\r\n                        result=\"composite2\"\r\n                        id=\"feComposite6254\"/>\r\n            </filter>\r\n            <filter\r\n                    style=\"color-interpolation-filters:sRGB;\"\r\n                    id=\"filter6245\">\r\n                <feFlood\r\n                        flood-opacity=\"0.5\"\r\n                        flood-color=\"black\"\r\n                        result=\"flood\"\r\n                        id=\"feFlood6246\"/>\r\n                <feComposite\r\n                        in=\"flood\"\r\n                        in2=\"SourceGraphic\"\r\n                        operator=\"in\"\r\n                        result=\"composite1\"\r\n                        id=\"feComposite6248\"/>\r\n                <feGaussianBlur\r\n                        in=\"composite1\"\r\n                        stdDeviation=\"8\"\r\n                        result=\"blur\"\r\n                        id=\"feGaussianBlur6250\"/>\r\n                <feOffset\r\n                        dx=\"-3\"\r\n                        dy=\"3.5\"\r\n                        result=\"offset\"\r\n                        id=\"feOffset6252\"/>\r\n                <feComposite\r\n                        in=\"SourceGraphic\"\r\n                        in2=\"offset\"\r\n                        operator=\"over\"\r\n                        result=\"composite2\"\r\n                        id=\"feComposite6254\"/>\r\n            </filter>\r\n            <filter\r\n                    style=\"color-interpolation-filters:sRGB;\"\r\n                    id=\"filter6245\">\r\n                <feFlood\r\n                        flood-opacity=\"0.5\"\r\n                        flood-color=\"black\"\r\n                        result=\"flood\"\r\n                        id=\"feFlood6246\"/>\r\n                <feComposite\r\n                        in=\"flood\"\r\n                        in2=\"SourceGraphic\"\r\n                        operator=\"in\"\r\n                        result=\"composite1\"\r\n                        id=\"feComposite6248\"/>\r\n                <feGaussianBlur\r\n                        in=\"composite1\"\r\n                        stdDeviation=\"3.5\"\r\n                        result=\"blur\"\r\n                        id=\"feGaussianBlur6250\"/>\r\n                <feOffset\r\n                        dx=\"2\"\r\n                        dy=\"-2\"\r\n                        result=\"offset\"\r\n                        id=\"feOffset6252\"/>\r\n                <feComposite\r\n                        in=\"SourceGraphic\"\r\n                        in2=\"offset\"\r\n                        operator=\"over\"\r\n                        result=\"composite2\"\r\n                        id=\"feComposite6254\"/>\r\n            </filter>\r\n        </defs>\r\n\r\n        <style>\r\n            /* These styles have been added seperately as a fix for firefox and IE */\r\n            #{{id}}.sisiliano .sisiliano-piano .sisiliano-piano-white-key {\r\n                filter: url('#filter6244');\r\n            }\r\n\r\n            #{{id}}.sisiliano .sisiliano-piano .sisiliano-piano-black-key {\r\n                filter: url('#filter6244');\r\n            }\r\n\r\n            #{{id}}.sisiliano-border {\r\n                filter: url(\"#filter6245\");\r\n            }\r\n\r\n            #{{id}}.sisiliano .sisiliano-piano .sisiliano-piano-key-pressed,\r\n            #{{id}}.sisiliano .sisiliano-piano .sisiliano-piano-white-key:hover,\r\n            #{{id}}.sisiliano .sisiliano-piano .sisiliano-piano-black-key:hover,\r\n            #{{id}}.sisiliano .sisiliano-piano .sisiliano-piano-key-inactive:hover {\r\n                fill: {{color}};\r\n                stroke: {{color}};\r\n            }\r\n        </style>\r\n        <g style=\"display:inline\">\r\n            <text\r\n                    x=\"{{keyBoard.border.x}}\"\r\n                    y=\"{{keyBoard.border.y}}\"\r\n                    aria-live=\"assertive\"\r\n                    class=\"sisiliano-piano-active-area-status\">\r\n                Piano is active from G to C\r\n            </text>\r\n            <rect\r\n                    class=\"sisiliano-border\"\r\n                    height=\"{{keyBoard.border.height}}\"\r\n                    width=\"{{keyBoard.border.width}}\"\r\n                    x=\"{{keyBoard.border.x}}\"\r\n                    y=\"{{keyBoard.border.y}}\"/>\r\n            {{#each keyBoard.whiteKeys}}\r\n            <rect\r\n                    index=\"{{index}}\"\r\n                    class=\"sisiliano-piano-key sisiliano-piano-white-key\"\r\n                    height=\"{{height}}\"\r\n                    width=\"{{width}}\"\r\n                    x=\"{{x}}\"\r\n                    y=\"{{y}}\"/>\r\n            {{/each}}\r\n            {{#each keyBoard.blackKeys}}\r\n            <rect\r\n                    index=\"{{index}}\"\r\n                    class=\"sisiliano-piano-key sisiliano-piano-black-key\"\r\n                    height=\"{{height}}\"\r\n                    width=\"{{width}}\"\r\n                    x=\"{{x}}\"\r\n                    y=\"{{y}}\"/>\r\n            {{/each}}\r\n        </g>\r\n\r\n        <!--<g style=\"display:inline\">\r\n          <rect\r\n            class=\"sisiliano-piano-key sisiliano-piano-disabledArea\"\r\n            height=\"{{disabledArea.left.height}}\"\r\n            width=\"{{disabledArea.left.width}}\"\r\n            x=\"{{disabledArea.left.x}}\"\r\n            y=\"{{disabledArea.left.y}}\" />\r\n          <rect\r\n            class=\"sisiliano-piano-key sisiliano-piano-disabledArea\"\r\n            height=\"{{disabledArea.right.height}}\"\r\n            width=\"{{disabledArea.right.width}}\"\r\n            x=\"{{disabledArea.right.x}}\"\r\n            y=\"{{disabledArea.right.y}}\" />\r\n        </g>-->\r\n    </svg>\r\n</div>\r\n"};
 (function (fluid) {
     "use strict";
 
@@ -71,14 +71,19 @@ htmlTempl["templates"] = {"src/controllers/knob/knob.html":"<div tabindex=\"0\"\
             max: 100,
             color: "#009688",
             value: null,
+            tickValue: 1,
             status: {
                 isActive: false
+            },
+            formatValue: function (value) {
+                return Math.round(value * 100) / 100.0;
             },
             title: "Knob Controoler",
             description: "Use up and down keys to increase and decrease the value. If you are using the mouse, Drag around the center to adjust the value"
         },
         selectors: {
             controller: ".sisiliano",
+            svg: "svg",
             valueLabel: ".sisiliano-knob-value-text",
             valueCircle: ".sisiliano-knob-value-circle",
             knobBackgroundCircle: ".sisiliano-knob-background-circle",
@@ -99,6 +104,10 @@ htmlTempl["templates"] = {"src/controllers/knob/knob.html":"<div tabindex=\"0\"\
                 func: "sisiliano.knob.onValueChange",
                 args: ["{that}", "{that}.model.value"]
             },
+            "formatValue": {
+                func: "sisiliano.knob.onValueChange",
+                args: ["{that}", "{that}.model.value"]
+            },
             "color": {
                 func: "sisiliano.knob.onColorChange",
                 args: ["{that}", "{that}.model.color"]
@@ -106,9 +115,27 @@ htmlTempl["templates"] = {"src/controllers/knob/knob.html":"<div tabindex=\"0\"\
             "status.isActive": {
                 func: "sisiliano.knob.onStatusChange",
                 args: ["{that}", "{that}.model.status.isActive"]
+            },
+            "min": {
+                func: "sisiliano.knob.onMinValueChange",
+                args: ["{that}", "{that}.model.min"]
+            },
+            "max": {
+                func: "sisiliano.knob.onMaxValueChange",
+                args: ["{that}", "{that}.model.max"]
             }
         }
     });
+
+    sisiliano.knob.onMinValueChange = function (that, min) {
+        that.locate("controller").attr("aria-valuemin", min);
+        sisiliano.knob.onValueChange(that, that.model.value);
+    };
+
+    sisiliano.knob.onMaxValueChange = function (that, max) {
+        that.locate("controller").attr("aria-valuemax", max);
+        sisiliano.knob.onValueChange(that, that.model.value);
+    };
 
     sisiliano.knob.onStatusChange = function (that, isActive) {
         var className = "sisiliano-knob" + (isActive ? " sisiliano-active" : "");
@@ -116,27 +143,36 @@ htmlTempl["templates"] = {"src/controllers/knob/knob.html":"<div tabindex=\"0\"\
     };
 
     sisiliano.knob.onValueChange = function (that, newValue) {
-        if (typeof newValue !== "number" || newValue < that.model.min) {
+        if (typeof newValue !== "number") {
+            sisiliano.knob.updateTheValueInUI(that, that.model.min);
+        } if (newValue < that.model.min) {
             newValue = that.model.min;
             that.applier.change("value", newValue);
         } else if (newValue > that.model.max) {
             newValue = that.model.max;
             that.applier.change("value", newValue);
         } else {
-            if (that.model.value <= that.model.max && that.model.value >= that.model.min) {
-                //Update the aria-valuenow
-                that.locate("controller").attr("aria-valuenow", Math.round((newValue * 100.0) / 100));
-
-                //Update the value in the UI
-                that.locate("valueLabel").text(Math.round(newValue) + "%");
-
-                //Update the ring arc according to the value
-                var valueRange = sisiliano.knob.getSize(that);
-                var obviousValue = sisiliano.knob.getObviousValue(that, newValue);
-                var offset = ((that.model.circumference / valueRange) * (valueRange - obviousValue)) + "px";
-                that.locate("valueCircle").attr("stroke-dashoffset", offset);
-            }
+            sisiliano.knob.updateTheValueInUI(that, newValue);
         }
+    };
+
+    sisiliano.knob.updateTheValueInUI = function (that, newValue) {
+        var formatedValue = newValue;
+        if (that.model.formatValue && typeof that.model.formatValue === "function") {
+            formatedValue = that.model.formatValue(newValue);
+        }
+
+        //Update the aria-valuenow
+        that.locate("controller").attr("aria-valuenow", formatedValue);
+
+        //Update the value in the UI
+        that.locate("valueLabel").text(formatedValue);
+
+        //Update the ring arc according to the value
+        var valueRange = sisiliano.knob.getSize(that);
+        var obviousValue = sisiliano.knob.getObviousValue(that, newValue);
+        var offset = ((that.model.circumference / valueRange) * (valueRange - obviousValue)) + "px";
+        that.locate("valueCircle").attr("stroke-dashoffset", offset);
     };
 
     sisiliano.knob.onColorChange = function (that, newColor) {
@@ -184,24 +220,27 @@ htmlTempl["templates"] = {"src/controllers/knob/knob.html":"<div tabindex=\"0\"\
             }
         };
         var keyDownHandler = function () {
+            var currentValue = sisiliano.knob.getValue(that);
             if (d3.event.keyCode === 38) {
-                that.applier.change("value", that.model.value + 1);
+                that.applier.change("value", currentValue + that.model.tickValue);
                 d3.event.preventDefault();
             } else if (d3.event.keyCode === 40) {
-                that.applier.change("value", that.model.value - 1);
+                that.applier.change("value", currentValue - that.model.tickValue);
                 d3.event.preventDefault();
             }
         };
 
         document.addEventListener("mousemove", function (evt) {
-            var svgElm = that.container.find("svg");
-            var svgPosition = svgElm.position();
-            var center = {x: svgPosition.left + (svgElm.width() / 2), y: svgPosition.top + (svgElm.height() / 2)};
-            var clickedPosition = {x: evt.pageX, y: evt.pageY};
-            if (that.model.status.isActive) {
-                sisiliano.knob.setValueByAngle(that, center, clickedPosition);
+            var svgElm = that.locate("svg");
+            if (svgElm && svgElm.length > 0) {
+                var svgPosition = svgElm.position();
+                var center = {x: svgPosition.left + (svgElm.width() / 2), y: svgPosition.top + (svgElm.height() / 2)};
+                var clickedPosition = {x: evt.pageX, y: evt.pageY};
+                if (that.model.status.isActive) {
+                    sisiliano.knob.setValueByAngle(that, center, clickedPosition);
 
-                return false;
+                    return false;
+                }
             }
         });
         document.addEventListener("mouseup", sisiliano.knob.setKnobActiveStatus.bind(this, that, false));
@@ -231,6 +270,14 @@ htmlTempl["templates"] = {"src/controllers/knob/knob.html":"<div tabindex=\"0\"\
         return Math.abs(that.model.max - that.model.min);
     };
 
+    sisiliano.knob.getValue = function (that) {
+        if (typeof that.model.value === "number") {
+            return that.model.value;
+        } else {
+            return that.model.min;
+        }
+    };
+
     sisiliano.knob.getObviousValue = function (that, value) {
         return value - that.model.min;
     };
@@ -243,7 +290,7 @@ htmlTempl["templates"] = {"src/controllers/knob/knob.html":"<div tabindex=\"0\"\
         model: {
             title: "Piano Controller",
             description: "The keys are accessible by mouse and the keyboad as well. Only the active area of the piano is accessible by the keyboard. If you want to move the active area, use left and right keys.",
-            color: "",
+            color: "#4CAF50",
             keyBoard: {
                 keys: [],
                 length: 36,
@@ -291,10 +338,10 @@ htmlTempl["templates"] = {"src/controllers/knob/knob.html":"<div tabindex=\"0\"\
         },
         selectors: {
             root: ".sisiliano",
-            keyBoard: ".key-board",
-            whiteKeys: ".white-key",
-            blackKeys: ".black-key",
-            key: ".key",
+            keyBoard: ".sisiliano-piano-key-board",
+            whiteKeys: ".sisiliano-piano-white-key",
+            blackKeys: ".sisiliano-piano-black-key",
+            keys: ".sisiliano-piano-key",
             activeAreaStatus: ".sisiliano-piano-active-area-status"
         },
         listeners: {
