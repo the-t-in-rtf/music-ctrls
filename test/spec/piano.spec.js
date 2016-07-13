@@ -60,7 +60,7 @@
     };
 
     sisiliano.tests.piano.verifyKeyStatus = function (piano, key, color, message, active, pressed) {
-        var keyColor = key.css("fill");
+        var keyColor = $(key).css("fill");
         var expectedColor = null;
         if (color === "WHITE") {
             if (active) {
@@ -86,12 +86,29 @@
     };
 
     sisiliano.tests.piano.getKeyColor = function (key) {
-        var className = key.attr("class");
+        var className = $(key).attr("class");
         if (className.indexOf("white") >= 0) {
             return "WHITE";
         } else {
             return "BLACK";
         }
+    };
+
+    sisiliano.tests.piano.getKeyIndex = function (key) {
+        return parseInt($(key).attr("index"), null);
+    };
+
+    sisiliano.tests.piano.getKeyByIndex = function (piano, index) {
+        var keys = piano.locate("keys");
+        var filteredKeys = keys.filter(function () {
+            return (sisiliano.tests.piano.getKeyIndex($(this)) + "") === (index + "");
+        });
+
+        return filteredKeys.length === 0 ? null : filteredKeys[0];
+    };
+
+    sisiliano.tests.piano.isKeyActive = function (key) {
+        return $(key).attr("class").indexOf("inactive") < 0;
     };
 
     /////////////////////////////////////////////////////////
@@ -103,7 +120,6 @@
             playKey: function() {},
             releaseKey: function() {}
         };
-
         $(".test").empty();
         var piano = sisiliano.piano(".test", {
             listeners: {
@@ -143,8 +159,7 @@
         soundBox.playKey = function () {
             jqUnit.assert(message + " : soundbox should start playing when mousedown");
         };
-
-        var isActive = key.attr("class").indexOf("inactive") < 0;
+        var isActive = sisiliano.tests.piano.isKeyActive(key);
         key.simulate("mousedown");
         sisiliano.tests.piano.verifyKeyStatus(piano, key, color, message + " : Key style should be changed as clicked", isActive, true);
     };
@@ -153,8 +168,7 @@
         soundBox.releaseKey = function () {
             jqUnit.assert(message + " : soundbox should stop playing when mouseup");
         };
-
-        var isActive = key.attr("class").indexOf("inactive") < 0;
+        var isActive = sisiliano.tests.piano.isKeyActive(key);
         key.simulate("mouseup");
         sisiliano.tests.piano.verifyKeyStatus(piano, key, color, message + " : Key style should be changed as clicked", isActive, false);
     };
@@ -163,6 +177,7 @@
     /////           Verifying active area navigation
     /////////////////////////////////////////////////////////
     fluid.registerNamespace("sisiliano.tests.piano.activeArea");
+
     jqUnit.test("Piano : active area navigation", function () {
         $(".test").empty();
         var piano = sisiliano.piano(".test");
@@ -178,7 +193,6 @@
             end: piano.model.activeArea.end
         };
         var testCaseMessage = "";
-
         for (var i = 1; i <= whiteKeys.length; i++) {
             sisiliano.tests.piano.activeArea.moveToRight(piano);
             if (expectedActiveArea.end === (whiteKeys.length - 1)) {
@@ -217,12 +231,10 @@
     sisiliano.tests.piano.verifyActiveAreaKeys = function (piano, message, expectedActiveArea) {
         var keys = piano.locate("keys");
         var whiteKeys = piano.locate("whiteKeys");
-
         var activeStartWhiteKey= whiteKeys[expectedActiveArea.start];
         var activeEndWhiteKey = whiteKeys[expectedActiveArea.end];
         var activeStartIndex = parseInt($(activeStartWhiteKey).attr("index"), null);
         var activeEndIndex = parseInt($(activeEndWhiteKey).attr("index"), null);
-
         for (var i = 0; i < keys.length; i++) {
             var key = $(keys[i]);
             var keyColor = sisiliano.tests.piano.getKeyColor(key);
@@ -239,13 +251,90 @@
             sisiliano.tests.piano.verifyKeyStatus(piano, key, keyColor,
                 message + " : Key " + (keyIndex + 1) + " should be " + (isActive ? "active" : "inactive"), isActive, false);
         }
+
+        sisiliano.tests.piano.verifyKeyEvents(piano, message + " : key events", expectedActiveArea);
     };
 
     /////////////////////////////////////////////////////////
     /////           Verifying Key Events
     /////////////////////////////////////////////////////////
     fluid.registerNamespace("sisiliano.tests.piano.keyEvents");
-    //TODO
+    jqUnit.test("Piano : active area navigation", function () {
+        $(".test").empty();
+        var piano = sisiliano.piano(".test");
+        sisiliano.tests.piano.verifyKeyEvents(piano, "Verifying key events", {start: 0, end: 10});
+    });
+
+    sisiliano.tests.piano.verifyKeyEvents = function (piano, message, expectedActiveArea) {
+        var keyCodeMap = {
+            Q: 81,
+            A: 65,
+            W: 87,
+            S: 83,
+            E: 69,
+            D: 68,
+            R: 82,
+            F: 70,
+            T: 84,
+            G: 71,
+            Y: 89,
+            H: 72,
+            U: 85,
+            J: 74,
+            I: 73,
+            K: 75,
+            O: 79,
+            L: 76,
+            P: 80,
+            ":": 186,
+            "{": 219,
+            "\"": 222,
+            "}": 221
+        };
+
+        var whiteKeys = piano.locate("whiteKeys");
+        var keyLettersOrder = "QAWSEDRFTGYHUJIKOLP:{\"}";
+        var expectedKeys = [];
+        for (var i = expectedActiveArea.start; i <= expectedActiveArea.end + 1; i++) {
+            var key = whiteKeys[i];
+            var keyIndex = sisiliano.tests.piano.getKeyIndex(key);
+            var prevKey = sisiliano.tests.piano.getKeyByIndex(piano, keyIndex - 1);
+            if (prevKey && sisiliano.tests.piano.getKeyColor(prevKey) === "BLACK") {
+                expectedKeys.push(prevKey);
+            } else {
+                expectedKeys.push(null);
+            }
+
+            expectedKeys.push(key);
+        }
+
+        for (i = 0; i < keyLettersOrder.length; i++) {
+            var keyLetter = keyLettersOrder[i];
+            var expectedKey = expectedKeys[i];
+            if (expectedKey) {
+                sisiliano.tests.piano.keyEvents.verifyKeyCodeAndKey(piano, keyCodeMap[keyLetter], expectedKey,
+                    message + " : letter " + keyLetter + " should fire key " + sisiliano.tests.piano.getKeyIndex(expectedKey));
+            }
+        }
+    };
+
+    sisiliano.tests.piano.keyEvents.verifyKeyCodeAndKey = function (piano, keyCode, expectedKey, message) {
+        //Verifying whether the key press of the specified key code presses the mapped key in the piano
+        piano.container.simulate("keydown", {
+            keyCode: keyCode
+        });
+        sisiliano.tests.piano.verifyKeyStatus(piano, expectedKey,
+            sisiliano.tests.piano.getKeyColor(expectedKey),
+            message + " : keydown", true, true);
+
+        //Verifying whether the key release of the specified key code releases the mapped key in the piano
+        piano.container.simulate("keyup", {
+            keyCode: keyCode
+        });
+        sisiliano.tests.piano.verifyKeyStatus(piano, expectedKey,
+            sisiliano.tests.piano.getKeyColor(expectedKey),
+            message + " : keyup", true, false);
+    };
 
     sisiliano.tests.piano.keyEvents.pressKey = function (piano, keyCode) {
         piano.container.simulate("keydown", {
