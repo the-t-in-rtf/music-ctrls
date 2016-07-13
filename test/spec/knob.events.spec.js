@@ -7,15 +7,14 @@
     fluid.registerNamespace("sisiliano.tests.knob.keyEvents");
     jqUnit.test("knob : key events", function () {
         var knob = sisiliano.knob(".test");
-        $(".test").empty();
         sisiliano.tests.knob.keyEvents.verifyKeyEvents(knob);
     });
     sisiliano.tests.knob.keyEvents.verifyKeyEvents = function (knob) {
-        var expectedValue = knob.model.value + 1;
+        var expectedValue = knob.model.value + knob.model.tickValue;
         sisiliano.tests.knob.keyEvents.pressKeyUp(knob);
         sisiliano.tests.knob.verifyValue(knob, "Value should be increased when up key is pressed", expectedValue);
 
-        expectedValue = knob.model.value - 1;
+        expectedValue = knob.model.value - knob.model.tickValue;
         sisiliano.tests.knob.keyEvents.pressKeyDown(knob);
         sisiliano.tests.knob.verifyValue(knob, "Value should be decreased when down key is pressed", expectedValue);
 
@@ -26,13 +25,13 @@
         var min = knob.model.min;
         var max = knob.model.max;
 
-        knob.applier.change("value", min + 1);
+        knob.applier.change("value", min + knob.model.tickValue);
         sisiliano.tests.knob.keyEvents.pressKeyDown(knob);
         sisiliano.tests.knob.keyEvents.pressKeyDown(knob);
         sisiliano.tests.knob.keyEvents.pressKeyDown(knob);
         sisiliano.tests.knob.verifyValue(knob, "Value should be not decreasing less than the min value", min);
 
-        knob.applier.change("value", max - 1);
+        knob.applier.change("value", max - knob.model.tickValue);
         sisiliano.tests.knob.keyEvents.pressKeyUp(knob);
         sisiliano.tests.knob.keyEvents.pressKeyUp(knob);
         sisiliano.tests.knob.keyEvents.pressKeyUp(knob);
@@ -154,29 +153,69 @@
     /////           Verifying min and max values
     /////////////////////////////////////////////////////////
     jqUnit.test("knob : min max", function () {
-        sisiliano.tests.knob.verifyMinMaxValues(10, 150);
-        sisiliano.tests.knob.verifyMinMaxValues(-10, 100);
-        sisiliano.tests.knob.verifyMinMaxValues(-140, -20);
+        var testCases = [
+            {min: 10, max: 150},
+            {min: -10, max: 100},
+            {min: -140, max: -20}
+        ];
+        fluid.each(testCases, function (testCase) {
+            var knob = sisiliano.knob(".test", {
+                model: {
+                    min: testCase.min,
+                    max: testCase.max
+                }
+            });
+            sisiliano.tests.knob.verifyMinMaxValues(knob);
+        });
     });
 
-    sisiliano.tests.knob.verifyMinMaxValues = function (min, max) {
-        var knob = sisiliano.knob(".test", {
-            model: {
-                min: min,
-                max: max
-            }
-        });
+    sisiliano.tests.knob.verifyMinMaxValues = function (knob) {
+        var min = knob.model.min;
+        var max = knob.model.max;
 
-        sisiliano.tests.knob.verifyValue(knob, "Default value should be the min value", min);
         jqUnit.assertEquals("aria-valuemax label should have been added", max + "",
             knob.container.find(".sisiliano").attr("aria-valuemax"));
         jqUnit.assertEquals("aria-valuemin label should have been added", min + "",
             knob.container.find(".sisiliano").attr("aria-valuemin"));
+    };
 
-        sisiliano.tests.knob.verifyValue(knob, "Default value should be the min value", min);
+    /////////////////////////////////////////////////////////
+    /////           Verifying tick value
+    /////////////////////////////////////////////////////////
+    jqUnit.test("knob : tick value", function () {
+        var testingTickValues = [1, 2, 5, 7, 10];
+        fluid.each(testingTickValues, function (tickValue) {
+            var knob = sisiliano.knob(".test", {
+                model: {
+                    tickValue: tickValue
+                }
+            });
+            sisiliano.tests.knob.verifyTickValue(knob);
+        });
+    });
 
-        //Verifying whether key events and mouse events are working when the min and max values are defined
+    sisiliano.tests.knob.verifyTickValue = function (knob) {
         sisiliano.tests.knob.keyEvents.verifyKeyEvents(knob);
         sisiliano.tests.knob.mouseEvents.verifyMouseEvents(knob);
+    };
+
+
+    /////////////////////////////////////////////////////////
+    /////           Verifying format value
+    /////////////////////////////////////////////////////////
+    jqUnit.test("knob : format value", function () {
+        var knob = sisiliano.knob(".test", {
+            model: {
+                formatValue: function (value) {
+                    return "#### " + value;
+                }
+            }
+        });
+        sisiliano.tests.knob.verifyFormatValue(knob);
+    });
+
+    sisiliano.tests.knob.verifyFormatValue = function (knob) {
+        knob.applier.change("value", 54);
+        sisiliano.tests.knob.verifyValue(knob, "Value should have been formatted", 54);
     };
 })(fluid, jqUnit);

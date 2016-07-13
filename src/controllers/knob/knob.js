@@ -8,14 +8,19 @@
             max: 100,
             color: "#009688",
             value: null,
+            tickValue: 1,
             status: {
                 isActive: false
+            },
+            formatValue: function (value) {
+                return Math.round(value * 100) / 100.0;
             },
             title: "Knob Controoler",
             description: "Use up and down keys to increase and decrease the value. If you are using the mouse, Drag around the center to adjust the value"
         },
         selectors: {
             controller: ".sisiliano",
+            svg: "svg",
             valueLabel: ".sisiliano-knob-value-text",
             valueCircle: ".sisiliano-knob-value-circle",
             knobBackgroundCircle: ".sisiliano-knob-background-circle",
@@ -36,6 +41,10 @@
                 func: "sisiliano.knob.onValueChange",
                 args: ["{that}", "{that}.model.value"]
             },
+            "formatValue": {
+                func: "sisiliano.knob.onValueChange",
+                args: ["{that}", "{that}.model.value"]
+            },
             "color": {
                 func: "sisiliano.knob.onColorChange",
                 args: ["{that}", "{that}.model.color"]
@@ -43,9 +52,27 @@
             "status.isActive": {
                 func: "sisiliano.knob.onStatusChange",
                 args: ["{that}", "{that}.model.status.isActive"]
+            },
+            "min": {
+                func: "sisiliano.knob.onMinValueChange",
+                args: ["{that}", "{that}.model.min"]
+            },
+            "max": {
+                func: "sisiliano.knob.onMaxValueChange",
+                args: ["{that}", "{that}.model.max"]
             }
         }
     });
+
+    sisiliano.knob.onMinValueChange = function (that, min) {
+        that.locate("controller").attr("aria-valuemin", min);
+        sisiliano.knob.onValueChange(that, that.model.value);
+    };
+
+    sisiliano.knob.onMaxValueChange = function (that, max) {
+        that.locate("controller").attr("aria-valuemax", max);
+        sisiliano.knob.onValueChange(that, that.model.value);
+    };
 
     sisiliano.knob.onStatusChange = function (that, isActive) {
         var className = "sisiliano-knob" + (isActive ? " sisiliano-active" : "");
@@ -53,27 +80,36 @@
     };
 
     sisiliano.knob.onValueChange = function (that, newValue) {
-        if (typeof newValue !== "number" || newValue < that.model.min) {
+        if (typeof newValue !== "number") {
+            sisiliano.knob.updateTheValueInUI(that, that.model.min);
+        } if (newValue < that.model.min) {
             newValue = that.model.min;
             that.applier.change("value", newValue);
         } else if (newValue > that.model.max) {
             newValue = that.model.max;
             that.applier.change("value", newValue);
         } else {
-            if (that.model.value <= that.model.max && that.model.value >= that.model.min) {
-                //Update the aria-valuenow
-                that.locate("controller").attr("aria-valuenow", Math.round((newValue * 100.0) / 100));
-
-                //Update the value in the UI
-                that.locate("valueLabel").text(Math.round(newValue) + "%");
-
-                //Update the ring arc according to the value
-                var valueRange = sisiliano.knob.getSize(that);
-                var obviousValue = sisiliano.knob.getObviousValue(that, newValue);
-                var offset = ((that.model.circumference / valueRange) * (valueRange - obviousValue)) + "px";
-                that.locate("valueCircle").attr("stroke-dashoffset", offset);
-            }
+            sisiliano.knob.updateTheValueInUI(that, newValue);
         }
+    };
+
+    sisiliano.knob.updateTheValueInUI = function (that, newValue) {
+        var formatedValue = newValue;
+        if (that.model.formatValue && typeof that.model.formatValue === "function") {
+            formatedValue = that.model.formatValue(newValue);
+        }
+
+        //Update the aria-valuenow
+        that.locate("controller").attr("aria-valuenow", formatedValue);
+
+        //Update the value in the UI
+        that.locate("valueLabel").text(formatedValue);
+
+        //Update the ring arc according to the value
+        var valueRange = sisiliano.knob.getSize(that);
+        var obviousValue = sisiliano.knob.getObviousValue(that, newValue);
+        var offset = ((that.model.circumference / valueRange) * (valueRange - obviousValue)) + "px";
+        that.locate("valueCircle").attr("stroke-dashoffset", offset);
     };
 
     sisiliano.knob.onColorChange = function (that, newColor) {
@@ -121,24 +157,27 @@
             }
         };
         var keyDownHandler = function () {
+            var currentValue = sisiliano.knob.getValue(that);
             if (d3.event.keyCode === 38) {
-                that.applier.change("value", that.model.value + 1);
+                that.applier.change("value", currentValue + that.model.tickValue);
                 d3.event.preventDefault();
             } else if (d3.event.keyCode === 40) {
-                that.applier.change("value", that.model.value - 1);
+                that.applier.change("value", currentValue - that.model.tickValue);
                 d3.event.preventDefault();
             }
         };
 
         document.addEventListener("mousemove", function (evt) {
-            var svgElm = that.container.find("svg");
-            var svgPosition = svgElm.position();
-            var center = {x: svgPosition.left + (svgElm.width() / 2), y: svgPosition.top + (svgElm.height() / 2)};
-            var clickedPosition = {x: evt.pageX, y: evt.pageY};
-            if (that.model.status.isActive) {
-                sisiliano.knob.setValueByAngle(that, center, clickedPosition);
+            var svgElm = that.locate("svg");
+            if (svgElm && svgElm.length > 0) {
+                var svgPosition = svgElm.position();
+                var center = {x: svgPosition.left + (svgElm.width() / 2), y: svgPosition.top + (svgElm.height() / 2)};
+                var clickedPosition = {x: evt.pageX, y: evt.pageY};
+                if (that.model.status.isActive) {
+                    sisiliano.knob.setValueByAngle(that, center, clickedPosition);
 
-                return false;
+                    return false;
+                }
             }
         });
         document.addEventListener("mouseup", sisiliano.knob.setKnobActiveStatus.bind(this, that, false));
@@ -166,6 +205,14 @@
 
     sisiliano.knob.getSize = function (that) {
         return Math.abs(that.model.max - that.model.min);
+    };
+
+    sisiliano.knob.getValue = function (that) {
+        if (typeof that.model.value === "number") {
+            return that.model.value;
+        } else {
+            return that.model.min;
+        }
     };
 
     sisiliano.knob.getObviousValue = function (that, value) {
