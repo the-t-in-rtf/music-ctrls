@@ -2,19 +2,9 @@
     "use strict";
 
     fluid.defaults("sisiliano.knob", {
-        gradeNames: ["fluid.viewComponent"],
+        gradeNames: ["sisiliano.slider"],
         model: {
-            min: 0,
-            max: 100,
-            color: "#009688",
-            value: null,
-            tickValue: 1,
-            status: {
-                isActive: false
-            },
-            formatValue: function (value) {
-                return Math.round(value * 100) / 100.0;
-            },
+            radius: 130,
             title: "Knob Controoler",
             description: "Use up and down keys to increase and decrease the value. If you are using the mouse, Drag around the center to adjust the value"
         },
@@ -27,51 +17,37 @@
             borderCircle: "sisiliano-knob-circle sisiliano-knob-border-circle",
             circles: ".sisiliano-knob-circle"
         },
-        events: {
-            onChange: null
-        },
         listeners: {
             onCreate: {
                 func: "sisiliano.knob.onCreate",
                 args: ["{that}"]
-            }
-        },
-        modelListeners: {
-            "value": {
-                func: "sisiliano.knob.onValueChange",
-                args: ["{that}", "{that}.model.value"]
             },
-            "formatValue": {
+            onValueChange: {
                 func: "sisiliano.knob.onValueChange",
-                args: ["{that}", "{that}.model.value"]
+                args: ["{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
             },
-            "color": {
+            onColorChange: {
                 func: "sisiliano.knob.onColorChange",
                 args: ["{that}", "{that}.model.color"]
             },
-            "status.isActive": {
+            onStatusChange: {
                 func: "sisiliano.knob.onStatusChange",
                 args: ["{that}", "{that}.model.status.isActive"]
-            },
-            "min": {
-                func: "sisiliano.knob.onMinValueChange",
-                args: ["{that}", "{that}.model.min"]
-            },
-            "max": {
-                func: "sisiliano.knob.onMaxValueChange",
-                args: ["{that}", "{that}.model.max"]
+            }
+        },
+        modelListeners: {
+            radius: {
+                func: "sisiliano.knob.onRadiusChange",
+                args: ["{that}", "{that}.model.radius"]
             }
         }
     });
 
-    sisiliano.knob.onMinValueChange = function (that, min) {
-        that.locate("controller").attr("aria-valuemin", min);
-        sisiliano.knob.onValueChange(that, that.model.value);
-    };
-
-    sisiliano.knob.onMaxValueChange = function (that, max) {
-        that.locate("controller").attr("aria-valuemax", max);
-        sisiliano.knob.onValueChange(that, that.model.value);
+    sisiliano.knob.onRadiusChange = function (that, radius) {
+        that.locate("knobBackgroundCircle").attr("r", radius);
+        var circumference = 2 * radius * Math.PI;
+        that.applier.change("circumference", circumference);
+        that.locate("circles").attr("stroke-dasharray", circumference);
     };
 
     sisiliano.knob.onStatusChange = function (that, isActive) {
@@ -79,35 +55,8 @@
         d3.select(that.container.get(0)).select(".sisiliano-knob").attr("class", className);
     };
 
-    sisiliano.knob.onValueChange = function (that, newValue) {
-        if (typeof newValue !== "number") {
-            sisiliano.knob.updateTheValueInUI(that, that.model.min);
-        } if (newValue < that.model.min) {
-            newValue = that.model.min;
-            that.applier.change("value", newValue);
-        } else if (newValue > that.model.max) {
-            newValue = that.model.max;
-            that.applier.change("value", newValue);
-        } else {
-            sisiliano.knob.updateTheValueInUI(that, newValue);
-        }
-    };
-
-    sisiliano.knob.updateTheValueInUI = function (that, newValue) {
-        var formatedValue = newValue;
-        if (that.model.formatValue && typeof that.model.formatValue === "function") {
-            formatedValue = that.model.formatValue(newValue);
-        }
-
-        //Update the aria-valuenow
-        that.locate("controller").attr("aria-valuenow", formatedValue);
-
-        //Update the value in the UI
-        that.locate("valueLabel").text(formatedValue);
-
-        //Update the ring arc according to the value
-        var valueRange = sisiliano.knob.getSize(that);
-        var obviousValue = sisiliano.knob.getObviousValue(that, newValue);
+    sisiliano.knob.onValueChange = function (that, obviousValue) {
+        var valueRange = that.model.size;
         var offset = ((that.model.circumference / valueRange) * (valueRange - obviousValue)) + "px";
         that.locate("valueCircle").attr("stroke-dashoffset", offset);
     };
@@ -120,30 +69,14 @@
         that.locate("valueLabel").css("fill", newColor);
     };
 
-    sisiliano.knob.init = function (that) {
-        var circleRadius = parseInt(that.locate("knobBackgroundCircle").attr("r"), "");
-        that.applier.change("radius", circleRadius);
-        that.applier.change("circumference", 2 * that.model.radius * Math.PI);
-        that.locate("circles").attr("stroke-dasharray", that.model.circumference + "px");
-    };
-
     sisiliano.knob.onCreate = function (that) {
-        sisiliano.knob.validateInputs(that);
         sisiliano.util.getTemplate(function (template) {
             var html = template(that.model);
             that.container.html(html);
-            sisiliano.knob.init(that);
-            sisiliano.knob.onColorChange(that, that.model.color);
-            sisiliano.knob.onValueChange(that, that.model.value);
+            sisiliano.knob.onRadiusChange(that, that.model.radius);
+            that.events.onReady.fire();
             sisiliano.knob.addListeners(that);
         }, "src/controllers/knob/knob.html");
-    };
-
-    sisiliano.knob.validateInputs = function (that) {
-        //TODO modified according to the standards of infusion
-        if (that.model.min >= that.model.max) {
-            throw new Error("Min should be less than max");
-        }
     };
 
     sisiliano.knob.addListeners = function (that) {
@@ -197,14 +130,10 @@
     };
 
     sisiliano.knob.setValueByAngle = function (that, center, clickedPosition) {
-        var value = sisiliano.util.getAngle(center, clickedPosition) * sisiliano.knob.getSize(that);
+        var value = sisiliano.util.getAngle(center, clickedPosition) * that.model.size;
         if (that.model.value !== value) {
             that.applier.change("value", value + that.model.min);
         }
-    };
-
-    sisiliano.knob.getSize = function (that) {
-        return Math.abs(that.model.max - that.model.min);
     };
 
     sisiliano.knob.getValue = function (that) {
@@ -213,9 +142,5 @@
         } else {
             return that.model.min;
         }
-    };
-
-    sisiliano.knob.getObviousValue = function (that, value) {
-        return value - that.model.min;
     };
 })(fluid);
