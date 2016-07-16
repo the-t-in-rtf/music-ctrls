@@ -174,9 +174,9 @@
         var max = knob.model.max;
 
         jqUnit.assertEquals("aria-valuemax label should have been added", max + "",
-            knob.container.find(".sisiliano").attr("aria-valuemax"));
+            knob.container.attr("aria-valuemax"));
         jqUnit.assertEquals("aria-valuemin label should have been added", min + "",
-            knob.container.find(".sisiliano").attr("aria-valuemin"));
+            knob.container.attr("aria-valuemin"));
     };
 
     /////////////////////////////////////////////////////////

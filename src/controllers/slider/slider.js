@@ -2,7 +2,7 @@
     "use strict";
 
     fluid.defaults("sisiliano.slider", {
-        gradeNames: ["fluid.viewComponent"],
+        gradeNames: ["sisiliano.util.ariaDescription", "fluid.viewComponent"],
         model: {
             min: 0,
             max: 100,
@@ -16,9 +16,9 @@
             formatValue: function (value) {
                 return Math.round(value * 100) / 100.0;
             },
-            title: "Abstract Slider Controoler",
-            description: "Abstract slider component"
+            title: "Abstract Slider Controller"
         },
+        ariaDescription: "",
         selectors: {
             controller: ".sisiliano",
             svg: "svg",
@@ -33,10 +33,24 @@
             onStatusChange: null
         },
         listeners: {
-            onCreate: {
-                func: "sisiliano.slider.validateInputs",
-                args: ["{that}"]
-            },
+            onCreate: [
+                {
+                    func: "sisiliano.slider.validateInputs",
+                    args: ["{that}"]
+                },
+                {
+                    func: "sisiliano.slider.onInit",
+                    args: ["{that}"]
+                },
+                {
+                    func: "sisiliano.slider.onTitleChange",
+                    args: ["{that}", "{that}.model.title"]
+                },
+                {
+                    func: "sisiliano.slider.onDescriptionChange",
+                    args: ["{that}", "{that}.model.description"]
+                }
+            ],
             onReady: [
                 {
                     func: "{that}.events.onColorChange.fire",
@@ -74,20 +88,48 @@
                 args: ["{that}", "{that}.model.max"]
             },
             "status.isActive": {
-                func: "sisiliano.knob.onStatusChange",
+                func: "sisiliano.slider.onStatusChange",
                 args: ["{that}", "{that}.model.status.isActive"]
+            },
+            "title": {
+                func: "sisiliano.slider.onTitleChange",
+                args: ["{that}", "{that}.model.title"]
+            },
+            "description": {
+                func: "sisiliano.slider.onDescriptionChange",
+                args: ["{that}", "{that}.model.description"]
             }
         }
     });
 
+    sisiliano.slider.onTitleChange = function () {
+        //that.container.attr("aria-label", title);
+    };
+
+    sisiliano.slider.onStatusChange = function (that) {
+        that.events.onStatusChange.fire();
+    };
+
+    sisiliano.slider.onDescriptionChange = function () {
+        //that.container.attr("aria-describedby", description);
+    };
+
+    sisiliano.slider.onInit = function (that) {
+        that.container.attr("tabindex", 0);
+        that.container.addClass("sisiliano");
+        that.container.attr("role", "slider");
+
+        sisiliano.slider.addListeners(that);
+    };
+
     sisiliano.slider.onMinValueChange = function (that, min) {
-        that.locate("controller").attr("aria-valuemin", min);
+        that.container.attr("aria-valuemin", min);
         that.applier.change("size", sisiliano.slider.getSize(that));
         sisiliano.slider.onValueChange(that, that.model.value);
     };
 
     sisiliano.slider.onMaxValueChange = function (that, max) {
-        that.locate("controller").attr("aria-valuemax", max);
+        that.container.attr("aria-valuemax", max);
         that.applier.change("size", sisiliano.slider.getSize(that));
         sisiliano.slider.onValueChange(that, that.model.value);
     };
@@ -113,11 +155,43 @@
         }
 
         //Update the aria-valuenow
-        that.locate("controller").attr("aria-valuenow", formatedValue);
+        that.container.attr("aria-valuenow", formatedValue);
 
         //Update the value in the UI
         that.locate("valueLabel").text(formatedValue);
         that.events.onValueChange.fire(that, sisiliano.slider.getObviousValue(that, that.model.value));
+    };
+
+    sisiliano.slider.addListeners = function (that) {
+        var keyDownHandler = function () {
+            var currentValue = sisiliano.slider.getValue(that);
+            if (d3.event.keyCode === 38) {
+                that.applier.change("value", currentValue + that.model.tickValue);
+                d3.event.preventDefault();
+            } else if (d3.event.keyCode === 40) {
+                that.applier.change("value", currentValue - that.model.tickValue);
+                d3.event.preventDefault();
+            }
+        };
+
+        d3.select(that.container.get(0))
+            .on("keydown", keyDownHandler)
+            .on("mousedown", sisiliano.slider.setSliderActiveStatus.bind(this, that, true))
+            .on("touchstart", sisiliano.slider.setSliderActiveStatus.bind(this, that, true))
+            .on("mouseup", sisiliano.slider.setSliderActiveStatus.bind(this, that, false))
+            .on("touchend", sisiliano.slider.setSliderActiveStatus.bind(this, that, false));
+    };
+
+    sisiliano.slider.setSliderActiveStatus = function (that, status) {
+        that.applier.change("status.isActive", status);
+    };
+
+    sisiliano.slider.getValue = function (that) {
+        if (typeof that.model.value === "number") {
+            return that.model.value;
+        } else {
+            return that.model.min;
+        }
     };
 
     sisiliano.slider.validateInputs = function (that) {
