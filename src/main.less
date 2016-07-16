@@ -47,6 +47,7 @@
     fill: none;
     stroke: none;
     stroke-dasharray: 10px;
+    filter: none;
   }
 
   .sisiliano-knob {
@@ -93,8 +94,9 @@
     outline: none;
 
     .sisiliano-border {
-      stroke: #9E9E9E;
+      /*stroke: #9E9E9E;
       stroke-width: 2;
+      filter: none;*/
     }
   }
 }
@@ -184,6 +186,20 @@
 
     .sisiliano-piano-key-board {
       display: inline;
+    }
+  }
+}
+
+.sisiliano {
+  .sisiliano-linear-slider {
+    .sisiliano-linear-slider-value-text {
+      font-family: inherit;
+      font-style: italic;
+      font-size: 30px;
+    }
+
+    .sisiliano-linear-slider-background-rect {
+      fill-opacity: 0.4;
     }
   }
 }
