@@ -165,10 +165,10 @@
     sisiliano.slider.addListeners = function (that) {
         var keyDownHandler = function () {
             var currentValue = sisiliano.slider.getValue(that);
-            if (d3.event.keyCode === 38) {
+            if (d3.event.keyCode === 38 || d3.event.keyCode === 39) {
                 that.applier.change("value", currentValue + that.model.tickValue);
                 d3.event.preventDefault();
-            } else if (d3.event.keyCode === 40) {
+            } else if (d3.event.keyCode === 37 || d3.event.keyCode === 40) {
                 that.applier.change("value", currentValue - that.model.tickValue);
                 d3.event.preventDefault();
             }
