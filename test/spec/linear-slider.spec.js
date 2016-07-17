@@ -12,6 +12,7 @@
     jqUnit.test("linearSlider: slider regression", function () {
         $(".test").empty();
         var linearSlider = sisiliano.linearSlider(".test");
+        $(".test").html("<div class='sisiliano-linear-slider-value-text'></div>");
 
         sisiliano.tests.verifySlider("linearSlider regression of slider features", linearSlider);
     });
