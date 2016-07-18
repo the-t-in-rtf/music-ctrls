@@ -19,4 +19,30 @@
     sisiliano.tests.helpers.dec2hex = function(i) {
         return (parseInt(i, "") + 0x10000).toString(16).substr(-2).toUpperCase();
     };
+    
+    
+    
+    fluid.registerNamespace("sisiliano.tests.util.mouseEvents");
+
+    sisiliano.tests.util.mouseEvents.moveMouseTo = function (element, x, y) {
+        element.simulate("mousemove", {
+            clientX : x,
+            clientY: y
+        });
+    };
+
+    sisiliano.tests.util.mouseEvents.moveMouseToOutside = function (x, y) {
+        $(document).simulate("mousemove", {
+            clientX : x,
+            clientY: y
+        });
+    };
+
+    sisiliano.tests.util.mouseEvents.mouseDown = function (element) {
+        element.simulate("mousedown");
+    };
+
+    sisiliano.tests.util.mouseEvents.mouseUp = function (element) {
+        element.simulate("mouseup");
+    };
 })(fluid);
