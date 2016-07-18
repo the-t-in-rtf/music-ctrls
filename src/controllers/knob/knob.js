@@ -4,10 +4,9 @@
     fluid.defaults("sisiliano.knob", {
         gradeNames: ["sisiliano.slider"],
         model: {
-            radius: 130,
-            title: "Knob Controoler",
-            description: "Use up and down keys to increase and decrease the value. If you are using the mouse, Drag around the center to adjust the value"
+            radius: 130
         },
+        ariaDescription: "Use up and down keys to increase and decrease the value. If you are using the mouse, Drag around the center to adjust the value",
         selectors: {
             controller: ".sisiliano",
             svg: "svg",
@@ -89,16 +88,6 @@
                 d3.event.preventDefault();
             }
         };
-        var keyDownHandler = function () {
-            var currentValue = sisiliano.knob.getValue(that);
-            if (d3.event.keyCode === 38) {
-                that.applier.change("value", currentValue + that.model.tickValue);
-                d3.event.preventDefault();
-            } else if (d3.event.keyCode === 40) {
-                that.applier.change("value", currentValue - that.model.tickValue);
-                d3.event.preventDefault();
-            }
-        };
 
         document.addEventListener("mousemove", function (evt) {
             var svgElm = that.locate("svg");
@@ -116,13 +105,8 @@
         document.addEventListener("mouseup", sisiliano.knob.setKnobActiveStatus.bind(this, that, false));
 
         d3.select(that.container.get(0))
-            .on("keydown", keyDownHandler)
-            .on("mousedown", sisiliano.knob.setKnobActiveStatus.bind(this, that, true))
-            .on("touchstart", sisiliano.knob.setKnobActiveStatus.bind(this, that, true))
             .on("touchmove", mouseMoveHandler)
-            .on("mousemove", mouseMoveHandler)
-            .on("mouseup", sisiliano.knob.setKnobActiveStatus.bind(this, that, false))
-            .on("touchend", sisiliano.knob.setKnobActiveStatus.bind(this, that, false));
+            .on("mousemove", mouseMoveHandler);
     };
 
     sisiliano.knob.setKnobActiveStatus = function (that, status) {
@@ -133,14 +117,6 @@
         var value = sisiliano.util.getAngle(center, clickedPosition) * that.model.size;
         if (that.model.value !== value) {
             that.applier.change("value", value + that.model.min);
-        }
-    };
-
-    sisiliano.knob.getValue = function (that) {
-        if (typeof that.model.value === "number") {
-            return that.model.value;
-        } else {
-            return that.model.min;
         }
     };
 })(fluid);
