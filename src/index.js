@@ -55,4 +55,31 @@
         var distanceFromTheCenter = Math.sqrt(Math.pow(point.x - center.x, 2) + Math.pow(point.y - center.y, 2));
         return distanceFromTheCenter <= radius;
     };
+
+    fluid.defaults("sisiliano.util.ariaDescription", {
+        gradeNames: "fluid.component",
+        listeners: {
+            onCreate: {
+                func: "sisiliano.util.ariaDescription.onCreate",
+                args: ["{that}"]
+            }
+        }
+    });
+
+    sisiliano.util.ariaDescription.onCreate = function (that) {
+        var descriptionsPane = $("#sisiliano-component-guide-descriptions");
+        if (descriptionsPane.length === 0) {
+            descriptionsPane = $("<div id='sisiliano-component-guide-descriptions' style='visibility: hidden'></div>");
+            $("body").append(descriptionsPane);
+        }
+
+        var descriptionElementIdOfTheComponent = that.typeName.replace(/\./g, "-") + "-guide-description";
+        var descriptionElementOfTheComponent = $("#" + descriptionElementIdOfTheComponent);
+        if (descriptionElementOfTheComponent.length === 0) {
+            descriptionElementOfTheComponent = $("<div id='" + descriptionElementIdOfTheComponent + "'>" + that.ariaDescription + "</div>");
+            descriptionsPane.append(descriptionElementOfTheComponent);
+        }
+
+        that.container.attr("aria-describedby", descriptionElementIdOfTheComponent);
+    };
 })(fluid);
