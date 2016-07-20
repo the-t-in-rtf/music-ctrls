@@ -8,6 +8,7 @@
         sisiliano.tests.slider.verifyMinMaxValues(message, slider);
         sisiliano.tests.slider.verifyTickValue(message, slider);
         sisiliano.tests.slider.verifyFormatValue(message, slider);
+        sisiliano.tests.slider.verifyAriaDescription(message, slider);
     };
     
     sisiliano.tests.slider.createNewSlider = function (options) {
@@ -147,5 +148,19 @@
             jqUnit.assertEquals(message + " : value should be formatted", slider.locate("valueLabel").text(),
                 testCase.expectedValue);
         });
+    };
+
+    /////////////////////////////////////////////////////////
+    /////           aria-describeby
+    /////////////////////////////////////////////////////////
+    jqUnit.test("slider : aria description", function () {
+        var slider = sisiliano.tests.slider.createNewSlider();
+        sisiliano.tests.slider.verifyAriaDescription("Slider aria description", slider);
+    });
+    sisiliano.tests.slider.verifyAriaDescription = function (message, slider) {
+        var ariaDescribebyValue = slider.container.attr("aria-describedby");
+        jqUnit.assertTrue(message + " : aria-describedby should have been defined", ariaDescribebyValue);
+        jqUnit.assertEquals(message + " : an element should have been defined for the aria description",
+            slider.options.ariaDescription, $("#" + ariaDescribebyValue).html());
     };
 })(fluid, jqUnit);

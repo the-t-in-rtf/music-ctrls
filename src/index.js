@@ -58,6 +58,7 @@
 
     fluid.defaults("sisiliano.util.ariaDescription", {
         gradeNames: "fluid.component",
+        ariaDescription: "",
         listeners: {
             onCreate: {
                 func: "sisiliano.util.ariaDescription.onCreate",
@@ -73,10 +74,10 @@
             $("body").append(descriptionsPane);
         }
 
-        var descriptionElementIdOfTheComponent = that.typeName.replace(/\./g, "-") + "-guide-description";
+        var descriptionElementIdOfTheComponent = (that.typeName.replace(/\./g, "-") + "-guide-description").toLowerCase();
         var descriptionElementOfTheComponent = $("#" + descriptionElementIdOfTheComponent);
         if (descriptionElementOfTheComponent.length === 0) {
-            descriptionElementOfTheComponent = $("<div id='" + descriptionElementIdOfTheComponent + "'>" + that.ariaDescription + "</div>");
+            descriptionElementOfTheComponent = $("<div id='" + descriptionElementIdOfTheComponent + "'>" + that.options.ariaDescription + "</div>");
             descriptionsPane.append(descriptionElementOfTheComponent);
         }
 
