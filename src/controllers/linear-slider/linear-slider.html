@@ -1,6 +1,6 @@
 <svg
         aria-hidden="true"
-        viewBox="0 0 500 50"
+        viewBox="0 0 500 80"
         width="100%"
         height="100%"
         class="sisiliano-linear-slider">
@@ -72,7 +72,9 @@
 
     <style>
         .sisiliano-linear-slider .sisiliano-linear-slider-background-rect,
-        .sisiliano-linear-slider .sisiliano-linear-slider-value-rect {
+        .sisiliano-linear-slider .sisiliano-linear-slider-value-rect,
+        .sisiliano-linear-slider .sisiliano-linear-slider-value-circle
+        .sisiliano-linear-slider .sisiliano-linear-slider-value-label {
             filter: url("#filter6244");
         }
 
@@ -83,21 +85,42 @@
     </style>
 
     <rect
-            class="sisiliano-border"
-            height="46"
-            width="494"
-            x="3"
-            y="3"/>
-    <rect
             class="sisiliano-linear-slider-rect sisiliano-linear-slider-background-rect"
-            height="16"
-            width="470"
-            x="15"
-            y="17"/>
+            height="8"
+            width="420"
+            x="40"
+            y="37"/>
     <rect
             class="sisiliano-linear-slider-rect sisiliano-linear-slider-value-rect"
-            height="20"
+            height="10"
             width="200"
-            x="15"
-            y="15"/>
+            x="40"
+            y="36"/>
+    <circle
+            class="sisiliano-linear-slider-value-circle sisiliano-linear-slider-value-circle-hover"
+            r="25"
+            cx="115"
+            cy="40">
+    </circle>
+    <circle
+            class="sisiliano-linear-slider-value-circle"
+            r="16"
+            cx="115"
+            cy="40">
+    </circle>
+    <rect
+            class="sisiliano-linear-slider-value-label"
+            x="10"
+            y="0"
+            fill="{{color}}"
+            width="50"
+            height="20"
+            rx="5"
+            ry="5">
+    </rect>
+    <text x="10"
+          y="15"
+          class="unselectable sisiliano-linear-slider-value-text">
+        100
+    </text>
 </svg>

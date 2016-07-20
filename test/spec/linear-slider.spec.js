@@ -12,7 +12,6 @@
     jqUnit.test("linearSlider: slider regression", function () {
         $(".test").empty();
         var linearSlider = sisiliano.linearSlider(".test");
-        $(".test").html("<div class='sisiliano-linear-slider-value-text'></div>");
 
         sisiliano.tests.verifySlider("linearSlider regression of slider features", linearSlider);
     });
@@ -26,7 +25,6 @@
     jqUnit.test("linearSlider: mouse events", function () {
         $(".test").empty();
         var linearSlider = sisiliano.linearSlider(".test");
-        $(".test").append("<div class='sisiliano-linear-slider-value-text'></div>");
 
         linearSlider.events.onReady.fire();
         sisiliano.tests.linearSlider.verifyMouseEvents("linearSlider: mouse events", linearSlider);
