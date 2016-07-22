@@ -12,6 +12,10 @@
                 left: 2,
                 right: 2
             },
+            viewBox: {
+                width: 500,
+                height: 80
+            },
             color: "green",
             orientation: "vertical", // vertical or horizontal
             title: "linearSlider Controller",
@@ -98,6 +102,22 @@
                 d3.event.preventDefault();
             }
         };
+
+        document.addEventListener("mousemove", function (evt) {
+            var svgElm = that.locate("svg");
+            if (svgElm && svgElm.length > 0) {
+                var svgPosition = svgElm.position();
+                var svgWidth = svgElm.width();
+                var clickedPosition = {x: ((evt.pageX - svgPosition.left) / svgWidth) * that.model.viewBox.width, y: 0};
+                if (that.model.status.isActive) {
+                    sisiliano.linearSlider.setValueByPosition(that, clickedPosition);
+                    evt.preventDefault(evt);
+                }
+            }
+        });
+        document.addEventListener("mouseup", function () {
+            that.applier.change("status.isActive", false);
+        });
 
         d3.select(that.container.get(0))
             .on("touchmove", mouseMoveHandler)
