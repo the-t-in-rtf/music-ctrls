@@ -97,8 +97,7 @@
                 var clickedPosition = {x: evt.pageX, y: evt.pageY};
                 if (that.model.status.isActive) {
                     sisiliano.knob.setValueByAngle(that, center, clickedPosition);
-
-                    return false;
+                    evt.preventDefault(evt);
                 }
             }
         });
