@@ -5,18 +5,27 @@
         gradeNames: ["sisiliano.slider"],
         defaultViewBox: [0 ,0, 500, 50],
         ariaDescription: "Linear slider, the value can be adjusted by arrow keys. If you are using the mouse, drag along the slider",
+        template: "src/controllers/linear-slider/linear-slider.html",
         model: {
-            padding: {
-                top: 2,
-                bottom: 2,
-                left: 2,
-                right: 2
+            styles: {
+                padding: {
+                    top: 2,
+                    bottom: 2,
+                    left: 2,
+                    right: 2
+                },
+                pointer: {
+                    radius: 10
+                },
+                sliderBar: {
+                    width: 100,
+                    height: 100
+                }
             },
             viewBox: {
                 width: 500,
                 height: 80
             },
-            color: "green",
             orientation: "vertical", // vertical or horizontal
             title: "linearSlider Controller",
             description: ""
@@ -33,10 +42,6 @@
             valueCircleHover: ".sisiliano-linear-slider-value-circle-hover"
         },
         listeners: {
-            onCreate: {
-                func: "sisiliano.linearSlider.onCreate",
-                args: ["{that}"]
-            },
             onValueChange: {
                 func: "sisiliano.linearSlider.onValueChange",
                 args: ["{arguments}.0", "{arguments}.1"]
@@ -48,6 +53,10 @@
             onStatusChange: {
                 func: "sisiliano.knob.onStatusChange",
                 args: ["{that}", "{that}.model.status.isActive"]
+            },
+            onReady: {
+                func: "sisiliano.linearSlider.addListeners",
+                args: ["{that}"]
             }
         },
         modelListeners: {
@@ -70,18 +79,10 @@
     };
 
     sisiliano.linearSlider.onColorChange = function (that, newColor) {
-        that.locate("rects").attr("fill", newColor);
-        that.locate("valueLabel").attr("fill", "white");
-        that.locate("valueCircle").attr("fill", newColor);
-    };
-
-    sisiliano.linearSlider.onCreate = function (that) {
-        sisiliano.util.getTemplate(function (template) {
-            var html = template(that.model);
-            that.container.html(html);
-            that.events.onReady.fire();
-            sisiliano.linearSlider.addListeners(that);
-        }, "src/controllers/linear-slider/linear-slider.html");
+        that.locate("rects").attr("fill", newColor[0]);
+        that.locate("valueLabelRect").attr("fill", newColor[0]);
+        that.locate("valueLabel").attr("fill", newColor[1]);
+        that.locate("valueCircle").attr("fill", newColor[0]);
     };
 
     sisiliano.linearSlider.setValueByPosition = function (that, clickedPosition) {
