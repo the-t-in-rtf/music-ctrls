@@ -11,7 +11,7 @@ module.exports = function(grunt) {
             },
             dist: {
                 separator: "\n\n",
-                src: ["dist/templates.js", "src/index.js", "src/controllers/**/*.js"],
+                src: ["dist/templates.js", "src/index.js", "src/core/**/*.js", "src/controllers/**/*.js"],
                 dest: "dist/sisiliano.js"
             }
         },
