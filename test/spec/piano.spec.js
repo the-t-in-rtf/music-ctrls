@@ -77,7 +77,7 @@
         }
 
         if (pressed) {
-            expectedColor = piano.model.color;
+            expectedColor = piano.model.color[0];
         }
 
         jqUnit.assertEquals(message + " : pressed color should have" + (pressed ? "": " not") + " been applied",
