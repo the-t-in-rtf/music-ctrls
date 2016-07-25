@@ -2,11 +2,10 @@
     "use strict";
 
     fluid.defaults("sisiliano.slider", {
-        gradeNames: ["sisiliano.util.ariaDescription", "fluid.viewComponent"],
+        gradeNames: ["sisiliano.component"],
         model: {
             min: 0,
             max: 100,
-            color: "#009688",
             value: null,
             size: 100,
             tickValue: 1,
@@ -25,10 +24,6 @@
             valueLabel: ".sisiliano-slider-value-text"
         },
         events: {
-            onCreate: null,
-            onReady: null,
-            onChange: null,
-            onColorChange: null,
             onValueChange: null,
             onStatusChange: null
         },
@@ -41,21 +36,9 @@
                 {
                     func: "sisiliano.slider.onInit",
                     args: ["{that}"]
-                },
-                {
-                    func: "sisiliano.slider.onTitleChange",
-                    args: ["{that}", "{that}.model.title"]
-                },
-                {
-                    func: "sisiliano.slider.onDescriptionChange",
-                    args: ["{that}", "{that}.model.description"]
                 }
             ],
             onReady: [
-                {
-                    func: "{that}.events.onColorChange.fire",
-                    args: ["{that}", "{that}.model.color"]
-                },
                 {
                     func: "sisiliano.slider.onMinValueChange",
                     args: ["{that}", "{that}.model.min"]
@@ -75,10 +58,6 @@
                 func: "sisiliano.slider.onValueChange",
                 args: ["{that}", "{that}.model.value"]
             },
-            "color": {
-                func: "{that}.events.onColorChange.fire",
-                args: ["{that}", "{that}.model.color"]
-            },
             "min": {
                 func: "sisiliano.slider.onMinValueChange",
                 args: ["{that}", "{that}.model.min"]
@@ -90,28 +69,12 @@
             "status.isActive": {
                 func: "sisiliano.slider.onStatusChange",
                 args: ["{that}", "{that}.model.status.isActive"]
-            },
-            "title": {
-                func: "sisiliano.slider.onTitleChange",
-                args: ["{that}", "{that}.model.title"]
-            },
-            "description": {
-                func: "sisiliano.slider.onDescriptionChange",
-                args: ["{that}", "{that}.model.description"]
             }
         }
     });
-
-    sisiliano.slider.onTitleChange = function () {
-        //that.container.attr("aria-label", title);
-    };
-
+    
     sisiliano.slider.onStatusChange = function (that) {
         that.events.onStatusChange.fire();
-    };
-
-    sisiliano.slider.onDescriptionChange = function () {
-        //that.container.attr("aria-describedby", description);
     };
 
     sisiliano.slider.onInit = function (that) {
