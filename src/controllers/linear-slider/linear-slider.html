@@ -68,23 +68,50 @@
                     result="composite2"
                     id="feComposite6254" />
         </filter>
+        <filter id="dropshadow" height="130%">
+            <feFlood
+                    flood-opacity="0.5"
+                    flood-color="red"
+                    result="flood"/>
+            <feGaussianBlur in="SourceAlpha" stdDeviation="1"/>
+            <feOffset dx="1" dy="1" result="offsetblur"/>
+            <feMerge>
+                <feMergeNode/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+        <filter style="color-interpolation-filters:sRGB;" id="drop-shadow" x="-100%" y="-100%" width="300%" height="400%">
+            <feFlood flood-opacity="0.5" flood-color="black" result="flood"></feFlood>
+            <feComposite in="flood" in2="SourceGraphic" operator="in" result="comp"></feComposite>
+            <feOffset dx="0" dy="1" result="offset"></feOffset>
+            <feGaussianBlur in="offset" stdDeviation="1" result="blur"></feGaussianBlur>
+            <feBlend in="SourceGraphic" in2="blur" mode="normal"></feBlend>
+        </filter>
+        <filter style="color-interpolation-filters:sRGB;" id="hover-drop-shadow" x="-100%" y="-100%" width="300%" height="400%">
+            <feFlood flood-opacity="0.5" flood-color="black" result="flood"></feFlood>
+            <feComposite in="flood" in2="SourceGraphic" operator="in" result="comp"></feComposite>
+            <feOffset dx="0" dy="1" result="offset"></feOffset>
+            <feGaussianBlur in="offset" stdDeviation="2" result="blur"></feGaussianBlur>
+            <feBlend in="SourceGraphic" in2="blur" mode="normal"></feBlend>
+        </filter>
     </defs>
 
     <style>
         .sisiliano-linear-slider .sisiliano-linear-slider-background-rect,
         .sisiliano-linear-slider .sisiliano-linear-slider-value-rect,
-        .sisiliano-linear-slider .sisiliano-linear-slider-value-circle,
+        .sisiliano-linear-slider .sisiliano-linear-slider-value-pointer,
+        .sisiliano-linear-slider .sisiliano-linear-slider-value-pointer-hover,
         .sisiliano-linear-slider .sisiliano-linear-slider-value-label {
-            filter: url("#filter6244");
+            filter: url("#drop-shadow");
         }
 
         .sisiliano:focus .sisiliano-linear-slider .sisiliano-linear-slider-background-rect,
         .sisiliano:focus .sisiliano-linear-slider .sisiliano-linear-slider-value-rect {
-            filter: url("#filter6245");
+            filter: url("#hover-drop-shadow");
         }
     </style>
 
-    <g class="sisiliano-linear-slider-notches"></g>
+    <g class="sisiliano-linear-slider-ruler"></g>
     <rect
             class="sisiliano-linear-slider-rect sisiliano-linear-slider-background-rect"
             height="8"
@@ -97,18 +124,24 @@
             width="200"
             x="40"
             y="36"/>
-    <circle
-            class="sisiliano-linear-slider-value-circle sisiliano-linear-slider-value-circle-hover"
-            r="25"
-            cx="115"
-            cy="40">
-    </circle>
-    <circle
-            class="sisiliano-linear-slider-value-circle"
-            r="16"
-            cx="115"
-            cy="40">
-    </circle>
+    <rect
+            class="sisiliano-linear-slider-value-pointer sisiliano-linear-slider-value-pointer-hover"
+            width="30"
+            height="30"
+            rx="50%"
+            ry="50%"
+            x="90"
+            y="26">
+    </rect>
+    <rect
+            class="sisiliano-linear-slider-value-pointer sisiliano-linear-slider-value-pointer"
+            width="20"
+            height="20"
+            rx="50%"
+            ry="50%"
+            x="90"
+            y="31">
+    </rect>
     <rect
             class="sisiliano-linear-slider-value-label"
             x="10"
@@ -119,7 +152,8 @@
             rx="5"
             ry="5">
     </rect>
-    <text x="10"
+    <text text-anchor="start"
+          x="10"
           y="15"
           class="unselectable sisiliano-linear-slider-value-text">
         100
