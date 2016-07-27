@@ -8,23 +8,25 @@
         template: "src/controllers/linear-slider/linear-slider.html",
         model: {
             styles: {
-                padding: {
-                    top: 2,
-                    bottom: 2,
-                    left: 2,
-                    right: 2
-                },
                 pointer: {
-                    radius: 10
+                    label: {
+                        "font-size": "10px"
+                    }
                 },
-                sliderBar: {
-                    width: 100,
-                    height: 100
+                ruler: {
+                    line: {
+                        width: 1,
+                        height: 20
+                    },
+                    value: {
+                        "font-size": "10px"
+                    }
                 }
             },
+            rulerPoints: [0,  20, 30, 40, 50, 60, 70, 80, 90, 100],
             viewBox: {
                 width: 500,
-                height: 80
+                height: 100
             },
             orientation: "vertical", // vertical or horizontal
             title: "linearSlider Controller",
@@ -39,7 +41,10 @@
             backgroundRect: ".sisiliano-linear-slider-background-rect",
             rects: ".sisiliano-linear-slider-rect",
             valueCircle: ".sisiliano-linear-slider-value-circle",
-            valueCircleHover: ".sisiliano-linear-slider-value-circle-hover"
+            valueCircleHover: ".sisiliano-linear-slider-value-circle-hover",
+            ruler: ".sisiliano-linear-slider-ruler",
+            valuePointer: ".sisiliano-linear-slider-value-pointer",
+            valuePointerHover: ".sisiliano-linear-slider-value-pointer-hover"
         },
         listeners: {
             onValueChange: {
@@ -51,20 +56,26 @@
                 args: ["{that}", "{that}.model.color"]
             },
             onStatusChange: {
-                func: "sisiliano.knob.onStatusChange",
+                func: "sisiliano.linearSlider.onStatusChange",
                 args: ["{that}", "{that}.model.status.isActive"]
             },
-            onReady: {
-                func: "sisiliano.linearSlider.addListeners",
-                args: ["{that}"]
-            }
+            onReady: [
+                {
+                    func: "sisiliano.linearSlider.drawNotches",
+                    args: ["{that}"]
+                },
+                {
+                    func: "sisiliano.linearSlider.addListeners",
+                    args: ["{that}"]
+                }
+            ]
         },
         modelListeners: {
         }
     });
 
-    sisiliano.knob.onStatusChange = function (that, isActive) {
-        that.locate("valueCircleHover").css("display", isActive ? "block" : "none");
+    sisiliano.linearSlider.onStatusChange = function (that, isActive) {
+        that.locate("valuePointerHover").css("display", isActive ? "block" : "none");
     };
 
     sisiliano.linearSlider.onValueChange = function (that, obviousValue) {
@@ -73,8 +84,9 @@
         var leftPadding = parseInt(that.locate("backgroundRect").attr("x"), null);
         var newWidth = maxWidth * (obviousValue / valueRange);
         that.locate("valueRect").attr("width", newWidth);
-        that.locate("valueCircle").attr("cx", newWidth + leftPadding);
         that.locate("valueLabelRect").attr("x", newWidth + leftPadding - 25);
+        that.locate("valuePointer").attr("x", newWidth + leftPadding - 8);
+        that.locate("valuePointerHover").attr("x", newWidth + leftPadding - 13);
         that.locate("valueLabel").attr("x", newWidth + 3 + leftPadding - 25);
     };
 
@@ -82,7 +94,8 @@
         that.locate("rects").attr("fill", newColor[0]);
         that.locate("valueLabelRect").attr("fill", newColor[0]);
         that.locate("valueLabel").attr("fill", newColor[1]);
-        that.locate("valueCircle").attr("fill", newColor[0]);
+        that.locate("valuePointer").attr("fill", newColor[0]);
+        that.locate("valuePointerHover").attr("fill", newColor[0]);
     };
 
     sisiliano.linearSlider.setValueByPosition = function (that, clickedPosition) {
@@ -123,5 +136,39 @@
         d3.select(that.container.get(0))
             .on("touchmove", mouseMoveHandler)
             .on("mousemove", mouseMoveHandler);
+    };
+
+    sisiliano.linearSlider.getNotches = function (that) {
+        //TODO define
+        return that.model.rulerPoints;
+    };
+
+    sisiliano.linearSlider.drawNotches = function (that) {
+        var notches = sisiliano.linearSlider.getNotches(that);
+        var notchesPane = d3.select(that.locate("ruler").get(0));
+        var sliderWidth = parseInt(that.locate("backgroundRect").attr("width"), null);
+        var sliderX = parseInt(that.locate("backgroundRect").attr("x"), null);
+        var sliderY = parseInt(that.locate("backgroundRect").attr("y"), null);
+        fluid.each(notches, function (notchValue) {
+            var x = sliderX + (sliderWidth * (notchValue - that.model.min) / (that.model.max - that.model.min));
+            var rulerLine = notchesPane.append("rect")
+                .attr("class", "sisiliano-linear-slider-ruler-line")
+                .attr("fill", that.model.color[0])
+                .attr("fill-opacity", 0.3)
+                .attr("x", x - 0.5)
+                .attr("y", sliderY);
+            sisiliano.util.applyStyles(rulerLine, that.model.styles.ruler.line);
+
+            var rulerValue = notchesPane.append("text")
+                .attr("fill", that.model.color[0])
+                .attr("fill-opacity", 0.6)
+                .attr("class", "sisiliano-linear-slider-ruler-value")
+                .attr("text-anchor", "end")
+                .attr("x", x + 0.5)
+                .attr("y", sliderY + 25)
+                .attr("transform","rotate(-90, " + (x + 1) + ", " + (sliderY + 25) + ")")
+                .text(notchValue);
+            sisiliano.util.applyStyles(rulerValue, that.model.styles.ruler.value);
+        });
     };
 })(fluid);
