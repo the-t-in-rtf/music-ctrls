@@ -53,4 +53,12 @@
         var distanceFromTheCenter = Math.sqrt(Math.pow(point.x - center.x, 2) + Math.pow(point.y - center.y, 2));
         return distanceFromTheCenter <= radius;
     };
+
+    sisiliano.util.applyStyles = function (element, styles) {
+        var stylesString = "";
+        fluid.each(styles, function (value, key) {
+            stylesString += key + ":" + value + ";";
+        });
+        element.attr("style", stylesString);
+    };
 })(fluid);
