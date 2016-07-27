@@ -5,8 +5,6 @@
 
     sisiliano.templates = htmlTempl.templates;
 
-
-
     fluid.registerNamespace("sisiliano.util");
     sisiliano.util.templateCache = {};
     sisiliano.util.getTemplate = function (callback, url) {
@@ -56,31 +54,11 @@
         return distanceFromTheCenter <= radius;
     };
 
-    fluid.defaults("sisiliano.util.ariaDescription", {
-        gradeNames: "fluid.component",
-        ariaDescription: "",
-        listeners: {
-            onCreate: {
-                func: "sisiliano.util.ariaDescription.onCreate",
-                args: ["{that}"]
-            }
-        }
-    });
-
-    sisiliano.util.ariaDescription.onCreate = function (that) {
-        var descriptionsPane = $("#sisiliano-component-guide-descriptions");
-        if (descriptionsPane.length === 0) {
-            descriptionsPane = $("<div id='sisiliano-component-guide-descriptions' style='visibility: hidden'></div>");
-            $("body").append(descriptionsPane);
-        }
-
-        var descriptionElementIdOfTheComponent = (that.typeName.replace(/\./g, "-") + "-guide-description").toLowerCase();
-        var descriptionElementOfTheComponent = $("#" + descriptionElementIdOfTheComponent);
-        if (descriptionElementOfTheComponent.length === 0) {
-            descriptionElementOfTheComponent = $("<div id='" + descriptionElementIdOfTheComponent + "'>" + that.options.ariaDescription + "</div>");
-            descriptionsPane.append(descriptionElementOfTheComponent);
-        }
-
-        that.container.attr("aria-describedby", descriptionElementIdOfTheComponent);
+    sisiliano.util.applyStyles = function (element, styles) {
+        var stylesString = "";
+        fluid.each(styles, function (value, key) {
+            stylesString += key + ":" + value + ";";
+        });
+        element.attr("style", stylesString);
     };
 })(fluid);

@@ -3,6 +3,7 @@
 
     fluid.defaults("sisiliano.knob", {
         gradeNames: ["sisiliano.slider"],
+        template: "src/controllers/knob/knob.html",
         model: {
             radius: 130
         },
@@ -17,10 +18,16 @@
             circles: ".sisiliano-knob-circle"
         },
         listeners: {
-            onCreate: {
-                func: "sisiliano.knob.onCreate",
-                args: ["{that}"]
-            },
+            onReady: [
+                {
+                    func: "sisiliano.knob.onRadiusChange",
+                    args: ["{that}", "{that}.model.radius"]
+                },
+                {
+                    func: "sisiliano.knob.addListeners",
+                    args: ["{that}"]
+                }
+            ],
             onValueChange: {
                 func: "sisiliano.knob.onValueChange",
                 args: ["{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
@@ -61,21 +68,11 @@
     };
 
     sisiliano.knob.onColorChange = function (that, newColor) {
-        that.locate("valueCircle").css("stroke", newColor);
-        that.locate("knobBackgroundCircle").css("stroke", newColor);
-        that.locate("valueCircle").css("fill", newColor);
-        that.locate("knobBackgroundCircle").css("fill", newColor);
-        that.locate("valueLabel").css("fill", newColor);
-    };
-
-    sisiliano.knob.onCreate = function (that) {
-        sisiliano.util.getTemplate(function (template) {
-            var html = template(that.model);
-            that.container.html(html);
-            sisiliano.knob.onRadiusChange(that, that.model.radius);
-            that.events.onReady.fire();
-            sisiliano.knob.addListeners(that);
-        }, "src/controllers/knob/knob.html");
+        that.locate("valueCircle").css("stroke", newColor[0]);
+        that.locate("knobBackgroundCircle").css("stroke", newColor[0]);
+        that.locate("valueCircle").css("fill", newColor[0]);
+        that.locate("knobBackgroundCircle").css("fill", newColor[0]);
+        that.locate("valueLabel").css("fill", newColor[0]);
     };
 
     sisiliano.knob.addListeners = function (that) {
@@ -97,8 +94,7 @@
                 var clickedPosition = {x: evt.pageX, y: evt.pageY};
                 if (that.model.status.isActive) {
                     sisiliano.knob.setValueByAngle(that, center, clickedPosition);
-
-                    return false;
+                    evt.preventDefault(evt);
                 }
             }
         });

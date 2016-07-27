@@ -2,7 +2,8 @@
     "use strict";
 
     fluid.defaults("sisiliano.piano", {
-        gradeNames: ["fluid.viewComponent"],
+        gradeNames: ["sisiliano.component"],
+        template: "src/controllers/piano/piano.html",
         model: {
             title: "Piano Controller",
             description: "The keys are accessible by mouse and the keyboad as well. Only the active area of the piano is accessible by the keyboard. If you want to move the active area, use left and right keys.",
@@ -48,12 +49,12 @@
             }
         },
         events: {
-            onChange: null,
             onKeyPress: null,
             onKeyRelease: null
         },
         selectors: {
             root: ".sisiliano",
+            svg: ".sisiliano-piano",
             keyBoard: ".sisiliano-piano-key-board",
             whiteKeys: ".sisiliano-piano-white-key",
             blackKeys: ".sisiliano-piano-black-key",
@@ -61,15 +62,25 @@
             activeAreaStatus: ".sisiliano-piano-active-area-status"
         },
         listeners: {
-            onCreate: {
-                func: "sisiliano.piano.onCreate",
-                args: ["{that}", "{that}.dom.keyBoard"]
-            }
+            onReady: [
+                {
+                    func: "sisiliano.piano.generateKeyboard",
+                    args: ["{that}"]
+                },
+                {
+                    func: "sisiliano.piano.onCreate",
+                    args: ["{that}", "{that}.dom.keyBoard"]
+                }
+            ]
         },
         modelListeners: {
-            "viewBox": {
-                func: "sisiliano.piano.onChange",
-                args: ["{that}", "{change}"]
+            "viewBox.width": {
+                func: "sisiliano.piano.onViewBoxChange",
+                args: ["{that}", "{that}.model.viewBox"]
+            },
+            "viewBox.height": {
+                func: "sisiliano.piano.onViewBoxChange",
+                args: ["{that}", "{that}.model.viewBox"]
             },
             "activeArea.end": {
                 func: "sisiliano.piano.onChangeActiveArea",
@@ -82,7 +93,8 @@
         }
     });
 
-    sisiliano.piano.onChange = function () {
+    sisiliano.piano.onViewBoxChange = function (that, viewBox) {
+        d3.select(that.locate("svg").get(0)).attr("viewBox", "0 0 " + viewBox.width + " " + viewBox.height);
     };
 
     sisiliano.piano.onChangeActiveArea = function (that, keys, activeArea) {
@@ -152,23 +164,41 @@
     sisiliano.piano.getElementKey = function (element, keys) {
         return keys[element.attr("index")];
     };
-
+    
     sisiliano.piano.onCreate = function (that) {
-        sisiliano.piano.generateKeyboard(that);
-        sisiliano.piano.refresh(that);
+        var keyBoardElm = d3.select(that.locate("keyBoard").get(0));
+
+        keyBoardElm.empty();
+        keyBoardElm.append("text")
+            .attr("x", that.model.keyBoard.border.x)
+            .attr("y", that.model.keyBoard.border.y)
+            .attr("aria-live", "assertive")
+            .attr("class", "sisiliano-piano-active-area-status")
+            .text("Piano is active from G to C");
+
+        fluid.each(sisiliano.piano.getWhiteKeys(that.model.keyBoard.keys), function (whiteKey) {
+            keyBoardElm.append("rect")
+                .attr("index", whiteKey.index)
+                .attr("class", "sisiliano-piano-key sisiliano-piano-white-key")
+                .attr("height", whiteKey.height)
+                .attr("width", whiteKey.width)
+                .attr("x", whiteKey.x)
+                .attr("y", whiteKey.y);
+        });
+
+        fluid.each(sisiliano.piano.getBlackKeys(that.model.keyBoard.keys), function (blackKey) {
+            keyBoardElm.append("rect")
+                .attr("index", blackKey.index)
+                .attr("class", "sisiliano-piano-key sisiliano-piano-black-key")
+                .attr("height", blackKey.height)
+                .attr("width", blackKey.width)
+                .attr("x", blackKey.x)
+                .attr("y", blackKey.y);
+        });
+
+        sisiliano.piano.onChangeActiveArea(that, that.model.keyBoard.keys, that.model.activeArea);
         sisiliano.piano.appendListeners(that);
-    };
-
-    sisiliano.piano.refresh = function (that) {
-        sisiliano.util.getTemplate(function (template) {
-            that.model.id = "fluid-sisiliano-id-" + that.id;
-            that.model.keyBoard.whiteKeys = sisiliano.piano.getWhiteKeys(that.model.keyBoard.keys);
-            that.model.keyBoard.blackKeys = sisiliano.piano.getBlackKeys(that.model.keyBoard.keys);
-            var html = template(that.model);
-            that.container.html(html);
-
-            sisiliano.piano.onChangeActiveArea(that, that.model.keyBoard.keys, that.model.activeArea);
-        }, "src/controllers/piano/piano.html");
+        sisiliano.piano.onViewBoxChange(that, that.model.viewBox);
     };
 
     sisiliano.piano.moveTabBy = function (that, increaseBy) {

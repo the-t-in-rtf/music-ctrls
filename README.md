@@ -1,4 +1,4 @@
-# music-ctrls        [![Build Status](https://travis-ci.org/dinukadesilva/music-ctrls.svg?branch=master)](https://travis-ci.org/dinukadesilva/music-ctrls)
+# music-ctrls
 
 With the introduction of the Web Audio API and music frameworks such as Flocking, it's possible to make music and develop custom instruments entirely using Web technologies.
 
@@ -21,3 +21,5 @@ http://localhost:8001/
 http://dinukadesilva.github.io/music-ctrls/demo/knob.html
 
 http://dinukadesilva.github.io/music-ctrls/demo/piano.html
+
+http://dinukadesilva.github.io/music-ctrls/demo/linear-slider.html

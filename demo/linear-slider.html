@@ -118,8 +118,41 @@
             <div id="editor" class="col-sm-12" style="min-height: 400px">
 sisiliano.linearSlider($('#preview'), {
     model: {
-        color: "white",
-        value: 23
+        color: "green",
+        value: 23,
+        styles: {
+            pointer: {
+                label: {
+                    padding: {
+                        top: 2,
+                        bottom: 2,
+                        left: 2,
+                        right: 2
+                    },
+                    "font-size": "10px"
+                },
+                default: {
+                    rx: "16px",
+                    ry: "16px"
+                },
+                active: {
+                    rx: "25px",
+                    ry: "25px"
+                }
+            },
+            ruler: {
+                line: {
+                    width: 1,
+                    height: 20
+                },
+                value: {
+                    "font-size": "10px"
+                }
+            },
+            sliderBar: {
+                width: "10px",
+            }
+        }
     }
 });
             </div>
@@ -127,7 +160,7 @@ sisiliano.linearSlider($('#preview'), {
             </div>
         </div>
         <div class="col-xs-6 preview" style="min-height: 400px;">
-            <div id="preview" style="width: 250px"></div>
+            <div id="preview" style="width: 100%"></div>
         </div>
     </div>
 </div>

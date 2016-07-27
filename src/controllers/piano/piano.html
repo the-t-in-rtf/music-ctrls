@@ -119,57 +119,11 @@
             #{{id}}.sisiliano .sisiliano-piano .sisiliano-piano-white-key:hover,
             #{{id}}.sisiliano .sisiliano-piano .sisiliano-piano-black-key:hover,
             #{{id}}.sisiliano .sisiliano-piano .sisiliano-piano-key-inactive:hover {
-                fill: {{color}};
-                stroke: {{color}};
+                fill: {{color.[0]}};
+                stroke: {{color.[0]}};
             }
         </style>
-        <g style="display:inline">
-            <text
-                    x="{{keyBoard.border.x}}"
-                    y="{{keyBoard.border.y}}"
-                    aria-live="assertive"
-                    class="sisiliano-piano-active-area-status">
-                Piano is active from G to C
-            </text>
-            <rect
-                    class="sisiliano-border"
-                    height="{{keyBoard.border.height}}"
-                    width="{{keyBoard.border.width}}"
-                    x="{{keyBoard.border.x}}"
-                    y="{{keyBoard.border.y}}"/>
-            {{#each keyBoard.whiteKeys}}
-            <rect
-                    index="{{index}}"
-                    class="sisiliano-piano-key sisiliano-piano-white-key"
-                    height="{{height}}"
-                    width="{{width}}"
-                    x="{{x}}"
-                    y="{{y}}"/>
-            {{/each}}
-            {{#each keyBoard.blackKeys}}
-            <rect
-                    index="{{index}}"
-                    class="sisiliano-piano-key sisiliano-piano-black-key"
-                    height="{{height}}"
-                    width="{{width}}"
-                    x="{{x}}"
-                    y="{{y}}"/>
-            {{/each}}
+        <g style="display:inline" class="sisiliano-piano-key-board">
         </g>
-
-        <!--<g style="display:inline">
-          <rect
-            class="sisiliano-piano-key sisiliano-piano-disabledArea"
-            height="{{disabledArea.left.height}}"
-            width="{{disabledArea.left.width}}"
-            x="{{disabledArea.left.x}}"
-            y="{{disabledArea.left.y}}" />
-          <rect
-            class="sisiliano-piano-key sisiliano-piano-disabledArea"
-            height="{{disabledArea.right.height}}"
-            width="{{disabledArea.right.width}}"
-            x="{{disabledArea.right.x}}"
-            y="{{disabledArea.right.y}}" />
-        </g>-->
     </svg>
 </div>
