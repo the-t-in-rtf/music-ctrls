@@ -13,10 +13,16 @@
             onReady: null
         },
         listeners: {
-            onCreate: {
-                func: "sisiliano.component.onTemplateChange",
-                args: ["{that}", "{that}.options.template"]
-            },
+            onCreate: [
+                {
+                    func: "sisiliano.component.onTemplateChange",
+                    args: ["{that}", "{that}.options.template"]
+                },
+                {
+                    func: "sisiliano.component.onInit",
+                    args: ["{that}"]
+                }
+            ],
             onReady: [
                 {
                     func: "{that}.events.onColorChange.fire",
@@ -25,6 +31,11 @@
             ]
         }
     });
+
+    sisiliano.component.onInit = function (that) {
+        that.container.attr("tabindex", 0);
+        that.container.addClass("sisiliano");
+    };
 
     sisiliano.component.onTemplateChange = function (that, template) {
         if (!template) {
