@@ -54,10 +54,12 @@
         return distanceFromTheCenter <= radius;
     };
 
-    sisiliano.util.applyStyles = function (element, styles) {
+    sisiliano.util.applyStyles = function (element, styles, restrictedStyles) {
         var stylesString = "";
         fluid.each(styles, function (value, key) {
-            stylesString += key + ":" + value + ";";
+            if (!restrictedStyles || restrictedStyles.indexOf(key.toLowerCase()) < 0) {
+                stylesString += key + ":" + value + ";";
+            }
         });
         element.attr("style", stylesString);
     };
