@@ -2,33 +2,72 @@
  * Created by VDESIDI on 7/29/2016.
  */
 
-angular.module("sisiliano.demo", ["ngRoute"])
-    .controller("demoCtrl", function($scope, $route, $routeParams, $location) {
-        "use strict";
+(function (fluid, $) {
+    "use strict";
 
-        $scope.title = "Haaaai";
-        $scope.$route = $route;
-        $scope.$location = $location;
-        $scope.$routeParams = $routeParams;
-    })
-    .config(function($routeProvider) {
-        "use strict";
-
-        $routeProvider
-            .when("/", {
-                templateUrl: "./pages/introduction.html"
-            })
-            .when("/controllers/piano/", {
-                templateUrl: "./pages/controllers/piano.html"
-            })
-            .when("/controllers/sliders/knob", {
-                templateUrl: "./pages/controllers/sliders/knob.html"
-            })
-            .when("/controllers/sliders/linear-slider", {
-                templateUrl: "./pages/controllers/sliders/linear-slider.html"
-            })
-            .when("/introduction", {
-                templateUrl: "./pages/introduction.html"
-            })
-            .otherwise({ redirectTo: "/" });
+    fluid.defaults("fluid.routeComponent", {
+        gradeNames: ["fluid.viewComponent"],
+        model: {
+            hash: "",
+            contentCache: {}
+        },
+        listeners: {
+            onCreate: [
+                {
+                    func: "fluid.routeComponent.appendListeners",
+                    args: ["{that}"]
+                }
+            ]
+        },
+        modelListeners: {
+            hash: {
+                func: "fluid.routeComponent.onHashChange",
+                args: ["{that}", "{that}.model.hash"]
+            }
+        },
+        allowedUrls: [],
+        defaultUrl: "",
+        routeTriggers: []
     });
+
+    fluid.routeComponent.appendListeners = function (that) {
+        fluid.each(that.options.routeTriggers, function (selector) {
+            $(selector).on("click", function () {
+                that.applier.change("hash", $(this).attr("href"));
+            });
+        });
+    };
+
+    fluid.routeComponent.onHashChange = function (that, hash) {
+        var url = that.options.allowedUrls[hash];
+        if (!url) {
+            url = that.options.defaultUrl;
+        }
+
+        var key = (url).replace(/\./g, "-");
+        if (that.model.contentCache[key]) {
+            that.container.html(that.model.contentCache[key]);
+        } else {
+            $.get(url, {}, function (content) {
+                that.applier.change("contentCache." + key, content);
+                that.container.html(content);
+            });
+        }
+    };
+
+    fluid.routeComponent(".content-pane", {
+        allowedUrls: {
+            "#controllers/": "./pages/introduction.html",
+            "#controllers/piano/": "./pages/controllers/piano.html",
+            "#controllers/sliders/knob/": "./pages/controllers/sliders/knob.html",
+            "#controllers/sliders/linear-slider/": "./pages/controllers/sliders/linear-slider.html"
+        },
+        defaultUrl: "./pages/introduction.html",
+        routeTriggers: [
+            ".demo-link"
+        ],
+        model: {
+            hash: window.location.hash
+        }
+    });
+})(fluid, $);

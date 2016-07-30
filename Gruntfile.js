@@ -71,8 +71,6 @@ module.exports = function(grunt) {
                     "bower_components/ace-builds/src-noconflict/**/*.*",
                     "bower_components/font-awesome/css/**/*.*",
                     "bower_components/font-awesome/fonts/**/*.*",
-                    "bower_components/angular/angular.min.js",
-                    "bower_components/angular-route/angular-route.min.js",
                     "lib/**/*.*",
                     "dist/**/*.*"
                 ],

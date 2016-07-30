@@ -19,9 +19,6 @@
     <script src="./source/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="./source/bower_components/bootstrap-material-design/dist/js/material.min.js"></script>
     <script src="./source/bower_components/bootstrap-material-design/dist/js/ripples.min.js"></script>
-    <script src="./source/bower_components/angular/angular.min.js"></script>
-    <script src="./source/bower_components/angular-route/angular-route.min.js"></script>
-    <script src="./js/app.js"></script>
     <script src="./source/bower_components/ace-builds/src-noconflict/ace.js"></script>
 
     <style>
@@ -59,7 +56,7 @@
         });
     </script>
 </head>
-<body ng-app="sisiliano.demo">
+<body>
     <div class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -72,32 +69,32 @@
             </div>
         </div>
     </div>
-    <div class="container" ng-controller="demoCtrl">
+    <div class="container">
         <div class="col-xs-12">
             <div class="col-sm-3">
                 <div class="list-group">
                     <a class="list-group-item btn btn-toolbar"
                        href="#introduction">
-                        <div class="h2">Introduction</div>
+                        <div class="h2 demo-link">Introduction</div>
                     </a>
                     <div class="list-group-separator"></div>
 
                     <div class="list-group-item">
-                        <a class="h2" href="#controllers/">Controllers</a>
+                        <a class="h2 demo-link" href="#controllers/">Controllers</a>
                         <div class="list-group">
-                            <a class="list-group-item btn btn-toolbar" href="#controllers/piano/">Piano</a>
+                            <a class="list-group-item btn btn-toolbar demo-link" href="#controllers/piano/">Piano</a>
                             <div class="list-group-separator"></div>
-                            <a class="list-group-item btn btn-toolbar" href="#controllers/sliders/">Sliders</a>
+                            <a class="list-group-item btn btn-toolbar demo-link" href="#controllers/sliders/">Sliders</a>
                             <div class="list-group-separator"></div>
                             <div class="list-group-item">
                                 <div class="list-group">
-                                    <a class="list-group-item btn btn-toolbar"
-                                       href="#controllers/sliders/knob">
+                                    <a class="list-group-item btn btn-toolbar demo-link"
+                                       href="#controllers/sliders/knob/">
                                         Knob Slider
                                     </a>
                                     <div class="list-group-separator"></div>
-                                    <a class="list-group-item btn btn-toolbar"
-                                         href="#controllers/sliders/linear-slider">
+                                    <a class="list-group-item btn btn-toolbar demo-link"
+                                       href="#controllers/sliders/linear-slider/">
                                         Linear Slider
                                     </a>
                                     <a class="list-group-separator"></a>
@@ -109,8 +106,11 @@
             </div>
 
 
-            <div class="col-sm-9" ng-view></div>
+            <div class="col-sm-9 content-pane"></div>
         </div>
     </div>
+
+
+    <script src="./js/app.js"></script>
 </body>
 </html>
