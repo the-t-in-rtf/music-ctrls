@@ -2,7 +2,7 @@
     "use strict";
 
     fluid.defaults("sisiliano.piano", {
-        gradeNames: ["sisiliano.component"],
+        gradeNames: ["sisiliano.border", "sisiliano.component"],
         template: "src/controllers/piano/piano.html",
         model: {
             title: "Piano Controller",
@@ -25,23 +25,7 @@
                     bottom: 20,
                     left: 20,
                     right: 20
-                },
-                border: {
-                    x: 0,
-                    y: 0,
-                    width: 600,
-                    height: 170
-                },
-                borderPadding: {
-                    top: 10,
-                    bottom: 10,
-                    left: 10,
-                    right: 10
                 }
-            },
-            viewBox: {
-                width: 600,
-                height: 170
             },
             activeArea: {
                 start: 0,
@@ -74,14 +58,6 @@
             ]
         },
         modelListeners: {
-            "viewBox.width": {
-                func: "sisiliano.piano.onViewBoxChange",
-                args: ["{that}", "{that}.model.viewBox"]
-            },
-            "viewBox.height": {
-                func: "sisiliano.piano.onViewBoxChange",
-                args: ["{that}", "{that}.model.viewBox"]
-            },
             "activeArea.end": {
                 func: "sisiliano.piano.onChangeActiveArea",
                 args: ["{that}", "{that}.model.keyBoard.keys", "{that}.model.activeArea"]
@@ -92,10 +68,6 @@
             }
         }
     });
-
-    sisiliano.piano.onViewBoxChange = function (that, viewBox) {
-        d3.select(that.locate("svg").get(0)).attr("viewBox", "0 0 " + viewBox.width + " " + viewBox.height);
-    };
 
     sisiliano.piano.onChangeActiveArea = function (that, keys, activeArea) {
         var allocatedComputerKeysForThePiano = [81, 65, 87, 83, 69, 68, 82, 70, 84, 71, 89, 72,
@@ -170,8 +142,8 @@
 
         keyBoardElm.empty();
         keyBoardElm.append("text")
-            .attr("x", that.model.keyBoard.border.x)
-            .attr("y", that.model.keyBoard.border.y)
+            .attr("x", 0)
+            .attr("y", 0)
             .attr("aria-live", "assertive")
             .attr("class", "sisiliano-piano-active-area-status")
             .text("Piano is active from G to C");
@@ -198,7 +170,6 @@
 
         sisiliano.piano.onChangeActiveArea(that, that.model.keyBoard.keys, that.model.activeArea);
         sisiliano.piano.appendListeners(that);
-        sisiliano.piano.onViewBoxChange(that, that.model.viewBox);
     };
 
     sisiliano.piano.moveTabBy = function (that, increaseBy) {
@@ -461,18 +432,10 @@
         }
 
         //Adjust the viewBox to fit with the entire div
-        that.model.viewBox.width = (keyCount.whiteKeys * that.model.keyBoard.whiteKey.width) +
-            that.model.keyBoard.padding.left + that.model.keyBoard.padding.right;
-        that.model.viewBox.height = that.model.keyBoard.whiteKey.height +
-            that.model.keyBoard.padding.top + that.model.keyBoard.padding.bottom;
-
-        //Adjust the border position and layout
-        that.model.keyBoard.border.width = (keyCount.whiteKeys * that.model.keyBoard.whiteKey.width) +
-            that.model.keyBoard.borderPadding.left + that.model.keyBoard.borderPadding.right;
-        that.model.keyBoard.border.height = that.model.keyBoard.whiteKey.height +
-            that.model.keyBoard.borderPadding.top + that.model.keyBoard.borderPadding.bottom;
-        that.model.keyBoard.border.x = that.model.keyBoard.keys[0].x - that.model.keyBoard.borderPadding.left;
-        that.model.keyBoard.border.y = that.model.keyBoard.keys[0].y - that.model.keyBoard.borderPadding.top;
+        that.applier.change("styles.controller", {
+            width: (keyCount.whiteKeys * that.model.keyBoard.whiteKey.width) + that.model.keyBoard.padding.left + that.model.keyBoard.padding.right,
+            height: that.model.keyBoard.whiteKey.height + that.model.keyBoard.padding.top + that.model.keyBoard.padding.bottom
+        });
 
         that.applier.change("", that.model);
     };
