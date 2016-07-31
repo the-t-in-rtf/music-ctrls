@@ -2,7 +2,7 @@
     "use strict";
 
     fluid.defaults("sisiliano.linearSlider", {
-        gradeNames: ["sisiliano.slider"],
+        gradeNames: ["sisiliano.border", "sisiliano.slider"],
         defaultViewBox: [0 ,0, 500, 50],
         ariaDescription: "Linear slider, the value can be adjusted by arrow keys. If you are using the mouse, drag along the slider",
         template: "src/controllers/linear-slider/linear-slider.html",
@@ -11,41 +11,42 @@
                 pointer: {
                     label: {
                         padding: {
-                            left: 2,
-                            right: 2,
-                            top: 2,
-                            bottom: 2
+                            left: 3,
+                            right: 3,
+                            top: 3,
+                            bottom: 3
                         },
                         margin: {
                             left: 0,
                             right: 0,
                             top: 0,
-                            bottom: 10
+                            bottom: 12
                         }
                     },
                     labelText: {
-                        "font-size": "10px"
+                        "font-size": "20px",
+                        fill: "white"
                     },
                     value: {
-                        width: 20,
-                        height: 20,
-                        rx: "10",
-                        ry: "10"
-                    },
-                    valueShadow: {
                         width: 30,
                         height: 30,
-                        rx: "15",
-                        ry: "15"
+                        rx: "50%",
+                        ry: "50%"
+                    },
+                    valueShadow: {
+                        width: 110,
+                        height: 110,
+                        rx: "50%",
+                        ry: "50%"
                     }
                 },
                 ruler: {
                     line: {
                         width: 1,
-                        height: 20
+                        height: 30
                     },
                     value: {
-                        "font-size": "10px"
+                        "font-size": "20px"
                     }
                 },
                 sliderBar: {
@@ -56,24 +57,20 @@
                         height: 8
                     },
                     padding: {
-                        left: 40,
-                        right: 40,
-                        top: 40,
-                        bottom: 40
+                        left: 80,
+                        right: 80,
+                        top: 80,
+                        bottom: 80
                     }
                 }
             },
             rulerPoints: [0,  20, 30, 40, 50, 60, 70, 80, 90, 100],
-            viewBox: {
-                width: 500,
-                height: 100
-            },
             orientation: "vertical", // vertical or horizontal
             title: "linearSlider Controller",
             description: ""
         },
         selectors: {
-            controller: ".sisiliano",
+            controller: ".sisiliano-controller-div",
             svg: "svg",
             valueLabel: ".sisiliano-linear-slider-value-text",
             valueLabelRect: ".sisiliano-linear-slider-value-label",
@@ -115,10 +112,6 @@
             ]
         },
         modelListeners: {
-            "viewBox.*": {
-                func: "sisiliano.linearSlider.onViewBoxChange",
-                args: ["{that}", "{that}.model.viewBox"]
-            },
             "styles.*": {
                 func: "sisiliano.linearSlider.onSliderStyleChange",
                 args: ["{that}", "{that}.model.styles"]
@@ -126,14 +119,14 @@
         }
     });
 
-    sisiliano.linearSlider.onSliderStyleChange = function (that) {
-        sisiliano.linearSlider.onSliderBarStyleChange(that);
-        sisiliano.linearSlider.drawNotches(that);
+    sisiliano.linearSlider.onSliderStyleChange = function (that, styles) {
+        if (styles.controller.width && styles.controller.height) {
+            sisiliano.linearSlider.onSliderBarStyleChange(that);
+            sisiliano.linearSlider.drawNotches(that);
+            sisiliano.linearSlider.onSliderPointerStyleChange(that);
 
-        sisiliano.linearSlider.onSliderPointerStyleChange(that);
-
-
-        sisiliano.slider.onValueChange(that, that.model.value);
+            sisiliano.slider.onValueChange(that, that.model.value);
+        }
     };
 
     sisiliano.linearSlider.onSliderBarStyleChange = sisiliano.linearSlider.onSliderPointerStyleChange = function (that) {
@@ -143,7 +136,7 @@
         that.locate("valueRect")
             .attr("x", that.model.styles.sliderBar.padding.left)
             .attr("y", barCenterY - (that.model.styles.sliderBar.valueBar.height / 2))
-            .attr("width", that.model.viewBox.width - that.model.styles.sliderBar.padding.left - that.model.styles.sliderBar.padding.right)
+            .attr("width", that.model.styles.controller.width - that.model.styles.sliderBar.padding.left - that.model.styles.sliderBar.padding.right)
             .attr("height", that.model.styles.sliderBar.valueBar.height);
 
         sisiliano.util.applyStyles(that.locate("backgroundRect"), that.model.styles.sliderBar.backgroundBar,
@@ -151,14 +144,14 @@
         that.locate("backgroundRect")
             .attr("x", that.model.styles.sliderBar.padding.left)
             .attr("y", barCenterY - (that.model.styles.sliderBar.backgroundBar.height / 2))
-            .attr("width", that.model.viewBox.width - that.model.styles.sliderBar.padding.left - that.model.styles.sliderBar.padding.right)
+            .attr("width", that.model.styles.controller.width - that.model.styles.sliderBar.padding.left - that.model.styles.sliderBar.padding.right)
             .attr("height", that.model.styles.sliderBar.backgroundBar.height);
     };
 
     sisiliano.linearSlider.onSliderPointerLabelStyleChange = sisiliano.linearSlider.onSliderPointerStyleChange = function (that) {
         var barCenterY = (that.model.styles.sliderBar.backgroundBar.height / 2) + that.model.styles.sliderBar.padding.top;
 
-        sisiliano.util.applyStyles(that.locate("valueLabel"), that.model.styles.pointer.labelText, ["y"]);
+        sisiliano.util.applyStyles(that.locate("valueLabel"), that.model.styles.pointer.labelText, ["y", "padding", "margin"]);
         that.locate("valueLabel")
             .attr(
                 "y",
@@ -203,26 +196,17 @@
             .attr("rx", that.model.styles.pointer.valueShadow.rx)
             .attr("ry", that.model.styles.pointer.valueShadow.ry);
     };
-
-    sisiliano.linearSlider.onViewBoxChange = function (that, viewBox) {
-        var sliderBarPadding = that.model.styles.sliderBar.padding;
-        d3.select(that.locate("svg").get(0)).attr("viewBox", "0 0 " + viewBox.width + " " + viewBox.height);
-        that.applier.change("styles.sliderBar.backgroundBar.width",
-            viewBox.width - sliderBarPadding.left - sliderBarPadding.right);
-    };
     
     sisiliano.linearSlider.onResize = function (that) {
         var sliderBarPadding = that.model.styles.sliderBar.padding;
         var styles = that.model.styles;
 
         //Configuring the viewBox based on the container
-        var svgHeight = sliderBarPadding.left + sliderBarPadding.right + Math.max(styles.sliderBar.backgroundBar.height,
+        var svgHeight = sliderBarPadding.top + sliderBarPadding.bottom + Math.max(styles.sliderBar.backgroundBar.height,
                 styles.sliderBar.valueBar.height);
-        var containerHeight = that.container.height();
-        var containerWidth = that.container.width();
-        var svgWidth = (containerWidth / containerHeight) * svgHeight;
-        that.applier.change("viewBox", {
-            width: svgWidth,
+
+        that.applier.change("styles.controller", {
+            width: null,
             height: svgHeight
         });
     };
@@ -254,7 +238,7 @@
 
     sisiliano.linearSlider.setValueByPosition = function (that, clickedPosition) {
         var maxWidth = parseInt(that.locate("backgroundRect").attr("width"), null);
-        var leftPadding = parseInt(that.locate("valueRect").attr("x"), null);
+        var leftPadding = parseInt(that.locate("valueRect").attr("x"), null) + that.model.styles.controller.x;
         var value = ((clickedPosition.x - leftPadding) / maxWidth) * that.model.size;
         if (that.model.value !== value) {
             that.applier.change("value", value + that.model.min);
