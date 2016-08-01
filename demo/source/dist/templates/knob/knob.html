@@ -1,4 +1,5 @@
 <svg
+        id="{{id}}"
         aria-hidden="true"
         viewBox="0 0 300 300"
         width="100%"
@@ -6,88 +7,44 @@
         class="sisiliano-knob">
     <defs
             id="defs4">
-        <filter
-                style="color-interpolation-filters:sRGB;"
-                id="filter6244">
-            <feFlood
-                    flood-opacity="0.4"
-                    flood-color="black"
-                    result="flood"
-                    id="feFlood6246" />
-            <feComposite
-                    in="flood"
-                    in2="SourceGraphic"
-                    operator="in"
-                    result="composite1"
-                    id="feComposite6248" />
-            <feGaussianBlur
-                    in="composite1"
-                    stdDeviation="3"
-                    result="blur"
-                    id="feGaussianBlur6250" />
-            <feOffset
-                    dx="-1"
-                    dy="1"
-                    result="offset"
-                    id="feOffset6252" />
-            <feComposite
-                    in="SourceGraphic"
-                    in2="offset"
-                    operator="over"
-                    result="composite2"
-                    id="feComposite6254" />
+        <filter style="color-interpolation-filters:sRGB;" id="{{id}}-drop-shadow" x="-100%" y="-100%" width="300%" height="400%">
+            <feFlood flood-opacity="0.5" flood-color="{{color.[1]}}" result="flood"></feFlood>
+            <feComposite in="flood" in2="SourceGraphic" operator="in" result="comp"></feComposite>
+            <feOffset dx="0" dy="0" result="offset"></feOffset>
+            <feGaussianBlur in="offset" stdDeviation="4" result="blur"></feGaussianBlur>
+            <feBlend in="SourceGraphic" in2="blur" mode="normal"></feBlend>
         </filter>
-        <filter
-                style="color-interpolation-filters:sRGB;"
-                id="filter6245">
-            <feFlood
-                    flood-opacity="0.5"
-                    flood-color="black"
-                    result="flood"
-                    id="feFlood6246" />
-            <feComposite
-                    in="flood"
-                    in2="SourceGraphic"
-                    operator="in"
-                    result="composite1"
-                    id="feComposite6248" />
-            <feGaussianBlur
-                    in="composite1"
-                    stdDeviation="3.5"
-                    result="blur"
-                    id="feGaussianBlur6250" />
-            <feOffset
-                    dx="2"
-                    dy="-2"
-                    result="offset"
-                    id="feOffset6252" />
-            <feComposite
-                    in="SourceGraphic"
-                    in2="offset"
-                    operator="over"
-                    result="composite2"
-                    id="feComposite6254" />
+        <filter style="color-interpolation-filters:sRGB;" id="{{id}}-hover-drop-shadow" x="-100%" y="-100%" width="300%" height="400%">
+            <feFlood flood-opacity="0.5" flood-color="{{color.[1]}}" result="flood"></feFlood>
+            <feComposite in="flood" in2="SourceGraphic" operator="in" result="comp"></feComposite>
+            <feOffset dx="0" dy="0" result="offset"></feOffset>
+            <feGaussianBlur in="offset" stdDeviation="6" result="blur"></feGaussianBlur>
+            <feBlend in="SourceGraphic" in2="blur" mode="normal"></feBlend>
         </filter>
     </defs>
 
     <style>
-        .sisiliano-knob-circle {
-            filter: url("#filter6244");
+        #{{id}} .sisiliano-knob-circle,
+        #{{id}} .sisiliano-border {
+            filter: url("#{{id}}-drop-shadow");
         }
-        .sisiliano-border, .sisiliano:focus .sisiliano-knob-circle {
-            filter: url("#filter6245");
-        }
-        .sisiliano-border, .sisiliano:focus .sisiliano-border {
-            filter: none;
+
+        #{{id}} .sisiliano:focus .sisiliano-knob-circle {
+            filter: url("#{{id}}-hover-drop-shadow");
         }
     </style>
 
-    <g style="display:inline">
-        <circle
-                class="sisiliano-border"
-                r="147" cx="150"
-                cy="150">
-        </circle>
+    <rect
+            class="sisiliano-border-div sisiliano-border"
+            width="100%"
+            height="100%"
+            rx="50%"
+            ry="50%"
+            x="0"
+            y="0">
+    </rect>
+
+    <g class="sisiliano-controller-div" style="display:inline">
         <circle
                 class="sisiliano-knob-circle sisiliano-knob-background-circle"
                 id="circle5634"
