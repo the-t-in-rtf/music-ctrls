@@ -16,12 +16,12 @@
         var piano = sisiliano.piano(".test", {
             model: {
                 color: "#FF0000",
-                activeArea: {
-                    start: 3,
-                    end: 9
-                },
                 keyBoard: {
-                    length: 20
+                    length: 20,
+                    activeArea: {
+                        start: 3,
+                        end: 9
+                    }
                 }
             }
         });
@@ -42,14 +42,15 @@
     };
 
     sisiliano.tests.piano.verifyActiveArea = function (piano, expectedStart, expectedEnd) {
+        var message = "when the active area is (" + expectedStart + "," + expectedEnd + ")";
         d3.select(piano.container.get(0)).selectAll(".sisiliano-piano-key").each(function () {
             var key = d3.select(this);
             var className = key.attr("class");
             var index = parseInt(key.attr("index"), null);
             if (index >= expectedStart && index <= expectedEnd) {
-                jqUnit.assertTrue(index + " should be active", className.indexOf("sisiliano-piano-key-active") >= 0);
+                jqUnit.assertTrue(message + index + " should be active", className.indexOf("sisiliano-piano-key-active") >= 0);
             } else {
-                jqUnit.assertFalse(index + " should be inactive", className.indexOf("sisiliano-piano-key-active") >= 0);
+                jqUnit.assertFalse(message + index + " should be inactive", className.indexOf("sisiliano-piano-key-active") >= 0);
             }
         });
     };
@@ -189,8 +190,8 @@
     sisiliano.tests.piano.verifyActiveAreaNavigations = function (piano, message) {
         var whiteKeys = piano.locate("whiteKeys");
         var expectedActiveArea = {
-            start: piano.model.activeArea.start,
-            end: piano.model.activeArea.end
+            start: piano.model.keyBoard.activeArea.start,
+            end: piano.model.keyBoard.activeArea.end
         };
         var testCaseMessage = "";
         for (var i = 1; i <= whiteKeys.length; i++) {
