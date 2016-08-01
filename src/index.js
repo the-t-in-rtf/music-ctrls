@@ -63,4 +63,27 @@
         });
         element.attr("style", stylesString);
     };
+
+    sisiliano.util.applyStylesToTheElement = function (element, styles, rules) {
+        fluid.each(styles, function (value, key) {
+            if (typeof value !== "object") {
+                if (rules.attributes.indexOf(key) >= 0) {
+                    element.attr(key, value);
+                } else {
+                    element.css(key, value);
+                }
+            }
+        });
+
+        if (styles.status) {
+            var status = styles.status;
+            if (typeof value !== "object") {
+                status = [status];
+            }
+
+            fluid.each(status, function (statusKey) {
+                sisiliano.util.applyStylesToTheElement(element, styles.statuses[statusKey], rules);
+            });
+        }
+    };
 })(fluid);
