@@ -10,14 +10,14 @@
             <feFlood flood-opacity="0.5" flood-color="{{color.[1]}}" result="flood"></feFlood>
             <feComposite in="flood" in2="SourceGraphic" operator="in" result="comp"></feComposite>
             <feOffset dx="0" dy="0" result="offset"></feOffset>
-            <feGaussianBlur in="offset" stdDeviation="1" result="blur"></feGaussianBlur>
+            <feGaussianBlur in="offset" stdDeviation="4" result="blur"></feGaussianBlur>
             <feBlend in="SourceGraphic" in2="blur" mode="normal"></feBlend>
         </filter>
         <filter style="color-interpolation-filters:sRGB;" id="{{id}}-hover-drop-shadow" x="-100%" y="-100%" width="300%" height="400%">
             <feFlood flood-opacity="0.5" flood-color="{{color.[1]}}" result="flood"></feFlood>
             <feComposite in="flood" in2="SourceGraphic" operator="in" result="comp"></feComposite>
             <feOffset dx="0" dy="0" result="offset"></feOffset>
-            <feGaussianBlur in="offset" stdDeviation="2" result="blur"></feGaussianBlur>
+            <feGaussianBlur in="offset" stdDeviation="6" result="blur"></feGaussianBlur>
             <feBlend in="SourceGraphic" in2="blur" mode="normal"></feBlend>
         </filter>
     </defs>
