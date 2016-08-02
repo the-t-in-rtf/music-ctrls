@@ -7,7 +7,7 @@
     fluid.defaults("sisiliano.util.colorable", {
         gradeNames: "fluid.component",
         model: {
-            color: ["#009688", "#FFFFFF"]
+            color: ["#009688", "#000000"]
         },
         events: {
             onColorChange: null
@@ -26,7 +26,7 @@
         }
     });
 
-    sisiliano.util.colorable.defaultColor = ["#009688", "#FFFFFF"];
+    sisiliano.util.colorable.defaultColor = ["#009688", "#000000"];
 
     sisiliano.util.colorable.onColorChange = function (that, color) {
         if (color) {
