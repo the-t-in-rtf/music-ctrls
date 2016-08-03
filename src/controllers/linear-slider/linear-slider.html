@@ -1,161 +1,98 @@
 <svg
+        id="{{id}}"
         aria-hidden="true"
-        viewBox="0 0 {{viewBox.width}} {{viewBox.height}}"
         width="100%"
         height="100%"
         class="sisiliano-linear-slider">
     <defs
             id="defs4">
-        <filter
-                style="color-interpolation-filters:sRGB;"
-                id="filter6244">
-            <feFlood
-                    flood-opacity="0.4"
-                    flood-color="black"
-                    result="flood"
-                    id="feFlood6246" />
-            <feComposite
-                    in="flood"
-                    in2="SourceGraphic"
-                    operator="in"
-                    result="composite1"
-                    id="feComposite6248" />
-            <feGaussianBlur
-                    in="composite1"
-                    stdDeviation="3"
-                    result="blur"
-                    id="feGaussianBlur6250" />
-            <feOffset
-                    dx="-1"
-                    dy="1"
-                    result="offset"
-                    id="feOffset6252" />
-            <feComposite
-                    in="SourceGraphic"
-                    in2="offset"
-                    operator="over"
-                    result="composite2"
-                    id="feComposite6254" />
-        </filter>
-        <filter
-                style="color-interpolation-filters:sRGB;"
-                id="filter6245">
-            <feFlood
-                    flood-opacity="0.5"
-                    flood-color="black"
-                    result="flood"
-                    id="feFlood6246" />
-            <feComposite
-                    in="flood"
-                    in2="SourceGraphic"
-                    operator="in"
-                    result="composite1"
-                    id="feComposite6248" />
-            <feGaussianBlur
-                    in="composite1"
-                    stdDeviation="3.5"
-                    result="blur"
-                    id="feGaussianBlur6250" />
-            <feOffset
-                    dx="-1"
-                    dy="1"
-                    result="offset"
-                    id="feOffset6252" />
-            <feComposite
-                    in="SourceGraphic"
-                    in2="offset"
-                    operator="over"
-                    result="composite2"
-                    id="feComposite6254" />
-        </filter>
-        <filter id="dropshadow" height="130%">
-            <feFlood
-                    flood-opacity="0.5"
-                    flood-color="red"
-                    result="flood"/>
-            <feGaussianBlur in="SourceAlpha" stdDeviation="1"/>
-            <feOffset dx="1" dy="1" result="offsetblur"/>
-            <feMerge>
-                <feMergeNode/>
-                <feMergeNode in="SourceGraphic"/>
-            </feMerge>
-        </filter>
-        <filter style="color-interpolation-filters:sRGB;" id="drop-shadow" x="-100%" y="-100%" width="300%" height="400%">
-            <feFlood flood-opacity="0.5" flood-color="black" result="flood"></feFlood>
+        <filter style="color-interpolation-filters:sRGB;" id="{{id}}-drop-shadow" x="-100%" y="-100%" width="300%" height="400%">
+            <feFlood flood-opacity="0.5" flood-color="{{color.[1]}}" result="flood"></feFlood>
             <feComposite in="flood" in2="SourceGraphic" operator="in" result="comp"></feComposite>
-            <feOffset dx="0" dy="1" result="offset"></feOffset>
-            <feGaussianBlur in="offset" stdDeviation="1" result="blur"></feGaussianBlur>
+            <feOffset dx="0" dy="0" result="offset"></feOffset>
+            <feGaussianBlur in="offset" stdDeviation="4" result="blur"></feGaussianBlur>
             <feBlend in="SourceGraphic" in2="blur" mode="normal"></feBlend>
         </filter>
-        <filter style="color-interpolation-filters:sRGB;" id="hover-drop-shadow" x="-100%" y="-100%" width="300%" height="400%">
-            <feFlood flood-opacity="0.5" flood-color="black" result="flood"></feFlood>
+        <filter style="color-interpolation-filters:sRGB;" id="{{id}}-hover-drop-shadow" x="-100%" y="-100%" width="300%" height="400%">
+            <feFlood flood-opacity="0.5" flood-color="{{color.[1]}}" result="flood"></feFlood>
             <feComposite in="flood" in2="SourceGraphic" operator="in" result="comp"></feComposite>
-            <feOffset dx="0" dy="1" result="offset"></feOffset>
-            <feGaussianBlur in="offset" stdDeviation="2" result="blur"></feGaussianBlur>
+            <feOffset dx="0" dy="0" result="offset"></feOffset>
+            <feGaussianBlur in="offset" stdDeviation="6" result="blur"></feGaussianBlur>
             <feBlend in="SourceGraphic" in2="blur" mode="normal"></feBlend>
         </filter>
     </defs>
 
     <style>
-        .sisiliano-linear-slider .sisiliano-linear-slider-background-rect,
-        .sisiliano-linear-slider .sisiliano-linear-slider-value-rect,
-        .sisiliano-linear-slider .sisiliano-linear-slider-value-pointer,
-        .sisiliano-linear-slider .sisiliano-linear-slider-value-pointer-hover,
-        .sisiliano-linear-slider .sisiliano-linear-slider-value-label {
-            filter: url("#drop-shadow");
+        #{{id}}.sisiliano-linear-slider .sisiliano-linear-slider-background-rect,
+        #{{id}}.sisiliano-linear-slider .sisiliano-linear-slider-value-rect,
+        #{{id}}.sisiliano-linear-slider .sisiliano-linear-slider-value-pointer,
+        #{{id}}.sisiliano-linear-slider .sisiliano-linear-slider-value-pointer-hover,
+        #{{id}}.sisiliano-linear-slider .sisiliano-linear-slider-value-label,
+        #{{id}}.sisiliano-linear-slider .sisiliano-border {
+            filter: url("#{{id}}-drop-shadow");
         }
 
-        .sisiliano:focus .sisiliano-linear-slider .sisiliano-linear-slider-background-rect,
-        .sisiliano:focus .sisiliano-linear-slider .sisiliano-linear-slider-value-rect {
-            filter: url("#hover-drop-shadow");
+        .sisiliano:focus #{{id}}.sisiliano-linear-slider .sisiliano-linear-slider-background-rect,
+        .sisiliano:focus #{{id}}.sisiliano-linear-slider .sisiliano-linear-slider-value-rect {
+            filter: url("#{{id}}-hover-drop-shadow");
         }
     </style>
 
     <rect
-            class="sisiliano-linear-slider-rect sisiliano-linear-slider-background-rect"
-            height="8"
-            width="10"
-            x="40"
-            y="37"/>
-    <rect
-            class="sisiliano-linear-slider-rect sisiliano-linear-slider-value-rect"
-            height="10"
-            width="200"
-            x="40"
-            y="36"/>
-    <g class="sisiliano-linear-slider-ruler"></g>
-    <rect
-            class="sisiliano-linear-slider-value-pointer sisiliano-linear-slider-value-pointer-hover"
-            width="30"
-            height="30"
-            rx="50%"
-            ry="50%"
-            x="90"
-            y="26">
+            class="sisiliano-border-div sisiliano-border"
+            width="100%"
+            height="100%"
+            x="0"
+            y="0">
     </rect>
-    <rect
-            class="sisiliano-linear-slider-value-pointer sisiliano-linear-slider-value-pointer"
-            width="20"
-            height="20"
-            rx="50%"
-            ry="50%"
-            x="90"
-            y="31">
-    </rect>
-    <rect
-            class="sisiliano-linear-slider-value-label"
-            x="10"
-            y="0"
-            fill="{{color}}"
-            width="50"
-            height="20"
-            rx="2"
-            ry="2">
-    </rect>
-    <text text-anchor="middle"
-          x="10"
-          y="15"
-          class="unselectable sisiliano-linear-slider-value-text">
-        100
-    </text>
+
+    <g class="sisiliano-controller-div">
+        <rect
+                class="sisiliano-linear-slider-rect sisiliano-linear-slider-background-rect"
+                height="8"
+                width="10"
+                x="40"
+                y="37"/>
+        <rect
+                class="sisiliano-linear-slider-rect sisiliano-linear-slider-value-rect"
+                height="10"
+                width="200"
+                x="40"
+                y="36"/>
+        <g class="sisiliano-linear-slider-ruler"></g>
+        <rect
+                class="sisiliano-linear-slider-value-pointer sisiliano-linear-slider-value-pointer-hover"
+                width="30"
+                height="30"
+                rx="50%"
+                ry="50%"
+                x="90"
+                y="26">
+        </rect>
+        <rect
+                class="sisiliano-linear-slider-value-pointer sisiliano-linear-slider-value-pointer"
+                width="20"
+                height="20"
+                rx="50%"
+                ry="50%"
+                x="90"
+                y="31">
+        </rect>
+        <rect
+                class="sisiliano-linear-slider-value-label"
+                x="10"
+                y="0"
+                fill="{{color}}"
+                width="50"
+                height="20"
+                rx="2"
+                ry="2">
+        </rect>
+        <text text-anchor="middle"
+              x="10"
+              y="15"
+              class="unselectable sisiliano-linear-slider-value-text">
+            100
+        </text>
+    </g>
 </svg>

@@ -21,7 +21,7 @@
         $(document).on('ready', function () {
             var tds = $('.test');
             var colors = [
-                "#F44336", ,
+                "#F44336",
                 "#FF9800",
                 "#3F51B5",
                 "#E91E63",
@@ -47,7 +47,7 @@
                 var randomColorIndex = Math.floor(Math.random() * colors.length - 1);
                 sisiliano.knob(tds[i], {
                     model: {
-                        color: colors[randomColorIndex],
+                        color: [colors[randomColorIndex], "black"],
                         value: Math.random() * 100
                     }
                 });

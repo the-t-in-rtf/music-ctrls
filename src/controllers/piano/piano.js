@@ -2,50 +2,37 @@
     "use strict";
 
     fluid.defaults("sisiliano.piano", {
-        gradeNames: ["sisiliano.component"],
+        gradeNames: ["sisiliano.border", "sisiliano.component"],
         template: "src/controllers/piano/piano.html",
+        ariaDescription: "Piano keys are accessible by mouse and the keyboad as well. Only the active area of the piano is accessible by the keyboard. If you want to move the active area, use left and right keys.",
         model: {
-            title: "Piano Controller",
-            description: "The keys are accessible by mouse and the keyboad as well. Only the active area of the piano is accessible by the keyboard. If you want to move the active area, use left and right keys.",
             color: "#4CAF50",
+            styles: {
+                keyBoard: {
+                    padding: {
+                        top: 20,
+                        bottom: 20,
+                        left: 20,
+                        right: 20
+                    },
+                    whiteKey: {
+                        width: 40,
+                        height: 150
+                    },
+                    blackKey: {
+                        width: 27,
+                        height: 100
+                    }
+                }
+            },
             keyBoard: {
                 keys: [],
                 length: 36,
                 start: 0,
-                whiteKey: {
-                    width: 40,
-                    height: 150
-                },
-                blackKey: {
-                    width: 27,
-                    height: 100
-                },
-                padding: {
-                    top: 20,
-                    bottom: 20,
-                    left: 20,
-                    right: 20
-                },
-                border: {
-                    x: 0,
-                    y: 0,
-                    width: 600,
-                    height: 170
-                },
-                borderPadding: {
-                    top: 10,
-                    bottom: 10,
-                    left: 10,
-                    right: 10
+                activeArea: {
+                    start: 0,
+                    end: 10
                 }
-            },
-            viewBox: {
-                width: 600,
-                height: 170
-            },
-            activeArea: {
-                start: 0,
-                end: 10
             }
         },
         events: {
@@ -74,17 +61,9 @@
             ]
         },
         modelListeners: {
-            "viewBox.width": {
-                func: "sisiliano.piano.onViewBoxChange",
-                args: ["{that}", "{that}.model.viewBox"]
-            },
-            "viewBox.height": {
-                func: "sisiliano.piano.onViewBoxChange",
-                args: ["{that}", "{that}.model.viewBox"]
-            },
-            "activeArea.end": {
+            "keyBoard.activeArea.*": {
                 func: "sisiliano.piano.onChangeActiveArea",
-                args: ["{that}", "{that}.model.keyBoard.keys", "{that}.model.activeArea"]
+                args: ["{that}", "{that}.model.keyBoard.keys", "{that}.model.keyBoard.activeArea"]
             },
             "keyBoard.keys": {
                 func: "sisiliano.piano.onKeysChange",
@@ -92,10 +71,6 @@
             }
         }
     });
-
-    sisiliano.piano.onViewBoxChange = function (that, viewBox) {
-        d3.select(that.locate("svg").get(0)).attr("viewBox", "0 0 " + viewBox.width + " " + viewBox.height);
-    };
 
     sisiliano.piano.onChangeActiveArea = function (that, keys, activeArea) {
         var allocatedComputerKeysForThePiano = [81, 65, 87, 83, 69, 68, 82, 70, 84, 71, 89, 72,
@@ -164,55 +139,58 @@
     sisiliano.piano.getElementKey = function (element, keys) {
         return keys[element.attr("index")];
     };
-    
+
     sisiliano.piano.onCreate = function (that) {
         var keyBoardElm = d3.select(that.locate("keyBoard").get(0));
 
         keyBoardElm.empty();
         keyBoardElm.append("text")
-            .attr("x", that.model.keyBoard.border.x)
-            .attr("y", that.model.keyBoard.border.y)
+            .attr("x", 0)
+            .attr("y", 0)
             .attr("aria-live", "assertive")
             .attr("class", "sisiliano-piano-active-area-status")
             .text("Piano is active from G to C");
 
         fluid.each(sisiliano.piano.getWhiteKeys(that.model.keyBoard.keys), function (whiteKey) {
-            keyBoardElm.append("rect")
+            var key = keyBoardElm.append("rect")
                 .attr("index", whiteKey.index)
                 .attr("class", "sisiliano-piano-key sisiliano-piano-white-key")
                 .attr("height", whiteKey.height)
                 .attr("width", whiteKey.width)
                 .attr("x", whiteKey.x)
                 .attr("y", whiteKey.y);
+            sisiliano.util.applyStyles(key, that.model.styles.keyBoard.whiteKey,
+                ["x", "y", "width", "height"]);
         });
 
         fluid.each(sisiliano.piano.getBlackKeys(that.model.keyBoard.keys), function (blackKey) {
-            keyBoardElm.append("rect")
+            var key = keyBoardElm.append("rect")
                 .attr("index", blackKey.index)
                 .attr("class", "sisiliano-piano-key sisiliano-piano-black-key")
                 .attr("height", blackKey.height)
                 .attr("width", blackKey.width)
                 .attr("x", blackKey.x)
                 .attr("y", blackKey.y);
+            sisiliano.util.applyStyles(key, that.model.styles.keyBoard.blackKey,
+                ["x", "y", "width", "height"]);
         });
 
-        sisiliano.piano.onChangeActiveArea(that, that.model.keyBoard.keys, that.model.activeArea);
+        sisiliano.piano.onChangeActiveArea(that, that.model.keyBoard.keys, that.model.keyBoard.activeArea);
         sisiliano.piano.appendListeners(that);
-        sisiliano.piano.onViewBoxChange(that, that.model.viewBox);
     };
 
     sisiliano.piano.moveTabBy = function (that, increaseBy) {
         if (increaseBy) {
             var newActiveArea = {
-                start: that.model.activeArea.start + increaseBy,
-                end: that.model.activeArea.end + increaseBy
+                start: that.model.keyBoard.activeArea.start + increaseBy,
+                end: that.model.keyBoard.activeArea.end + increaseBy
             };
             var whiteKeys = sisiliano.piano.getWhiteKeys(that.model.keyBoard.keys);
             var isValid = newActiveArea.start >= 0 && newActiveArea.start < whiteKeys.length &&
                 newActiveArea.end >= 0 && newActiveArea.end < whiteKeys.length &&
                 newActiveArea.start < newActiveArea.end;
             if (isValid) {
-                that.applier.change("activeArea", newActiveArea);
+                that.applier.change("keyBoard.activeArea", newActiveArea);
             }
         }
     };
@@ -415,8 +393,8 @@
     };
 
     sisiliano.piano.generateKeyboard = function (that) {
-        that.model.keyBoard.blackKey.width = (((that.model.keyBoard.whiteKey.width - 1) / 3) * 2) + 1;
-        that.model.keyBoard.blackKey.height = (that.model.keyBoard.whiteKey.height / 3) * 2;
+        that.model.styles.keyBoard.blackKey.width = (((that.model.styles.keyBoard.whiteKey.width - 1) / 3) * 2) + 1;
+        that.model.styles.keyBoard.blackKey.height = (that.model.styles.keyBoard.whiteKey.height / 3) * 2;
         that.model.keyBoard.keys = [];
 
         var keyCount = {
@@ -430,10 +408,10 @@
             if (sisiliano.piano.OCTAVE[octaveIndex].color === "WHITE") {
                 key = {
                     color: "WHITE",
-                    x: that.model.keyBoard.padding.left + (keyCount.whiteKeys * that.model.keyBoard.whiteKey.width),
-                    y: that.model.keyBoard.padding.top,
-                    width: that.model.keyBoard.whiteKey.width - 1,
-                    height: that.model.keyBoard.whiteKey.height,
+                    x: that.model.styles.keyBoard.padding.left + (keyCount.whiteKeys * that.model.styles.keyBoard.whiteKey.width),
+                    y: that.model.styles.keyBoard.padding.top,
+                    width: that.model.styles.keyBoard.whiteKey.width - 1,
+                    height: that.model.styles.keyBoard.whiteKey.height,
                     index: index,
                     octave: Math.floor(x / 12),
                     octaveIndex: octaveIndex,
@@ -444,10 +422,10 @@
             } else if (sisiliano.piano.OCTAVE[octaveIndex].color === "BLACK") {
                 key = {
                     color: "BLACK",
-                    x: that.model.keyBoard.padding.left + ((keyCount.whiteKeys - 1) * that.model.keyBoard.whiteKey.width) + ((that.model.keyBoard.whiteKey.width / 3) * 2),
-                    y: that.model.keyBoard.padding.top,
-                    width: that.model.keyBoard.blackKey.width,
-                    height: that.model.keyBoard.blackKey.height,
+                    x: that.model.styles.keyBoard.padding.left + ((keyCount.whiteKeys - 1) * that.model.styles.keyBoard.whiteKey.width) + ((that.model.styles.keyBoard.whiteKey.width / 3) * 2),
+                    y: that.model.styles.keyBoard.padding.top,
+                    width: that.model.styles.keyBoard.blackKey.width,
+                    height: that.model.styles.keyBoard.blackKey.height,
                     index: index,
                     octave: Math.floor(x / 12),
                     octaveIndex: octaveIndex,
@@ -461,18 +439,10 @@
         }
 
         //Adjust the viewBox to fit with the entire div
-        that.model.viewBox.width = (keyCount.whiteKeys * that.model.keyBoard.whiteKey.width) +
-            that.model.keyBoard.padding.left + that.model.keyBoard.padding.right;
-        that.model.viewBox.height = that.model.keyBoard.whiteKey.height +
-            that.model.keyBoard.padding.top + that.model.keyBoard.padding.bottom;
-
-        //Adjust the border position and layout
-        that.model.keyBoard.border.width = (keyCount.whiteKeys * that.model.keyBoard.whiteKey.width) +
-            that.model.keyBoard.borderPadding.left + that.model.keyBoard.borderPadding.right;
-        that.model.keyBoard.border.height = that.model.keyBoard.whiteKey.height +
-            that.model.keyBoard.borderPadding.top + that.model.keyBoard.borderPadding.bottom;
-        that.model.keyBoard.border.x = that.model.keyBoard.keys[0].x - that.model.keyBoard.borderPadding.left;
-        that.model.keyBoard.border.y = that.model.keyBoard.keys[0].y - that.model.keyBoard.borderPadding.top;
+        that.applier.change("styles.controller", {
+            width: (keyCount.whiteKeys * that.model.styles.keyBoard.whiteKey.width) + that.model.styles.keyBoard.padding.left + that.model.styles.keyBoard.padding.right,
+            height: that.model.styles.keyBoard.whiteKey.height + that.model.styles.keyBoard.padding.top + that.model.styles.keyBoard.padding.bottom
+        });
 
         that.applier.change("", that.model);
     };
