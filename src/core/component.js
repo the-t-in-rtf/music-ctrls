@@ -12,6 +12,9 @@
         events: {
             onReady: null
         },
+        selectors: {
+            svg: "svg"
+        },
         listeners: {
             onCreate: [
                 {
@@ -35,6 +38,12 @@
     sisiliano.component.onInit = function (that) {
         that.container.attr("tabindex", 0);
         that.container.addClass("sisiliano");
+
+        //A fix for https://github.com/dinukadesilva/music-ctrls/issues/59
+        that.locate("svg").mousedown(function (evt) {
+            evt.preventDefault();
+            that.container.focus();
+        });
     };
 
     sisiliano.component.onTemplateChange = function (that, template) {
