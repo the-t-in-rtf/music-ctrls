@@ -12,11 +12,20 @@
         events: {
             onReady: null
         },
+        selectors: {
+            svg: "svg"
+        },
         listeners: {
-            onCreate: {
-                func: "sisiliano.component.onTemplateChange",
-                args: ["{that}", "{that}.options.template"]
-            },
+            onCreate: [
+                {
+                    func: "sisiliano.component.onTemplateChange",
+                    args: ["{that}", "{that}.options.template"]
+                },
+                {
+                    func: "sisiliano.component.onInit",
+                    args: ["{that}"]
+                }
+            ],
             onReady: [
                 {
                     func: "{that}.events.onColorChange.fire",
@@ -25,6 +34,17 @@
             ]
         }
     });
+
+    sisiliano.component.onInit = function (that) {
+        that.container.attr("tabindex", 0);
+        that.container.addClass("sisiliano");
+
+        //A fix for https://github.com/dinukadesilva/music-ctrls/issues/59
+        that.locate("svg").mousedown(function (evt) {
+            evt.preventDefault();
+            that.container.focus();
+        });
+    };
 
     sisiliano.component.onTemplateChange = function (that, template) {
         if (!template) {
