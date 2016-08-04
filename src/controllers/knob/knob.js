@@ -5,11 +5,43 @@
         gradeNames: ["sisiliano.slider"],
         template: "src/controllers/knob/knob.html",
         model: {
-            radius: 130
+            styles: {
+                valueText: {
+                    "x": 40,
+                    "y": 170,
+                    "class": "unselectable sisiliano-knob-value-text",
+                    "font-family": "inherit",
+                    "fill": "#009688",
+                    "font-style": "italic",
+                    "font-size": "80px"
+                },
+                valueKnob: {
+                    "class": "sisiliano-knob-circle sisiliano-knob-value-circle",
+                    "cx": 150,
+                    "cy": 150,
+                    "fill": "transparent",
+                    "fill-opacity": 0,
+                    "r": 130,
+                    "stroke": "#009688",
+                    "stroke-width": 20,
+                    "transform": "rotate(90, 150, 150)"
+                },
+                backgroundKnob: {
+                    "class": "sisiliano-knob-circle sisiliano-knob-background-circle",
+                    "cx": 150,
+                    "cy": 150,
+                    "fill": "white",
+                    "fill-opacity": 0,
+                    "r": 130,
+                    "stroke": "white",
+                    "stroke-dashoffset": 0,
+                    "stroke-opacity": 0.4,
+                    "stroke-width": 10
+                }
+            }
         },
         ariaDescription: "Use up and down keys to increase and decrease the value. If you are using the mouse, Drag around the center to adjust the value",
         selectors: {
-            controller: ".sisiliano",
             svg: "svg",
             valueLabel: ".sisiliano-knob-value-text",
             valueCircle: ".sisiliano-knob-value-circle",
@@ -21,7 +53,19 @@
             onReady: [
                 {
                     func: "sisiliano.knob.onRadiusChange",
-                    args: ["{that}", "{that}.model.radius"]
+                    args: ["{that}", "{that}.model.styles.valueKnob.r"]
+                },
+                {
+                    func: "sisiliano.util.applyStylesToTheElement",
+                    args: ["{that}.dom.valueLabel", "{that}.model.styles.valueText", "{that}.options.styleRules"]
+                },
+                {
+                    func: "sisiliano.util.applyStylesToTheElement",
+                    args: ["{that}.dom.valueCircle", "{that}.model.styles.valueKnob", "{that}.options.styleRules"]
+                },
+                {
+                    func: "sisiliano.util.applyStylesToTheElement",
+                    args: ["{that}.dom.knobBackgroundCircle", "{that}.model.styles.backgroundKnob", "{that}.options.styleRules"]
                 },
                 {
                     func: "sisiliano.knob.addListeners",
@@ -42,18 +86,36 @@
             }
         },
         modelListeners: {
-            radius: {
+            "styles.valueKnob.r": {
                 func: "sisiliano.knob.onRadiusChange",
-                args: ["{that}", "{that}.model.radius"]
+                args: ["{that}", "{that}.model.styles.valueKnob.r"]
+            },
+            "styles.valueText.*": {
+                func: "sisiliano.util.applyStylesToTheElement",
+                args: ["{that}.dom.valueLabel", "{that}.model.styles.valueText", "{that}.options.styleRules"]
+            },
+            "styles.valueKnob.*": {
+                func: "sisiliano.util.applyStylesToTheElement",
+                args: ["{that}.dom.valueCircle", "{that}.model.styles.valueKnob", "{that}.options.styleRules"]
+            },
+            "styles.backgroundKnob.*": {
+                func: "sisiliano.util.applyStylesToTheElement",
+                args: ["{that}.dom.knobBackgroundCircle", "{that}.model.styles.backgroundKnob", "{that}.options.styleRules"]
             }
+        },
+        styleRules: {
+            attributes: [
+                "class", "cx", "cy",
+                "stroke", "stroke-dasharray", "stroke-dashoffset", "stroke-width",
+                "x", "y", "width", "height", "fill", "fill-opacity",
+                "stroke-opacity", "transform",  "r"
+            ]
         }
     });
 
     sisiliano.knob.onRadiusChange = function (that, radius) {
-        that.locate("knobBackgroundCircle").attr("r", radius);
-        var circumference = 2 * radius * Math.PI;
-        that.applier.change("circumference", circumference);
-        that.locate("circles").attr("stroke-dasharray", circumference);
+        var circumference = sisiliano.knob.getCircumference(radius);
+        that.applier.change("styles.valueKnob.stroke-dasharray", circumference);
     };
 
     sisiliano.knob.onStatusChange = function (that, isActive) {
@@ -63,16 +125,21 @@
 
     sisiliano.knob.onValueChange = function (that, obviousValue) {
         var valueRange = that.model.size;
-        var offset = ((that.model.circumference / valueRange) * (valueRange - obviousValue)) + "px";
-        that.locate("valueCircle").attr("stroke-dashoffset", offset);
+        var circumference = sisiliano.knob.getCircumference(that.model.styles.valueKnob.r);
+        var offset = ((circumference / valueRange) * (valueRange - obviousValue)) ;
+        that.applier.change("styles.valueKnob.stroke-dashoffset", offset);
+    };
+
+    sisiliano.knob.getCircumference = function (radius) {
+        return 2 * radius * Math.PI;
     };
 
     sisiliano.knob.onColorChange = function (that, newColor) {
-        that.locate("valueCircle").css("stroke", newColor[0]);
-        that.locate("knobBackgroundCircle").css("stroke", newColor[0]);
-        that.locate("valueCircle").css("fill", newColor[0]);
-        that.locate("knobBackgroundCircle").css("fill", newColor[0]);
-        that.locate("valueLabel").css("fill", newColor[0]);
+        that.applier.change("styles.valueKnob.fill", newColor[0]);
+        that.applier.change("styles.valueKnob.stroke", newColor[0]);
+        that.applier.change("styles.backgroundKnob.fill", newColor[0]);
+        that.applier.change("styles.backgroundKnob.stroke", newColor[0]);
+        that.applier.change("styles.valueText.fill", newColor[0]);
     };
 
     sisiliano.knob.addListeners = function (that) {

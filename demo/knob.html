@@ -41,10 +41,10 @@
                 "#4CAF50",
                 "#CDDC39",
                 "#673AB7",
-                "#FFEB3B",
+                "#FFEB3B"
             ];
             for (var i = 0; i < tds.length; i++) {
-                var randomColorIndex = Math.floor(Math.random() * colors.length - 1);
+                var randomColorIndex = Math.floor(Math.random() * (colors.length - 1));
                 sisiliano.knob(tds[i], {
                     model: {
                         color: [colors[randomColorIndex], "black"],
@@ -131,7 +131,36 @@ sisiliano.knob($('#preview'), {
         min: 10,
         max: 150,
         color: "white",
-        value: 23
+        value: 23,
+        styles: {
+            valueText: {
+                /* #### CSS classes ###
+                class: "class-name1 class-name2"
+                */
+
+                /* ### CSS properties ###
+                fill: "res"
+                */
+            },
+            valueKnob: {
+                /* #### CSS classes ###
+                class: "class-name1 class-name2"
+                */
+
+                /* ### CSS properties ###
+                fill: "res"
+                */
+            },
+            backgroundKnob: {
+                /* #### CSS classes ###
+                class: "class-name1 class-name2"
+                */
+
+                /* ### CSS properties ###
+                fill: "res"
+                */
+            }
+        }
     }
 });
             </div>
