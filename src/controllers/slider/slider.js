@@ -19,7 +19,6 @@
         },
         ariaDescription: "",
         selectors: {
-            controller: ".sisiliano",
             svg: "svg",
             valueLabel: ".sisiliano-slider-value-text"
         },
