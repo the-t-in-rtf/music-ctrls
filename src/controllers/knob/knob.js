@@ -102,14 +102,6 @@
                 func: "sisiliano.util.applyStylesToTheElement",
                 args: ["{that}.dom.knobBackgroundCircle", "{that}.model.styles.backgroundKnob", "{that}.options.styleRules"]
             }
-        },
-        styleRules: {
-            attributes: [
-                "class", "cx", "cy",
-                "stroke", "stroke-dasharray", "stroke-dashoffset", "stroke-width",
-                "x", "y", "width", "height", "fill", "fill-opacity",
-                "stroke-opacity", "transform",  "r"
-            ]
         }
     });
 

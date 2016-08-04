@@ -27,13 +27,13 @@
                         "font-size": "20px",
                         fill: "white"
                     },
-                    value: {
+                    valuePointer: {
                         width: 30,
                         height: 30,
                         rx: "50%",
                         ry: "50%"
                     },
-                    valueShadow: {
+                    valuePointerShadow: {
                         width: 110,
                         height: 110,
                         rx: "50%",
@@ -112,9 +112,35 @@
             ]
         },
         modelListeners: {
-            "styles.*": {
+            "styles.controller.*": {
                 func: "sisiliano.linearSlider.onSliderStyleChange",
                 args: ["{that}", "{that}.model.styles"]
+            },
+            "styles.sliderBar.valueBar": {
+                func: "sisiliano.util.applyStylesToTheElement",
+                args: ["{that}.dom.valueRect", "{that}.model.styles.sliderBar.valueBar", "{that}.options.styleRules"]
+            },
+            "styles.sliderBar.backgroundBar": {
+                func: "sisiliano.util.applyStylesToTheElement",
+                args: ["{that}.dom.backgroundRect", "{that}.model.styles.sliderBar.backgroundBar", "{that}.options.styleRules"]
+            },
+            "styles.pointer.label.*": {
+                func: "sisiliano.util.applyStylesToTheElement",
+                args: ["{that}.dom.valueLabelRect", "{that}.model.styles.pointer.label", "{that}.options.styleRules"]
+            },
+            "styles.pointer.labelText.*": {
+                func: "sisiliano.util.applyStylesToTheElement",
+                args: ["{that}.dom.valueLabel", "{that}.model.styles.pointer.labelText", "{that}.options.styleRules"]
+            },
+            "styles.pointer.valuePointer.*": {
+                func: "sisiliano.util.applyStylesToTheElement",
+                args: ["{that}.dom.valuePointer", "{that}.model.styles.pointer.valuePointer",
+                    "{that}.options.styleRules"]
+            },
+            "styles.pointer.valuePointerShadow.*": {
+                func: "sisiliano.util.applyStylesToTheElement",
+                args: ["{that}.dom.valuePointerHover", "{that}.model.styles.pointer.valuePointerShadow",
+                    "{that}.options.styleRules"]
             }
         }
     });
@@ -132,41 +158,36 @@
     sisiliano.linearSlider.onSliderBarStyleChange = sisiliano.linearSlider.onSliderPointerStyleChange = function (that) {
         var barCenterY = (that.model.styles.sliderBar.backgroundBar.height / 2) + that.model.styles.sliderBar.padding.top;
 
-        sisiliano.util.applyStyles(that.locate("valueRect"), that.model.styles.sliderBar.valueBar, ["x", "y", "width"]);
-        that.locate("valueRect")
-            .attr("x", that.model.styles.sliderBar.padding.left)
-            .attr("y", barCenterY - (that.model.styles.sliderBar.valueBar.height / 2))
-            .attr("width", that.model.styles.controller.width - that.model.styles.sliderBar.padding.left - that.model.styles.sliderBar.padding.right)
-            .attr("height", that.model.styles.sliderBar.valueBar.height);
+        that.applier.change("styles.sliderBar.valueBar.x", that.model.styles.sliderBar.padding.left);
+        that.applier.change("styles.sliderBar.valueBar.y",
+            barCenterY - (that.model.styles.sliderBar.valueBar.height / 2));
+        that.applier.change("styles.sliderBar.valueBar.width",
+            that.model.styles.controller.width - that.model.styles.sliderBar.padding.left - that.model.styles.sliderBar.padding.right);
+        that.applier.change("styles.sliderBar.valueBar.height", that.model.styles.sliderBar.valueBar.height);
 
-        sisiliano.util.applyStyles(that.locate("backgroundRect"), that.model.styles.sliderBar.backgroundBar,
-            ["x", "y", "width"]);
-        that.locate("backgroundRect")
-            .attr("x", that.model.styles.sliderBar.padding.left)
-            .attr("y", barCenterY - (that.model.styles.sliderBar.backgroundBar.height / 2))
-            .attr("width", that.model.styles.controller.width - that.model.styles.sliderBar.padding.left - that.model.styles.sliderBar.padding.right)
-            .attr("height", that.model.styles.sliderBar.backgroundBar.height);
+        that.applier.change("styles.sliderBar.backgroundBar.x", that.model.styles.sliderBar.padding.left);
+        that.applier.change("styles.sliderBar.backgroundBar.y",
+            barCenterY - (that.model.styles.sliderBar.backgroundBar.height / 2));
+        that.applier.change("styles.sliderBar.backgroundBar.width",
+            that.model.styles.controller.width - that.model.styles.sliderBar.padding.left - that.model.styles.sliderBar.padding.right);
+        that.applier.change("styles.sliderBar.backgroundBar.height",
+            that.model.styles.sliderBar.backgroundBar.height);
     };
 
     sisiliano.linearSlider.onSliderPointerLabelStyleChange = sisiliano.linearSlider.onSliderPointerStyleChange = function (that) {
         var barCenterY = (that.model.styles.sliderBar.backgroundBar.height / 2) + that.model.styles.sliderBar.padding.top;
 
-        sisiliano.util.applyStyles(that.locate("valueLabel"), that.model.styles.pointer.labelText, ["y", "padding", "margin"]);
-        that.locate("valueLabel")
-            .attr(
-                "y",
-                barCenterY - (that.model.styles.pointer.value.height / 2) - that.model.styles.pointer.label.padding.bottom - that.model.styles.pointer.label.margin.bottom
-            );
+        that.applier.change("styles.pointer.labelText.y",
+            barCenterY - (that.model.styles.pointer.valuePointer.height / 2) - that.model.styles.pointer.label.padding.bottom - that.model.styles.pointer.label.margin.bottom);
 
-        sisiliano.util.applyStyles(that.locate("valueLabelRect"), that.model.styles.pointer.label,
-            ["x", "y", "width", "height"]);
         if (that.locate("valueLabel").length > 0) {
             var SVGRect = d3.select(that.locate("valueLabel").get(0))[0][0].getBBox();
-            that.locate("valueLabelRect")
-                .attr("x", SVGRect.x - that.model.styles.pointer.label.padding.left)
-                .attr("y", SVGRect.y - that.model.styles.pointer.label.padding.top)
-                .attr("width", SVGRect.width + that.model.styles.pointer.label.padding.left + that.model.styles.pointer.label.padding.right)
-                .attr("height", SVGRect.height + that.model.styles.pointer.label.padding.bottom + that.model.styles.pointer.label.padding.top);
+            that.applier.change("styles.pointer.label.x", SVGRect.x - that.model.styles.pointer.label.padding.left);
+            that.applier.change("styles.pointer.label.y", SVGRect.y - that.model.styles.pointer.label.padding.top);
+            that.applier.change("styles.pointer.label.width",
+                SVGRect.width + that.model.styles.pointer.label.padding.left + that.model.styles.pointer.label.padding.right);
+            that.applier.change("styles.pointer.label.height",
+                SVGRect.height + that.model.styles.pointer.label.padding.bottom + that.model.styles.pointer.label.padding.top);
         }
     };
 
@@ -177,24 +198,11 @@
         var barCenterY = (that.model.styles.sliderBar.backgroundBar.height / 2) + that.model.styles.sliderBar.padding.top;
 
         //Value pointer
-        sisiliano.util.applyStyles(that.locate("valuePointer"), that.model.styles.pointer.value,
-            ["width", "height", "x", "y", "rx", "ry"]);
-        that.locate("valuePointer")
-            .attr("width", that.model.styles.pointer.value.width)
-            .attr("height", that.model.styles.pointer.value.height)
-            .attr("y", barCenterY - (that.model.styles.pointer.value.height / 2))
-            .attr("rx", that.model.styles.pointer.value.rx)
-            .attr("ry", that.model.styles.pointer.value.ry);
+        that.applier.change("styles.pointer.valuePointer.y", barCenterY - (that.model.styles.pointer.valuePointer.height / 2));
 
         //Value pointer hover
-        sisiliano.util.applyStyles(that.locate("valuePointerHover"), that.model.styles.pointer.valueShadow,
-            ["width", "height", "x", "y", "rx", "ry"]);
-        that.locate("valuePointerHover")
-            .attr("width", that.model.styles.pointer.valueShadow.width)
-            .attr("height", that.model.styles.pointer.valueShadow.height)
-            .attr("y", barCenterY - (that.model.styles.pointer.valueShadow.height / 2))
-            .attr("rx", that.model.styles.pointer.valueShadow.rx)
-            .attr("ry", that.model.styles.pointer.valueShadow.ry);
+        that.applier.change("styles.pointer.valuePointerShadow.y",
+            barCenterY - (that.model.styles.pointer.valuePointerShadow.height / 2));
     };
     
     sisiliano.linearSlider.onResize = function (that) {
@@ -220,20 +228,30 @@
         var maxWidth = parseInt(that.locate("backgroundRect").attr("width"), null);
         var leftPadding = parseInt(that.locate("backgroundRect").attr("x"), null);
         var newWidth = maxWidth * (obviousValue / valueRange);
-        that.locate("valueRect").attr("width", newWidth);
-        that.locate("valuePointer").attr("x", newWidth + leftPadding - (that.model.styles.pointer.value.width / 2));
-        that.locate("valuePointerHover").attr("x", newWidth + leftPadding - that.model.styles.pointer.valueShadow.width / 2);
-        that.locate("valueLabel").attr("x", newWidth + leftPadding);
+
+        that.applier.change("styles.sliderBar.valueBar.width", newWidth);
+        that.applier.change("styles.pointer.valuePointer.x",
+            newWidth + leftPadding - (that.model.styles.pointer.valuePointer.width / 2));
+        that.applier.change("styles.pointer.valuePointerShadow.x",
+            newWidth + leftPadding - that.model.styles.pointer.valuePointerShadow.width / 2);
+        that.applier.change("styles.pointer.labelText.x", newWidth + leftPadding);
 
         sisiliano.linearSlider.onSliderPointerLabelStyleChange(that);
     };
 
     sisiliano.linearSlider.onColorChange = function (that, newColor) {
-        that.locate("rects").attr("fill", newColor[0]);
-        that.locate("valueLabelRect").attr("fill", newColor[0]);
-        that.locate("valueLabel").attr("fill", newColor[1]);
-        that.locate("valuePointer").attr("fill", newColor[0]);
-        that.locate("valuePointerHover").attr("fill", newColor[0]);
+        that.applier.change("styles.sliderBar.valueBar.fill",
+            that.model.styles.sliderBar.valueBar.fill || newColor[0]);
+        that.applier.change("styles.sliderBar.backgroundBar.fill",
+            that.model.styles.sliderBar.backgroundBar.fill || newColor[0]);
+        that.applier.change("styles.pointer.label.fill",
+            that.model.styles.pointer.label.fill || newColor[0]);
+        that.applier.change("styles.pointer.labelText.fill",
+            that.model.styles.pointer.labelText.fill || newColor[1]);
+        that.applier.change("styles.pointer.valuePointer.fill",
+            that.model.styles.pointer.valuePointer.fill || newColor[0]);
+        that.applier.change("styles.pointer.valuePointerShadow.fill",
+            that.model.styles.pointer.valuePointerShadow.fill || newColor[0]);
     };
 
     sisiliano.linearSlider.setValueByPosition = function (that, clickedPosition) {
