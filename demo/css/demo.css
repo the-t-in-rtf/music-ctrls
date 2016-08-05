@@ -6,6 +6,13 @@
     left: 0;
 }
 
+.fork-me {
+    z-index: 100;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: 0;
+}
 
 .introduction-div {
     width: 50%;
