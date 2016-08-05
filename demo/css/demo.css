@@ -6,6 +6,35 @@
     left: 0;
 }
 
+
+.introduction-div {
+    width: 50%;
+}
+
+@media screen and (max-width: 1150px) {
+    .introduction-div {
+        width: 100%;
+    }
+}
+
+.box {
+    float: left;
+    position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+    display: block;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.box:after, .box:before {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
 .description {
     padding: 5px;
     /* background: rgba(0, 0, 0, 0.78); */
@@ -58,6 +87,10 @@ body {
 }
 
 .play-btn {
+    border-radius: 5px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    cursor: pointer;
     color: white;
     top: 70px;
     position: relative;
