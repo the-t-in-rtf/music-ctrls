@@ -1,4 +1,4 @@
-/*! sisiliano - v1.0.0 - 2016-08-04 
+/*! sisiliano - v1.0.0 - 2016-08-05 
 
 */var htmlTempl = htmlTempl || {};
 htmlTempl["templates"] = {"src/controllers/knob/knob.html":"<svg\r\n        id=\"{{id}}\"\r\n        aria-hidden=\"true\"\r\n        viewBox=\"0 0 300 300\"\r\n        width=\"100%\"\r\n        height=\"100%\"\r\n        class=\"sisiliano-knob\">\r\n    <defs\r\n            id=\"defs4\">\r\n        <filter style=\"color-interpolation-filters:sRGB;\" id=\"{{id}}-drop-shadow\" x=\"-100%\" y=\"-100%\" width=\"300%\" height=\"400%\">\r\n            <feFlood flood-opacity=\"0.5\" flood-color=\"{{color.[1]}}\" result=\"flood\"></feFlood>\r\n            <feComposite in=\"flood\" in2=\"SourceGraphic\" operator=\"in\" result=\"comp\"></feComposite>\r\n            <feOffset dx=\"0\" dy=\"0\" result=\"offset\"></feOffset>\r\n            <feGaussianBlur in=\"offset\" stdDeviation=\"4\" result=\"blur\"></feGaussianBlur>\r\n            <feBlend in=\"SourceGraphic\" in2=\"blur\" mode=\"normal\"></feBlend>\r\n        </filter>\r\n        <filter style=\"color-interpolation-filters:sRGB;\" id=\"{{id}}-hover-drop-shadow\" x=\"-100%\" y=\"-100%\" width=\"300%\" height=\"400%\">\r\n            <feFlood flood-opacity=\"0.5\" flood-color=\"{{color.[1]}}\" result=\"flood\"></feFlood>\r\n            <feComposite in=\"flood\" in2=\"SourceGraphic\" operator=\"in\" result=\"comp\"></feComposite>\r\n            <feOffset dx=\"0\" dy=\"0\" result=\"offset\"></feOffset>\r\n            <feGaussianBlur in=\"offset\" stdDeviation=\"6\" result=\"blur\"></feGaussianBlur>\r\n            <feBlend in=\"SourceGraphic\" in2=\"blur\" mode=\"normal\"></feBlend>\r\n        </filter>\r\n    </defs>\r\n\r\n    <style>\r\n        #{{id}} .sisiliano-knob-circle,\r\n        #{{id}} .sisiliano-border {\r\n            filter: url(\"#{{id}}-drop-shadow\");\r\n        }\r\n\r\n        #{{id}} .sisiliano:focus .sisiliano-knob-circle {\r\n            filter: url(\"#{{id}}-hover-drop-shadow\");\r\n        }\r\n    </style>\r\n\r\n    <rect\r\n            class=\"sisiliano-border-div sisiliano-border\"\r\n            width=\"100%\"\r\n            height=\"100%\"\r\n            rx=\"50%\"\r\n            ry=\"50%\"\r\n            x=\"0\"\r\n            y=\"0\">\r\n    </rect>\r\n\r\n    <g class=\"sisiliano-controller-div\">\r\n        <circle\r\n                class=\"sisiliano-knob-circle sisiliano-knob-background-circle\"\r\n                id=\"circle5634\"\r\n                r=\"130\"\r\n                cx=\"150\"\r\n                cy=\"150\"/>\r\n        <text xmlns=\"http://www.w3.org/2000/svg\" x=\"40\" y=\"170\"\r\n              class=\"unselectable sisiliano-knob-value-text\">\r\n            100\r\n        </text>\r\n        <circle\r\n                class=\"sisiliano-knob-circle sisiliano-knob-value-circle\"\r\n                fill=\"transparent\"\r\n                id=\"circle5636\"\r\n                r=\"130\"\r\n                cx=\"150\"\r\n                cy=\"150\"\r\n                transform=\"rotate(90, 150, 150)\"\r\n                stroke-width=\"20\"/>\r\n    </g>\r\n</svg>","src/controllers/linear-slider/linear-slider.html":"<svg\r\n        id=\"{{id}}\"\r\n        aria-hidden=\"true\"\r\n        width=\"100%\"\r\n        height=\"100%\"\r\n        class=\"sisiliano-linear-slider\">\r\n    <defs\r\n            id=\"defs4\">\r\n        <filter style=\"color-interpolation-filters:sRGB;\" id=\"{{id}}-drop-shadow\" x=\"-100%\" y=\"-100%\" width=\"300%\" height=\"400%\">\r\n            <feFlood flood-opacity=\"0.5\" flood-color=\"{{color.[1]}}\" result=\"flood\"></feFlood>\r\n            <feComposite in=\"flood\" in2=\"SourceGraphic\" operator=\"in\" result=\"comp\"></feComposite>\r\n            <feOffset dx=\"0\" dy=\"0\" result=\"offset\"></feOffset>\r\n            <feGaussianBlur in=\"offset\" stdDeviation=\"4\" result=\"blur\"></feGaussianBlur>\r\n            <feBlend in=\"SourceGraphic\" in2=\"blur\" mode=\"normal\"></feBlend>\r\n        </filter>\r\n        <filter style=\"color-interpolation-filters:sRGB;\" id=\"{{id}}-hover-drop-shadow\" x=\"-100%\" y=\"-100%\" width=\"300%\" height=\"400%\">\r\n            <feFlood flood-opacity=\"0.5\" flood-color=\"{{color.[1]}}\" result=\"flood\"></feFlood>\r\n            <feComposite in=\"flood\" in2=\"SourceGraphic\" operator=\"in\" result=\"comp\"></feComposite>\r\n            <feOffset dx=\"0\" dy=\"0\" result=\"offset\"></feOffset>\r\n            <feGaussianBlur in=\"offset\" stdDeviation=\"6\" result=\"blur\"></feGaussianBlur>\r\n            <feBlend in=\"SourceGraphic\" in2=\"blur\" mode=\"normal\"></feBlend>\r\n        </filter>\r\n    </defs>\r\n\r\n    <style>\r\n        #{{id}}.sisiliano-linear-slider .sisiliano-linear-slider-background-rect,\r\n        #{{id}}.sisiliano-linear-slider .sisiliano-linear-slider-value-rect,\r\n        #{{id}}.sisiliano-linear-slider .sisiliano-linear-slider-value-pointer,\r\n        #{{id}}.sisiliano-linear-slider .sisiliano-linear-slider-value-pointer-hover,\r\n        #{{id}}.sisiliano-linear-slider .sisiliano-linear-slider-value-label,\r\n        #{{id}}.sisiliano-linear-slider .sisiliano-border {\r\n            filter: url(\"#{{id}}-drop-shadow\");\r\n        }\r\n\r\n        .sisiliano:focus #{{id}}.sisiliano-linear-slider .sisiliano-linear-slider-background-rect,\r\n        .sisiliano:focus #{{id}}.sisiliano-linear-slider .sisiliano-linear-slider-value-rect {\r\n            filter: url(\"#{{id}}-hover-drop-shadow\");\r\n        }\r\n    </style>\r\n\r\n    <rect\r\n            class=\"sisiliano-border-div sisiliano-border\"\r\n            width=\"100%\"\r\n            height=\"100%\"\r\n            x=\"0\"\r\n            y=\"0\">\r\n    </rect>\r\n\r\n    <g class=\"sisiliano-controller-div\">\r\n        <rect\r\n                class=\"sisiliano-linear-slider-rect sisiliano-linear-slider-background-rect\"\r\n                height=\"8\"\r\n                width=\"10\"\r\n                x=\"40\"\r\n                y=\"37\"/>\r\n        <rect\r\n                class=\"sisiliano-linear-slider-rect sisiliano-linear-slider-value-rect\"\r\n                height=\"10\"\r\n                width=\"200\"\r\n                x=\"40\"\r\n                y=\"36\"/>\r\n        <g class=\"sisiliano-linear-slider-ruler\"></g>\r\n        <rect\r\n                class=\"sisiliano-linear-slider-value-pointer sisiliano-linear-slider-value-pointer-hover\"\r\n                width=\"30\"\r\n                height=\"30\"\r\n                rx=\"50%\"\r\n                ry=\"50%\"\r\n                x=\"90\"\r\n                y=\"26\">\r\n        </rect>\r\n        <rect\r\n                class=\"sisiliano-linear-slider-value-pointer sisiliano-linear-slider-value-pointer\"\r\n                width=\"20\"\r\n                height=\"20\"\r\n                rx=\"50%\"\r\n                ry=\"50%\"\r\n                x=\"90\"\r\n                y=\"31\">\r\n        </rect>\r\n        <rect\r\n                class=\"sisiliano-linear-slider-value-label\"\r\n                x=\"10\"\r\n                y=\"0\"\r\n                fill=\"{{color}}\"\r\n                width=\"50\"\r\n                height=\"20\"\r\n                rx=\"2\"\r\n                ry=\"2\">\r\n        </rect>\r\n        <text text-anchor=\"middle\"\r\n              x=\"10\"\r\n              y=\"15\"\r\n              class=\"unselectable sisiliano-linear-slider-value-text\">\r\n            100\r\n        </text>\r\n    </g>\r\n</svg>","src/controllers/piano/piano.html":"<div tabindex=\"0\" class=\"sisiliano\" aria-label=\"{{title}} ,{{description}}\" id=\"{{id}}\">\r\n    <svg\r\n            class=\"sisiliano-piano\"\r\n            width=\"100%\"\r\n            height=\"100%\"\r\n            viewBox=\"0 0 {{viewBox.width}} {{viewBox.height}}\">\r\n        <defs\r\n                id=\"defs4\">\r\n            <filter style=\"color-interpolation-filters:sRGB;\" id=\"{{id}}-drop-shadow\" x=\"-100%\" y=\"-100%\" width=\"300%\" height=\"400%\">\r\n                <feFlood flood-opacity=\"0.5\" flood-color=\"{{color.[1]}}\" result=\"flood\"></feFlood>\r\n                <feComposite in=\"flood\" in2=\"SourceGraphic\" operator=\"in\" result=\"comp\"></feComposite>\r\n                <feOffset dx=\"0\" dy=\"0\" result=\"offset\"></feOffset>\r\n                <feGaussianBlur in=\"offset\" stdDeviation=\"4\" result=\"blur\"></feGaussianBlur>\r\n                <feBlend in=\"SourceGraphic\" in2=\"blur\" mode=\"normal\"></feBlend>\r\n            </filter>\r\n            <filter style=\"color-interpolation-filters:sRGB;\" id=\"{{id}}-hover-drop-shadow\" x=\"-100%\" y=\"-100%\" width=\"300%\" height=\"400%\">\r\n                <feFlood flood-opacity=\"0.5\" flood-color=\"{{color.[1]}}\" result=\"flood\"></feFlood>\r\n                <feComposite in=\"flood\" in2=\"SourceGraphic\" operator=\"in\" result=\"comp\"></feComposite>\r\n                <feOffset dx=\"0\" dy=\"0\" result=\"offset\"></feOffset>\r\n                <feGaussianBlur in=\"offset\" stdDeviation=\"6\" result=\"blur\"></feGaussianBlur>\r\n                <feBlend in=\"SourceGraphic\" in2=\"blur\" mode=\"normal\"></feBlend>\r\n            </filter>\r\n        </defs>\r\n\r\n        <style>\r\n            /* These styles have been added seperately as a fix for firefox and IE */\r\n            #{{id}}.sisiliano .sisiliano-piano .sisiliano-piano-white-key {\r\n                filter: url('#{{id}}-drop-shadow');\r\n            }\r\n\r\n            #{{id}}.sisiliano .sisiliano-piano .sisiliano-piano-black-key {\r\n                filter: url('#{{id}}-drop-shadow');\r\n            }\r\n\r\n            #{{id}}.sisiliano-border {\r\n                filter: url(\"#{{id}}-hover-drop-shadow\");\r\n            }\r\n\r\n            #{{id}}.sisiliano .sisiliano-piano .sisiliano-piano-key-pressed {\r\n                fill: {{color.[0]}};\r\n                stroke: {{color.[0]}};\r\n            }\r\n        </style>\r\n        <rect\r\n                class=\"sisiliano-border-div sisiliano-border\"\r\n                width=\"100%\"\r\n                height=\"100%\"\r\n                x=\"0\"\r\n                y=\"0\">\r\n        </rect>\r\n        <g style=\"display:inline\" class=\"sisiliano-piano-key-board sisiliano-controller-div\">\r\n        </g>\r\n    </svg>\r\n</div>\r\n"};
@@ -201,6 +201,14 @@ htmlTempl["templates"] = {"src/controllers/knob/knob.html":"<svg\r\n        id=\
                     func: "{that}.events.onColorChange.fire",
                     args: ["{that}", "{that}.model.color"]
                 }
+            ]
+        },
+        styleRules: {
+            attributes: [
+                "class", "cx", "cy",
+                "stroke", "stroke-dasharray", "stroke-dashoffset", "stroke-width",
+                "x", "y", "width", "height", "fill", "fill-opacity",
+                "stroke-opacity", "transform",  "r"
             ]
         }
     });
@@ -499,14 +507,6 @@ htmlTempl["templates"] = {"src/controllers/knob/knob.html":"<svg\r\n        id=\
                 func: "sisiliano.util.applyStylesToTheElement",
                 args: ["{that}.dom.knobBackgroundCircle", "{that}.model.styles.backgroundKnob", "{that}.options.styleRules"]
             }
-        },
-        styleRules: {
-            attributes: [
-                "class", "cx", "cy",
-                "stroke", "stroke-dasharray", "stroke-dashoffset", "stroke-width",
-                "x", "y", "width", "height", "fill", "fill-opacity",
-                "stroke-opacity", "transform",  "r"
-            ]
         }
     });
 
@@ -553,7 +553,7 @@ htmlTempl["templates"] = {"src/controllers/knob/knob.html":"<svg\r\n        id=\
         document.addEventListener("mousemove", function (evt) {
             var svgElm = that.locate("svg");
             if (svgElm && svgElm.length > 0) {
-                var svgPosition = svgElm.position();
+                var svgPosition = svgElm.offset();
                 var center = {x: svgPosition.left + (svgElm.width() / 2), y: svgPosition.top + (svgElm.height() / 2)};
                 var clickedPosition = {x: evt.pageX, y: evt.pageY};
                 if (that.model.status.isActive) {
@@ -609,13 +609,13 @@ htmlTempl["templates"] = {"src/controllers/knob/knob.html":"<svg\r\n        id=\
                         "font-size": "20px",
                         fill: "white"
                     },
-                    value: {
+                    valuePointer: {
                         width: 30,
                         height: 30,
                         rx: "50%",
                         ry: "50%"
                     },
-                    valueShadow: {
+                    valuePointerShadow: {
                         width: 110,
                         height: 110,
                         rx: "50%",
@@ -694,9 +694,35 @@ htmlTempl["templates"] = {"src/controllers/knob/knob.html":"<svg\r\n        id=\
             ]
         },
         modelListeners: {
-            "styles.*": {
+            "styles.controller.*": {
                 func: "sisiliano.linearSlider.onSliderStyleChange",
                 args: ["{that}", "{that}.model.styles"]
+            },
+            "styles.sliderBar.valueBar": {
+                func: "sisiliano.util.applyStylesToTheElement",
+                args: ["{that}.dom.valueRect", "{that}.model.styles.sliderBar.valueBar", "{that}.options.styleRules"]
+            },
+            "styles.sliderBar.backgroundBar": {
+                func: "sisiliano.util.applyStylesToTheElement",
+                args: ["{that}.dom.backgroundRect", "{that}.model.styles.sliderBar.backgroundBar", "{that}.options.styleRules"]
+            },
+            "styles.pointer.label.*": {
+                func: "sisiliano.util.applyStylesToTheElement",
+                args: ["{that}.dom.valueLabelRect", "{that}.model.styles.pointer.label", "{that}.options.styleRules"]
+            },
+            "styles.pointer.labelText.*": {
+                func: "sisiliano.util.applyStylesToTheElement",
+                args: ["{that}.dom.valueLabel", "{that}.model.styles.pointer.labelText", "{that}.options.styleRules"]
+            },
+            "styles.pointer.valuePointer.*": {
+                func: "sisiliano.util.applyStylesToTheElement",
+                args: ["{that}.dom.valuePointer", "{that}.model.styles.pointer.valuePointer",
+                    "{that}.options.styleRules"]
+            },
+            "styles.pointer.valuePointerShadow.*": {
+                func: "sisiliano.util.applyStylesToTheElement",
+                args: ["{that}.dom.valuePointerHover", "{that}.model.styles.pointer.valuePointerShadow",
+                    "{that}.options.styleRules"]
             }
         }
     });
@@ -714,41 +740,36 @@ htmlTempl["templates"] = {"src/controllers/knob/knob.html":"<svg\r\n        id=\
     sisiliano.linearSlider.onSliderBarStyleChange = sisiliano.linearSlider.onSliderPointerStyleChange = function (that) {
         var barCenterY = (that.model.styles.sliderBar.backgroundBar.height / 2) + that.model.styles.sliderBar.padding.top;
 
-        sisiliano.util.applyStyles(that.locate("valueRect"), that.model.styles.sliderBar.valueBar, ["x", "y", "width"]);
-        that.locate("valueRect")
-            .attr("x", that.model.styles.sliderBar.padding.left)
-            .attr("y", barCenterY - (that.model.styles.sliderBar.valueBar.height / 2))
-            .attr("width", that.model.styles.controller.width - that.model.styles.sliderBar.padding.left - that.model.styles.sliderBar.padding.right)
-            .attr("height", that.model.styles.sliderBar.valueBar.height);
+        that.applier.change("styles.sliderBar.valueBar.x", that.model.styles.sliderBar.padding.left);
+        that.applier.change("styles.sliderBar.valueBar.y",
+            barCenterY - (that.model.styles.sliderBar.valueBar.height / 2));
+        that.applier.change("styles.sliderBar.valueBar.width",
+            that.model.styles.controller.width - that.model.styles.sliderBar.padding.left - that.model.styles.sliderBar.padding.right);
+        that.applier.change("styles.sliderBar.valueBar.height", that.model.styles.sliderBar.valueBar.height);
 
-        sisiliano.util.applyStyles(that.locate("backgroundRect"), that.model.styles.sliderBar.backgroundBar,
-            ["x", "y", "width"]);
-        that.locate("backgroundRect")
-            .attr("x", that.model.styles.sliderBar.padding.left)
-            .attr("y", barCenterY - (that.model.styles.sliderBar.backgroundBar.height / 2))
-            .attr("width", that.model.styles.controller.width - that.model.styles.sliderBar.padding.left - that.model.styles.sliderBar.padding.right)
-            .attr("height", that.model.styles.sliderBar.backgroundBar.height);
+        that.applier.change("styles.sliderBar.backgroundBar.x", that.model.styles.sliderBar.padding.left);
+        that.applier.change("styles.sliderBar.backgroundBar.y",
+            barCenterY - (that.model.styles.sliderBar.backgroundBar.height / 2));
+        that.applier.change("styles.sliderBar.backgroundBar.width",
+            that.model.styles.controller.width - that.model.styles.sliderBar.padding.left - that.model.styles.sliderBar.padding.right);
+        that.applier.change("styles.sliderBar.backgroundBar.height",
+            that.model.styles.sliderBar.backgroundBar.height);
     };
 
     sisiliano.linearSlider.onSliderPointerLabelStyleChange = sisiliano.linearSlider.onSliderPointerStyleChange = function (that) {
         var barCenterY = (that.model.styles.sliderBar.backgroundBar.height / 2) + that.model.styles.sliderBar.padding.top;
 
-        sisiliano.util.applyStyles(that.locate("valueLabel"), that.model.styles.pointer.labelText, ["y", "padding", "margin"]);
-        that.locate("valueLabel")
-            .attr(
-                "y",
-                barCenterY - (that.model.styles.pointer.value.height / 2) - that.model.styles.pointer.label.padding.bottom - that.model.styles.pointer.label.margin.bottom
-            );
+        that.applier.change("styles.pointer.labelText.y",
+            barCenterY - (that.model.styles.pointer.valuePointer.height / 2) - that.model.styles.pointer.label.padding.bottom - that.model.styles.pointer.label.margin.bottom);
 
-        sisiliano.util.applyStyles(that.locate("valueLabelRect"), that.model.styles.pointer.label,
-            ["x", "y", "width", "height"]);
         if (that.locate("valueLabel").length > 0) {
             var SVGRect = d3.select(that.locate("valueLabel").get(0))[0][0].getBBox();
-            that.locate("valueLabelRect")
-                .attr("x", SVGRect.x - that.model.styles.pointer.label.padding.left)
-                .attr("y", SVGRect.y - that.model.styles.pointer.label.padding.top)
-                .attr("width", SVGRect.width + that.model.styles.pointer.label.padding.left + that.model.styles.pointer.label.padding.right)
-                .attr("height", SVGRect.height + that.model.styles.pointer.label.padding.bottom + that.model.styles.pointer.label.padding.top);
+            that.applier.change("styles.pointer.label.x", SVGRect.x - that.model.styles.pointer.label.padding.left);
+            that.applier.change("styles.pointer.label.y", SVGRect.y - that.model.styles.pointer.label.padding.top);
+            that.applier.change("styles.pointer.label.width",
+                SVGRect.width + that.model.styles.pointer.label.padding.left + that.model.styles.pointer.label.padding.right);
+            that.applier.change("styles.pointer.label.height",
+                SVGRect.height + that.model.styles.pointer.label.padding.bottom + that.model.styles.pointer.label.padding.top);
         }
     };
 
@@ -759,24 +780,11 @@ htmlTempl["templates"] = {"src/controllers/knob/knob.html":"<svg\r\n        id=\
         var barCenterY = (that.model.styles.sliderBar.backgroundBar.height / 2) + that.model.styles.sliderBar.padding.top;
 
         //Value pointer
-        sisiliano.util.applyStyles(that.locate("valuePointer"), that.model.styles.pointer.value,
-            ["width", "height", "x", "y", "rx", "ry"]);
-        that.locate("valuePointer")
-            .attr("width", that.model.styles.pointer.value.width)
-            .attr("height", that.model.styles.pointer.value.height)
-            .attr("y", barCenterY - (that.model.styles.pointer.value.height / 2))
-            .attr("rx", that.model.styles.pointer.value.rx)
-            .attr("ry", that.model.styles.pointer.value.ry);
+        that.applier.change("styles.pointer.valuePointer.y", barCenterY - (that.model.styles.pointer.valuePointer.height / 2));
 
         //Value pointer hover
-        sisiliano.util.applyStyles(that.locate("valuePointerHover"), that.model.styles.pointer.valueShadow,
-            ["width", "height", "x", "y", "rx", "ry"]);
-        that.locate("valuePointerHover")
-            .attr("width", that.model.styles.pointer.valueShadow.width)
-            .attr("height", that.model.styles.pointer.valueShadow.height)
-            .attr("y", barCenterY - (that.model.styles.pointer.valueShadow.height / 2))
-            .attr("rx", that.model.styles.pointer.valueShadow.rx)
-            .attr("ry", that.model.styles.pointer.valueShadow.ry);
+        that.applier.change("styles.pointer.valuePointerShadow.y",
+            barCenterY - (that.model.styles.pointer.valuePointerShadow.height / 2));
     };
     
     sisiliano.linearSlider.onResize = function (that) {
@@ -802,20 +810,30 @@ htmlTempl["templates"] = {"src/controllers/knob/knob.html":"<svg\r\n        id=\
         var maxWidth = parseInt(that.locate("backgroundRect").attr("width"), null);
         var leftPadding = parseInt(that.locate("backgroundRect").attr("x"), null);
         var newWidth = maxWidth * (obviousValue / valueRange);
-        that.locate("valueRect").attr("width", newWidth);
-        that.locate("valuePointer").attr("x", newWidth + leftPadding - (that.model.styles.pointer.value.width / 2));
-        that.locate("valuePointerHover").attr("x", newWidth + leftPadding - that.model.styles.pointer.valueShadow.width / 2);
-        that.locate("valueLabel").attr("x", newWidth + leftPadding);
+
+        that.applier.change("styles.sliderBar.valueBar.width", newWidth);
+        that.applier.change("styles.pointer.valuePointer.x",
+            newWidth + leftPadding - (that.model.styles.pointer.valuePointer.width / 2));
+        that.applier.change("styles.pointer.valuePointerShadow.x",
+            newWidth + leftPadding - that.model.styles.pointer.valuePointerShadow.width / 2);
+        that.applier.change("styles.pointer.labelText.x", newWidth + leftPadding);
 
         sisiliano.linearSlider.onSliderPointerLabelStyleChange(that);
     };
 
     sisiliano.linearSlider.onColorChange = function (that, newColor) {
-        that.locate("rects").attr("fill", newColor[0]);
-        that.locate("valueLabelRect").attr("fill", newColor[0]);
-        that.locate("valueLabel").attr("fill", newColor[1]);
-        that.locate("valuePointer").attr("fill", newColor[0]);
-        that.locate("valuePointerHover").attr("fill", newColor[0]);
+        that.applier.change("styles.sliderBar.valueBar.fill",
+            that.model.styles.sliderBar.valueBar.fill || newColor[0]);
+        that.applier.change("styles.sliderBar.backgroundBar.fill",
+            that.model.styles.sliderBar.backgroundBar.fill || newColor[0]);
+        that.applier.change("styles.pointer.label.fill",
+            that.model.styles.pointer.label.fill || newColor[0]);
+        that.applier.change("styles.pointer.labelText.fill",
+            that.model.styles.pointer.labelText.fill || newColor[1]);
+        that.applier.change("styles.pointer.valuePointer.fill",
+            that.model.styles.pointer.valuePointer.fill || newColor[0]);
+        that.applier.change("styles.pointer.valuePointerShadow.fill",
+            that.model.styles.pointer.valuePointerShadow.fill || newColor[0]);
     };
 
     sisiliano.linearSlider.setValueByPosition = function (that, clickedPosition) {
@@ -840,7 +858,7 @@ htmlTempl["templates"] = {"src/controllers/knob/knob.html":"<svg\r\n        id=\
         document.addEventListener("mousemove", function (evt) {
             var svgElm = that.locate("svg");
             if (svgElm && svgElm.length > 0) {
-                var svgPosition = svgElm.position();
+                var svgPosition = svgElm.offset();
                 var svgWidth = svgElm.width();
                 var clickedPosition = {x: ((evt.pageX - svgPosition.left) / svgWidth) * that.model.viewBox.width, y: 0};
                 if (that.model.status.isActive) {
