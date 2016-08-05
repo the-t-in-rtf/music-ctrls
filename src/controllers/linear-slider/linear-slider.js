@@ -276,7 +276,7 @@
         document.addEventListener("mousemove", function (evt) {
             var svgElm = that.locate("svg");
             if (svgElm && svgElm.length > 0) {
-                var svgPosition = svgElm.position();
+                var svgPosition = svgElm.offset();
                 var svgWidth = svgElm.width();
                 var clickedPosition = {x: ((evt.pageX - svgPosition.left) / svgWidth) * that.model.viewBox.width, y: 0};
                 if (that.model.status.isActive) {
