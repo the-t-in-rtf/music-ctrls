@@ -10,9 +10,7 @@
     <script src="./source/bower_components/d3/d3.js"></script>
     <script src="./source/dist/sisiliano.js"></script>
     <script src="./source/bower_components/ace-builds/src-noconflict/ace.js"></script>
-    <style type="text/css" media="screen">
 
-    </style>
     <script>
         $(document).on('ready', function () {
             var tds = $('.test');
@@ -55,7 +53,7 @@
 
             $(".play-btn").on("load click", function (evt) {
                 $("#preview").empty();
-                $("#preview").html("<div class='box text-center' style='width: 100%'><i class='loading-animation fa-li fa fa-spinner fa-spin'></i></div>");
+                $("#preview").html("<div class='box text-center' style='width: 100%'><i class='loading-animation'></i></div>");
                 eval(editor.getValue());
             });
             $(".play-btn").draggable({containment: "parent"});
@@ -161,7 +159,7 @@ sisiliano.piano($('#preview'), {
     }
 });
             </div>
-            <a class="box btn play-btn glyphicon glyphicon-play">
+            <a class="box play-btn">
                 Run
             </a>
         </div>
