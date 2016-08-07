@@ -63,13 +63,9 @@ module.exports = function(grunt) {
             "demo-public": {
                 expand: true,
                 src: [
-                    "bower_components/bootstrap/dist/**/*.*",
-                    "bower_components/bootstrap/fonts/**/*.*",
                     "bower_components/jquery/dist/**/*.*",
                     "bower_components/d3/d3.js",
                     "bower_components/ace-builds/src-noconflict/**/*.*",
-                    "bower_components/font-awesome/css/**/*.*",
-                    "bower_components/font-awesome/fonts/**/*.*",
                     "lib/**/*.*",
                     "dist/**/*.*"
                 ],
