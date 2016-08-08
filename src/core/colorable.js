@@ -13,7 +13,7 @@
             onColorChange: null
         },
         modelListeners: {
-            "color": {
+            "color.*": {
                 func: "sisiliano.util.colorable.onColorChange",
                 args: ["{that}", "{that}.model.color"]
             }
