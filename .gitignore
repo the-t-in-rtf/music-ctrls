@@ -3,3 +3,4 @@ bower_components
 .idea
 dist
 demo/source/**
+test/html/lib/**
