@@ -9,9 +9,16 @@
 .fork-me {
     z-index: 100;
     position: fixed;
-    top: 0;
-    right: 0;
+    top: 40px;
+    right: -40px;
     border: 0;
+    transform: rotate(45deg);
+    background: #007200;
+    color: white;
+    padding: 10px;
+    width: 180px;
+    text-align: center;
+    text-decoration: blink;
 }
 
 .introduction-div {
