@@ -154,6 +154,26 @@
             sisiliano.tests.piano.mouseEvents.verifyMouseUp(piano, "Black key " + keyElm.attr("index"), keyElm,
                 "BLACK", i, soundBox);
         }
+
+        sisiliano.tests.piano.mouseEvents.verifyMouseDownOutsideThePiano(piano, "Click on outside of the piano");
+    };
+
+    sisiliano.tests.piano.mouseEvents.verifyMouseDownOutsideThePiano = function (piano, message) {
+        //Press all the keys in the piano
+        var keys = piano.locate("keys");
+        for (var i = 0; i < keys.length; i++) {
+            var key = $(keys[i]);
+            key.simulate("mousedown");
+        }
+
+        jqUnit.assertEquals(message + " : all keys should have been pressed before the test",
+            keys.length, piano.locate("pressedKeys").length);
+
+        //Click outside the piano
+        $(document).simulate("mouseup");
+
+        jqUnit.assertEquals(message + " : all keys should have been released on outside click",
+            0, piano.locate("pressedKeys").length);
     };
 
     sisiliano.tests.piano.mouseEvents.verifyMouseDown = function (piano, message, key, color, index, soundBox) {
