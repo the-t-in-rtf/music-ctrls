@@ -1,5 +1,6 @@
 lib/**
 dist/**
 demo/source/**
+test/html/lib/**
 node_modules/**
 bower_components/**
