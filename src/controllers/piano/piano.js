@@ -46,7 +46,8 @@
             whiteKeys: ".sisiliano-piano-white-key",
             blackKeys: ".sisiliano-piano-black-key",
             keys: ".sisiliano-piano-key",
-            activeAreaStatus: ".sisiliano-piano-active-area-status"
+            activeAreaStatus: ".sisiliano-piano-active-area-status",
+            pressedKeys: ".sisiliano-piano-key-pressed"
         },
         listeners: {
             onReady: [
@@ -298,6 +299,10 @@
 
                 d3.event.preventDefault();
             }
+        });
+
+        document.addEventListener("mouseup", function () {
+            d3.select(that.container.get(0)).selectAll(".sisiliano-piano-key-pressed").each(keyUpHandler);
         });
     };
 
