@@ -43,7 +43,7 @@
                 ruler: {
                     line: {
                         width: 1,
-                        height: 30
+                        height: 40
                     },
                     value: {
                         "font-size": "20px"
@@ -79,9 +79,11 @@
             rects: ".sisiliano-linear-slider-rect",
             valueCircle: ".sisiliano-linear-slider-value-circle",
             valueCircleHover: ".sisiliano-linear-slider-value-circle-hover",
-            ruler: ".sisiliano-linear-slider-ruler",
             valuePointer: ".sisiliano-linear-slider-value-pointer",
-            valuePointerHover: ".sisiliano-linear-slider-value-pointer-hover"
+            valuePointerHover: ".sisiliano-linear-slider-value-pointer-hover",
+            ruler: ".sisiliano-linear-slider-ruler",
+            rulerLines: ".sisiliano-linear-slider-ruler-line",
+            rulerValues: ".sisiliano-linear-slider-ruler-value"
         },
         listeners: {
             onValueChange: {
@@ -141,6 +143,14 @@
                 func: "sisiliano.util.applyStylesToTheElement",
                 args: ["{that}.dom.valuePointerHover", "{that}.model.styles.pointer.valuePointerShadow",
                     "{that}.options.styleRules"]
+            },
+            "styles.ruler.line": {
+                func: "sisiliano.util.applyStylesToTheElement",
+                args: ["{that}.dom.rulerLines", "{that}.model.styles.ruler.line", "{that}.options.styleRules"]
+            },
+            "styles.ruler.value": {
+                func: "sisiliano.util.applyStylesToTheElement",
+                args: ["{that}.dom.rulerValues", "{that}.model.styles.ruler.value", "{that}.options.styleRules"]
             }
         }
     });
@@ -252,6 +262,10 @@
             that.model.styles.pointer.valuePointer.fill || newColor[0]);
         that.applier.change("styles.pointer.valuePointerShadow.fill",
             that.model.styles.pointer.valuePointerShadow.fill || newColor[0]);
+        that.applier.change("styles.ruler.value.fill",
+            that.model.styles.ruler.value.fill || newColor[0]);
+        that.applier.change("styles.ruler.line.fill",
+            that.model.styles.ruler.line.fill || newColor[0]);
     };
 
     sisiliano.linearSlider.setValueByPosition = function (that, clickedPosition) {
@@ -303,30 +317,29 @@
 
     sisiliano.linearSlider.drawNotches = function (that) {
         var notches = sisiliano.linearSlider.getNotches(that);
+        that.locate("ruler").empty();
         var notchesPane = d3.select(that.locate("ruler").get(0));
         var sliderWidth = parseInt(that.locate("backgroundRect").attr("width"), null);
         var sliderX = parseInt(that.locate("backgroundRect").attr("x"), null);
         var sliderY = parseInt(that.locate("backgroundRect").attr("y"), null);
         fluid.each(notches, function (notchValue) {
             var x = sliderX + (sliderWidth * (notchValue - that.model.min) / (that.model.max - that.model.min));
-            var rulerLine = notchesPane.append("rect")
+            notchesPane.append("rect")
                 .attr("class", "sisiliano-linear-slider-ruler-line")
-                .attr("fill", that.model.color[0])
-                .attr("fill-opacity", 0.3)
-                .attr("x", x - 0.5)
+                .attr("x", x)
                 .attr("y", sliderY);
-            sisiliano.util.applyStyles(rulerLine, that.model.styles.ruler.line, ["x", "y"]);
 
-            var rulerValue = notchesPane.append("text")
-                .attr("fill", that.model.color[0])
-                .attr("fill-opacity", 0.6)
+            notchesPane.append("text")
                 .attr("class", "sisiliano-linear-slider-ruler-value")
                 .attr("text-anchor", "end")
-                .attr("x", x + 0.5)
-                .attr("y", sliderY + 25)
-                .attr("transform","rotate(-90, " + (x + 1) + ", " + (sliderY + 25) + ")")
+                .attr("x", x - 5)
+                .attr("y", sliderY + that.model.styles.ruler.line.height)
                 .text(notchValue);
-            sisiliano.util.applyStyles(rulerValue, that.model.styles.ruler.value, ["x", "y"]);
         });
+
+        sisiliano.util.applyStylesToTheElement(that.locate("rulerLines"),
+            that.model.styles.ruler.line, that.options.styleRules);
+        sisiliano.util.applyStylesToTheElement(that.locate("rulerValues"),
+            that.model.styles.ruler.value, that.options.styleRules);
     };
 })(fluid);

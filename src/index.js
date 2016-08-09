@@ -68,7 +68,11 @@
         fluid.each(styles, function (value, key) {
             if (typeof value !== "object") {
                 if (rules.attributes.indexOf(key) >= 0) {
-                    element.attr(key, value);
+                    if (key === "class") {
+                        element.attr(key, element.attr(key) + " " + value);
+                    } else {
+                        element.attr(key, value);
+                    }
                 } else {
                     element.css(key, value);
                 }
