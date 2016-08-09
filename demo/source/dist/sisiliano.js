@@ -1,4 +1,4 @@
-/*! sisiliano - v1.0.0 - 2016-08-08 
+/*! sisiliano - v1.0.0 - 2016-08-09 
 
 */var htmlTempl = htmlTempl || {};
 htmlTempl["templates"] = {"src/controllers/knob/knob.html":"<svg\r\n        id=\"{{id}}\"\r\n        aria-hidden=\"true\"\r\n        viewBox=\"0 0 300 300\"\r\n        width=\"100%\"\r\n        height=\"100%\"\r\n        class=\"sisiliano-knob\">\r\n    <defs\r\n            id=\"defs4\">\r\n        <filter style=\"color-interpolation-filters:sRGB;\" id=\"{{id}}-drop-shadow\" x=\"-100%\" y=\"-100%\" width=\"300%\" height=\"400%\">\r\n            <feFlood flood-opacity=\"0.5\" flood-color=\"{{color.[1]}}\" result=\"flood\"></feFlood>\r\n            <feComposite in=\"flood\" in2=\"SourceGraphic\" operator=\"in\" result=\"comp\"></feComposite>\r\n            <feOffset dx=\"0\" dy=\"0\" result=\"offset\"></feOffset>\r\n            <feGaussianBlur in=\"offset\" stdDeviation=\"4\" result=\"blur\"></feGaussianBlur>\r\n            <feBlend in=\"SourceGraphic\" in2=\"blur\" mode=\"normal\"></feBlend>\r\n        </filter>\r\n        <filter style=\"color-interpolation-filters:sRGB;\" id=\"{{id}}-hover-drop-shadow\" x=\"-100%\" y=\"-100%\" width=\"300%\" height=\"400%\">\r\n            <feFlood flood-opacity=\"0.5\" flood-color=\"{{color.[1]}}\" result=\"flood\"></feFlood>\r\n            <feComposite in=\"flood\" in2=\"SourceGraphic\" operator=\"in\" result=\"comp\"></feComposite>\r\n            <feOffset dx=\"0\" dy=\"0\" result=\"offset\"></feOffset>\r\n            <feGaussianBlur in=\"offset\" stdDeviation=\"6\" result=\"blur\"></feGaussianBlur>\r\n            <feBlend in=\"SourceGraphic\" in2=\"blur\" mode=\"normal\"></feBlend>\r\n        </filter>\r\n    </defs>\r\n\r\n    <style>\r\n        #{{id}} .sisiliano-knob-circle,\r\n        #{{id}} .sisiliano-border {\r\n            filter: url(\"#{{id}}-drop-shadow\");\r\n        }\r\n\r\n        #{{id}} .sisiliano:focus .sisiliano-knob-circle {\r\n            filter: url(\"#{{id}}-hover-drop-shadow\");\r\n        }\r\n    </style>\r\n\r\n    <rect\r\n            class=\"sisiliano-border-div sisiliano-border\"\r\n            width=\"100%\"\r\n            height=\"100%\"\r\n            rx=\"50%\"\r\n            ry=\"50%\"\r\n            x=\"0\"\r\n            y=\"0\">\r\n    </rect>\r\n\r\n    <g class=\"sisiliano-controller-div\">\r\n        <circle\r\n                class=\"sisiliano-knob-circle sisiliano-knob-background-circle\"\r\n                id=\"circle5634\"\r\n                r=\"130\"\r\n                cx=\"150\"\r\n                cy=\"150\"/>\r\n        <text xmlns=\"http://www.w3.org/2000/svg\" x=\"40\" y=\"170\"\r\n              class=\"unselectable sisiliano-knob-value-text\">\r\n            100\r\n        </text>\r\n        <circle\r\n                class=\"sisiliano-knob-circle sisiliano-knob-value-circle\"\r\n                fill=\"transparent\"\r\n                id=\"circle5636\"\r\n                r=\"130\"\r\n                cx=\"150\"\r\n                cy=\"150\"\r\n                transform=\"rotate(90, 150, 150)\"\r\n                stroke-width=\"20\"/>\r\n    </g>\r\n</svg>","src/controllers/linear-slider/linear-slider.html":"<svg\r\n        id=\"{{id}}\"\r\n        aria-hidden=\"true\"\r\n        width=\"100%\"\r\n        height=\"100%\"\r\n        class=\"sisiliano-linear-slider\">\r\n    <defs\r\n            id=\"defs4\">\r\n        <filter style=\"color-interpolation-filters:sRGB;\" id=\"{{id}}-drop-shadow\" x=\"-100%\" y=\"-100%\" width=\"300%\" height=\"400%\">\r\n            <feFlood flood-opacity=\"0.5\" flood-color=\"{{color.[1]}}\" result=\"flood\"></feFlood>\r\n            <feComposite in=\"flood\" in2=\"SourceGraphic\" operator=\"in\" result=\"comp\"></feComposite>\r\n            <feOffset dx=\"0\" dy=\"0\" result=\"offset\"></feOffset>\r\n            <feGaussianBlur in=\"offset\" stdDeviation=\"4\" result=\"blur\"></feGaussianBlur>\r\n            <feBlend in=\"SourceGraphic\" in2=\"blur\" mode=\"normal\"></feBlend>\r\n        </filter>\r\n        <filter style=\"color-interpolation-filters:sRGB;\" id=\"{{id}}-hover-drop-shadow\" x=\"-100%\" y=\"-100%\" width=\"300%\" height=\"400%\">\r\n            <feFlood flood-opacity=\"0.5\" flood-color=\"{{color.[1]}}\" result=\"flood\"></feFlood>\r\n            <feComposite in=\"flood\" in2=\"SourceGraphic\" operator=\"in\" result=\"comp\"></feComposite>\r\n            <feOffset dx=\"0\" dy=\"0\" result=\"offset\"></feOffset>\r\n            <feGaussianBlur in=\"offset\" stdDeviation=\"6\" result=\"blur\"></feGaussianBlur>\r\n            <feBlend in=\"SourceGraphic\" in2=\"blur\" mode=\"normal\"></feBlend>\r\n        </filter>\r\n    </defs>\r\n\r\n    <style>\r\n        #{{id}}.sisiliano-linear-slider .sisiliano-linear-slider-background-rect,\r\n        #{{id}}.sisiliano-linear-slider .sisiliano-linear-slider-value-rect,\r\n        #{{id}}.sisiliano-linear-slider .sisiliano-linear-slider-value-pointer,\r\n        #{{id}}.sisiliano-linear-slider .sisiliano-linear-slider-value-pointer-hover,\r\n        #{{id}}.sisiliano-linear-slider .sisiliano-linear-slider-value-label,\r\n        #{{id}}.sisiliano-linear-slider .sisiliano-border {\r\n            filter: url(\"#{{id}}-drop-shadow\");\r\n        }\r\n\r\n        .sisiliano:focus #{{id}}.sisiliano-linear-slider .sisiliano-linear-slider-background-rect,\r\n        .sisiliano:focus #{{id}}.sisiliano-linear-slider .sisiliano-linear-slider-value-rect {\r\n            filter: url(\"#{{id}}-hover-drop-shadow\");\r\n        }\r\n    </style>\r\n\r\n    <rect\r\n            class=\"sisiliano-border-div sisiliano-border\"\r\n            width=\"100%\"\r\n            height=\"100%\"\r\n            x=\"0\"\r\n            y=\"0\">\r\n    </rect>\r\n\r\n    <g class=\"sisiliano-controller-div\">\r\n        <rect\r\n                class=\"sisiliano-linear-slider-rect sisiliano-linear-slider-background-rect\"\r\n                height=\"8\"\r\n                width=\"10\"\r\n                x=\"40\"\r\n                y=\"37\"/>\r\n        <rect\r\n                class=\"sisiliano-linear-slider-rect sisiliano-linear-slider-value-rect\"\r\n                height=\"10\"\r\n                width=\"200\"\r\n                x=\"40\"\r\n                y=\"36\"/>\r\n        <g class=\"sisiliano-linear-slider-ruler\"></g>\r\n        <rect\r\n                class=\"sisiliano-linear-slider-value-pointer sisiliano-linear-slider-value-pointer-hover\"\r\n                width=\"30\"\r\n                height=\"30\"\r\n                rx=\"50%\"\r\n                ry=\"50%\"\r\n                x=\"90\"\r\n                y=\"26\">\r\n        </rect>\r\n        <rect\r\n                class=\"sisiliano-linear-slider-value-pointer sisiliano-linear-slider-value-pointer\"\r\n                width=\"20\"\r\n                height=\"20\"\r\n                rx=\"50%\"\r\n                ry=\"50%\"\r\n                x=\"90\"\r\n                y=\"31\">\r\n        </rect>\r\n        <rect\r\n                class=\"sisiliano-linear-slider-value-label\"\r\n                x=\"10\"\r\n                y=\"0\"\r\n                fill=\"{{color}}\"\r\n                width=\"50\"\r\n                height=\"20\"\r\n                rx=\"2\"\r\n                ry=\"2\">\r\n        </rect>\r\n        <text text-anchor=\"middle\"\r\n              x=\"10\"\r\n              y=\"15\"\r\n              class=\"unselectable sisiliano-linear-slider-value-text\">\r\n            100\r\n        </text>\r\n    </g>\r\n</svg>","src/controllers/piano/piano.html":"<div tabindex=\"0\" class=\"sisiliano\" aria-label=\"{{title}} ,{{description}}\" id=\"{{id}}\">\r\n    <svg\r\n            class=\"sisiliano-piano\"\r\n            width=\"100%\"\r\n            height=\"100%\"\r\n            viewBox=\"0 0 {{viewBox.width}} {{viewBox.height}}\">\r\n        <defs\r\n                id=\"defs4\">\r\n            <filter style=\"color-interpolation-filters:sRGB;\" id=\"{{id}}-drop-shadow\" x=\"-100%\" y=\"-100%\" width=\"300%\" height=\"400%\">\r\n                <feFlood flood-opacity=\"0.5\" flood-color=\"{{color.[1]}}\" result=\"flood\"></feFlood>\r\n                <feComposite in=\"flood\" in2=\"SourceGraphic\" operator=\"in\" result=\"comp\"></feComposite>\r\n                <feOffset dx=\"0\" dy=\"0\" result=\"offset\"></feOffset>\r\n                <feGaussianBlur in=\"offset\" stdDeviation=\"4\" result=\"blur\"></feGaussianBlur>\r\n                <feBlend in=\"SourceGraphic\" in2=\"blur\" mode=\"normal\"></feBlend>\r\n            </filter>\r\n            <filter style=\"color-interpolation-filters:sRGB;\" id=\"{{id}}-hover-drop-shadow\" x=\"-100%\" y=\"-100%\" width=\"300%\" height=\"400%\">\r\n                <feFlood flood-opacity=\"0.5\" flood-color=\"{{color.[1]}}\" result=\"flood\"></feFlood>\r\n                <feComposite in=\"flood\" in2=\"SourceGraphic\" operator=\"in\" result=\"comp\"></feComposite>\r\n                <feOffset dx=\"0\" dy=\"0\" result=\"offset\"></feOffset>\r\n                <feGaussianBlur in=\"offset\" stdDeviation=\"6\" result=\"blur\"></feGaussianBlur>\r\n                <feBlend in=\"SourceGraphic\" in2=\"blur\" mode=\"normal\"></feBlend>\r\n            </filter>\r\n        </defs>\r\n\r\n        <style>\r\n            /* These styles have been added seperately as a fix for firefox and IE */\r\n            #{{id}}.sisiliano .sisiliano-piano .sisiliano-piano-white-key {\r\n                filter: url('#{{id}}-drop-shadow');\r\n            }\r\n\r\n            #{{id}}.sisiliano .sisiliano-piano .sisiliano-piano-black-key {\r\n                filter: url('#{{id}}-drop-shadow');\r\n            }\r\n\r\n            #{{id}}.sisiliano-border {\r\n                filter: url(\"#{{id}}-hover-drop-shadow\");\r\n            }\r\n\r\n            #{{id}}.sisiliano .sisiliano-piano .sisiliano-piano-key-pressed {\r\n                fill: {{color.[0]}};\r\n                stroke: {{color.[0]}};\r\n            }\r\n        </style>\r\n        <rect\r\n                class=\"sisiliano-border-div sisiliano-border\"\r\n                width=\"100%\"\r\n                height=\"100%\"\r\n                x=\"0\"\r\n                y=\"0\">\r\n        </rect>\r\n        <g style=\"display:inline\" class=\"sisiliano-piano-key-board sisiliano-controller-div\">\r\n        </g>\r\n    </svg>\r\n</div>\r\n"};
@@ -72,7 +72,11 @@ htmlTempl["templates"] = {"src/controllers/knob/knob.html":"<svg\r\n        id=\
         fluid.each(styles, function (value, key) {
             if (typeof value !== "object") {
                 if (rules.attributes.indexOf(key) >= 0) {
-                    element.attr(key, value);
+                    if (key === "class") {
+                        element.attr(key, element.attr(key) + " " + value);
+                    } else {
+                        element.attr(key, value);
+                    }
                 } else {
                     element.css(key, value);
                 }
@@ -135,7 +139,7 @@ htmlTempl["templates"] = {"src/controllers/knob/knob.html":"<svg\r\n        id=\
             onColorChange: null
         },
         modelListeners: {
-            "color": {
+            "color.*": {
                 func: "sisiliano.util.colorable.onColorChange",
                 args: ["{that}", "{that}.model.color"]
             }
@@ -625,7 +629,7 @@ htmlTempl["templates"] = {"src/controllers/knob/knob.html":"<svg\r\n        id=\
                 ruler: {
                     line: {
                         width: 1,
-                        height: 30
+                        height: 40
                     },
                     value: {
                         "font-size": "20px"
@@ -661,9 +665,11 @@ htmlTempl["templates"] = {"src/controllers/knob/knob.html":"<svg\r\n        id=\
             rects: ".sisiliano-linear-slider-rect",
             valueCircle: ".sisiliano-linear-slider-value-circle",
             valueCircleHover: ".sisiliano-linear-slider-value-circle-hover",
-            ruler: ".sisiliano-linear-slider-ruler",
             valuePointer: ".sisiliano-linear-slider-value-pointer",
-            valuePointerHover: ".sisiliano-linear-slider-value-pointer-hover"
+            valuePointerHover: ".sisiliano-linear-slider-value-pointer-hover",
+            ruler: ".sisiliano-linear-slider-ruler",
+            rulerLines: ".sisiliano-linear-slider-ruler-line",
+            rulerValues: ".sisiliano-linear-slider-ruler-value"
         },
         listeners: {
             onValueChange: {
@@ -723,6 +729,14 @@ htmlTempl["templates"] = {"src/controllers/knob/knob.html":"<svg\r\n        id=\
                 func: "sisiliano.util.applyStylesToTheElement",
                 args: ["{that}.dom.valuePointerHover", "{that}.model.styles.pointer.valuePointerShadow",
                     "{that}.options.styleRules"]
+            },
+            "styles.ruler.line": {
+                func: "sisiliano.util.applyStylesToTheElement",
+                args: ["{that}.dom.rulerLines", "{that}.model.styles.ruler.line", "{that}.options.styleRules"]
+            },
+            "styles.ruler.value": {
+                func: "sisiliano.util.applyStylesToTheElement",
+                args: ["{that}.dom.rulerValues", "{that}.model.styles.ruler.value", "{that}.options.styleRules"]
             }
         }
     });
@@ -834,6 +848,10 @@ htmlTempl["templates"] = {"src/controllers/knob/knob.html":"<svg\r\n        id=\
             that.model.styles.pointer.valuePointer.fill || newColor[0]);
         that.applier.change("styles.pointer.valuePointerShadow.fill",
             that.model.styles.pointer.valuePointerShadow.fill || newColor[0]);
+        that.applier.change("styles.ruler.value.fill",
+            that.model.styles.ruler.value.fill || newColor[0]);
+        that.applier.change("styles.ruler.line.fill",
+            that.model.styles.ruler.line.fill || newColor[0]);
     };
 
     sisiliano.linearSlider.setValueByPosition = function (that, clickedPosition) {
@@ -885,31 +903,30 @@ htmlTempl["templates"] = {"src/controllers/knob/knob.html":"<svg\r\n        id=\
 
     sisiliano.linearSlider.drawNotches = function (that) {
         var notches = sisiliano.linearSlider.getNotches(that);
+        that.locate("ruler").empty();
         var notchesPane = d3.select(that.locate("ruler").get(0));
         var sliderWidth = parseInt(that.locate("backgroundRect").attr("width"), null);
         var sliderX = parseInt(that.locate("backgroundRect").attr("x"), null);
         var sliderY = parseInt(that.locate("backgroundRect").attr("y"), null);
         fluid.each(notches, function (notchValue) {
             var x = sliderX + (sliderWidth * (notchValue - that.model.min) / (that.model.max - that.model.min));
-            var rulerLine = notchesPane.append("rect")
+            notchesPane.append("rect")
                 .attr("class", "sisiliano-linear-slider-ruler-line")
-                .attr("fill", that.model.color[0])
-                .attr("fill-opacity", 0.3)
-                .attr("x", x - 0.5)
+                .attr("x", x)
                 .attr("y", sliderY);
-            sisiliano.util.applyStyles(rulerLine, that.model.styles.ruler.line, ["x", "y"]);
 
-            var rulerValue = notchesPane.append("text")
-                .attr("fill", that.model.color[0])
-                .attr("fill-opacity", 0.6)
+            notchesPane.append("text")
                 .attr("class", "sisiliano-linear-slider-ruler-value")
                 .attr("text-anchor", "end")
-                .attr("x", x + 0.5)
-                .attr("y", sliderY + 25)
-                .attr("transform","rotate(-90, " + (x + 1) + ", " + (sliderY + 25) + ")")
+                .attr("x", x - 5)
+                .attr("y", sliderY + that.model.styles.ruler.line.height)
                 .text(notchValue);
-            sisiliano.util.applyStyles(rulerValue, that.model.styles.ruler.value, ["x", "y"]);
         });
+
+        sisiliano.util.applyStylesToTheElement(that.locate("rulerLines"),
+            that.model.styles.ruler.line, that.options.styleRules);
+        sisiliano.util.applyStylesToTheElement(that.locate("rulerValues"),
+            that.model.styles.ruler.value, that.options.styleRules);
     };
 })(fluid);
 (function (fluid) {
