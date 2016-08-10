@@ -208,10 +208,6 @@
     sisiliano.piano.appendListeners = function (that) {
         var mouseDown = false;
 
-        d3.select(document).on("mouseup", function () {
-            mouseDown = false;
-        });
-
         var keyPressHandler = function () {
             mouseDown = true;
             var clickedIndex = d3.select(this).attr("index");
@@ -304,6 +300,7 @@
         });
 
         document.addEventListener("mouseup", function () {
+            mouseDown = false;
             d3.select(that.container.get(0)).selectAll(".sisiliano-piano-key-pressed").each(keyUpHandler);
         });
     };
