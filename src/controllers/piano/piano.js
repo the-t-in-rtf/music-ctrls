@@ -269,11 +269,14 @@
         d3.select(that.container.get(0)).on("keydown", function () {
             var keyCode = d3.event.keyCode;
             var mappedPianoKey = sisiliano.piano.getKeyByComputerKeyCode(keyCode, that.model.keyBoard.keys);
-            if (mappedPianoKey && !mappedPianoKey.isPressed) {
-                mappedPianoKey.isPressed = true;
-                sisiliano.piano.updateKey(that, mappedPianoKey);
-                sisiliano.piano.playKey(that, mappedPianoKey);
-            } else {
+            if (mappedPianoKey) {
+                if (!mappedPianoKey.isPressed) {
+                    mappedPianoKey.isPressed = true;
+                    sisiliano.piano.updateKey(that, mappedPianoKey);
+                    sisiliano.piano.playKey(that, mappedPianoKey);
+                }
+
+                d3.event.preventDefault();
             }
 
             //Handel the arrow click
@@ -296,7 +299,6 @@
                 mappedPianoKey.isPressed = false;
                 sisiliano.piano.updateKey(that, mappedPianoKey);
                 sisiliano.piano.releaseKey(that, mappedPianoKey);
-
                 d3.event.preventDefault();
             }
         });
