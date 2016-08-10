@@ -213,6 +213,24 @@
     };
 
     /////////////////////////////////////////////////////////
+    /////           Verifying Glissando
+    /////////////////////////////////////////////////////////
+    jqUnit.test("Piano : mouse move (Glissando)", function () {
+        $(".test").empty();
+        var piano = sisiliano.piano(".test", {});
+
+        sisiliano.tests.piano.mouseEvents.verifyGlissando(piano, "Mouse move");
+    });
+
+    sisiliano.tests.piano.mouseEvents.verifyGlissando = function (piano, message) {
+        //Click the first key to start the glissando
+        $(piano.locate("keys")[0]).simulate("mousedown");
+
+        //verify whether they keyborad is working on dragging
+        sisiliano.tests.piano.verifyMouseEvents(piano,message + " : Glissando", {}, "mouseover", "mouseleave", true);
+    };
+
+    /////////////////////////////////////////////////////////
     /////           Verifying active area navigation
     /////////////////////////////////////////////////////////
     fluid.registerNamespace("sisiliano.tests.piano.activeArea");
