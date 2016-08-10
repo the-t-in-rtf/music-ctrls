@@ -171,6 +171,48 @@
     };
 
     /////////////////////////////////////////////////////////
+    /////           Verifying mouse behavior on outside
+    /////////////////////////////////////////////////////////
+    fluid.registerNamespace("sisiliano.tests.piano.mouseEvents.outSide");
+    jqUnit.test("Piano : mouse click on outside", function () {
+        $(".test").empty();
+        var piano = sisiliano.piano(".test", {});
+
+        sisiliano.tests.piano.mouseEvents.verifyMouseDownOutsideThePiano(piano, "Mouse Events on outside");
+    });
+
+    sisiliano.tests.piano.mouseEvents.verifyMouseDownOutsideThePiano = function (piano, message) {
+        sisiliano.tests.piano.mouseEvents.outSide.verifyMouseClickWhenThereAreKeysPressed(piano, message);
+        sisiliano.tests.piano.mouseEvents.outSide.verifyMouseClickWhenThereAreNoKeysPressed(piano, message);
+    };
+
+    sisiliano.tests.piano.mouseEvents.outSide.verifyMouseClickWhenThereAreKeysPressed = function (piano, message) {
+        //Press all the keys in the piano
+        var keys = piano.locate("keys");
+        for (var i = 0; i < keys.length; i++) {
+            var key = $(keys[i]);
+            key.simulate("mousedown");
+        }
+
+        jqUnit.assertEquals(message + " : all keys should have been pressed before the test",
+            keys.length, piano.locate("pressedKeys").length);
+        $(document).simulate("mouseup");
+        jqUnit.assertEquals(message + " : all keys should have been released on outside click",
+            0, piano.locate("pressedKeys").length);
+        sisiliano.tests.piano.verifyMouseEvents(piano, message + " : on outside click", {},
+            "mouseover", "mouseleave", false);
+    };
+
+    sisiliano.tests.piano.mouseEvents.outSide.verifyMouseClickWhenThereAreNoKeysPressed = function (piano, message) {
+        var keys = piano.locate("keys");
+        $(keys[0]).simulate("mousedown");
+        $(keys[0]).simulate("mouseleave");
+        $(document).simulate("mouseup");
+        sisiliano.tests.piano.verifyMouseEvents(piano, message + " : on outside click without mouse up on keys", {},
+            "mouseover", "mouseleave", false);
+    };
+
+    /////////////////////////////////////////////////////////
     /////           Verifying active area navigation
     /////////////////////////////////////////////////////////
     fluid.registerNamespace("sisiliano.tests.piano.activeArea");
