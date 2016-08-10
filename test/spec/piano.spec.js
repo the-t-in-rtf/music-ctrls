@@ -280,7 +280,7 @@
     /////           Verifying Key Events
     /////////////////////////////////////////////////////////
     fluid.registerNamespace("sisiliano.tests.piano.keyEvents");
-    jqUnit.test("Piano : active area navigation", function () {
+    jqUnit.test("Piano : key events", function () {
         $(".test").empty();
         var piano = sisiliano.piano(".test");
         sisiliano.tests.piano.verifyKeyEvents(piano, "Verifying key events", {start: 0, end: 10});
