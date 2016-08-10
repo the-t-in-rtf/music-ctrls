@@ -208,10 +208,6 @@
     sisiliano.piano.appendListeners = function (that) {
         var mouseDown = false;
 
-        d3.select(document).on("mouseup", function () {
-            mouseDown = false;
-        });
-
         var keyPressHandler = function () {
             mouseDown = true;
             var clickedIndex = d3.select(this).attr("index");
@@ -269,11 +265,14 @@
         d3.select(that.container.get(0)).on("keydown", function () {
             var keyCode = d3.event.keyCode;
             var mappedPianoKey = sisiliano.piano.getKeyByComputerKeyCode(keyCode, that.model.keyBoard.keys);
-            if (mappedPianoKey && !mappedPianoKey.isPressed) {
-                mappedPianoKey.isPressed = true;
-                sisiliano.piano.updateKey(that, mappedPianoKey);
-                sisiliano.piano.playKey(that, mappedPianoKey);
-            } else {
+            if (mappedPianoKey) {
+                if (!mappedPianoKey.isPressed) {
+                    mappedPianoKey.isPressed = true;
+                    sisiliano.piano.updateKey(that, mappedPianoKey);
+                    sisiliano.piano.playKey(that, mappedPianoKey);
+                }
+
+                d3.event.preventDefault();
             }
 
             //Handel the arrow click
@@ -296,12 +295,12 @@
                 mappedPianoKey.isPressed = false;
                 sisiliano.piano.updateKey(that, mappedPianoKey);
                 sisiliano.piano.releaseKey(that, mappedPianoKey);
-
                 d3.event.preventDefault();
             }
         });
 
         document.addEventListener("mouseup", function () {
+            mouseDown = false;
             d3.select(that.container.get(0)).selectAll(".sisiliano-piano-key-pressed").each(keyUpHandler);
         });
     };
