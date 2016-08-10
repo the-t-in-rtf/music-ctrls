@@ -41,7 +41,7 @@
 
     sisiliano.util.makeMusic.play = function (that, index, frequency) {
         var oscillator = that.context.createOscillator();
-        oscillator.type = "square";
+        oscillator.type = "triangle";
         oscillator.frequency.value = frequency;
         oscillator.connect(that.masterGain);
         oscillator.start(0);
