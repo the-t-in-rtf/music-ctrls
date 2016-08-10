@@ -132,33 +132,61 @@
                 }
             }
         });
-        sisiliano.tests.piano.verifyMouseEvents(piano, soundBox);
+        sisiliano.tests.piano.verifyMouseEvents(piano, "Mouse events of key board", soundBox, "mousedown", "mouseup", true);
     });
 
-    sisiliano.tests.piano.verifyMouseEvents = function (piano, soundBox) {
+    sisiliano.tests.piano.verifyMouseEvents = function (piano, message, soundBox, playEventName, releaseEventName, expectedToPlay) {
         var whiteKeys = piano.locate("whiteKeys");
         var keyElm;
         for (var i = 0; i < whiteKeys.length; i++) {
             keyElm = $(whiteKeys[i]);
-            sisiliano.tests.piano.mouseEvents.verifyMouseDown(piano, "White key " + keyElm.attr("index"), keyElm,
-                "WHITE", i, soundBox);
-            sisiliano.tests.piano.mouseEvents.verifyMouseUp(piano, "White key " + keyElm.attr("index"), keyElm,
-                "WHITE", i, soundBox);
+            sisiliano.tests.piano.mouseEvents.verifyKeyStatusOn(piano, playEventName, expectedToPlay,
+                message + " : White key " + keyElm.attr("index"), keyElm, "WHITE", i, soundBox);
+            sisiliano.tests.piano.mouseEvents.verifyKeyStatusOn(piano, releaseEventName, false,
+                message + " : White key " + keyElm.attr("index"), keyElm, "WHITE", i, soundBox);
         }
 
         var blackKeys = piano.locate("blackKeys");
         for (i = 0; i < blackKeys.length; i++) {
             keyElm = $(blackKeys[i]);
-            sisiliano.tests.piano.mouseEvents.verifyMouseDown(piano, "Black key " + keyElm.attr("index"), keyElm,
-                "BLACK", i, soundBox);
-            sisiliano.tests.piano.mouseEvents.verifyMouseUp(piano, "Black key " + keyElm.attr("index"), keyElm,
-                "BLACK", i, soundBox);
+            sisiliano.tests.piano.mouseEvents.verifyKeyStatusOn(piano, playEventName, expectedToPlay,
+                message + " : Black key " + keyElm.attr("index"), keyElm, "BLACK", i, soundBox);
+            sisiliano.tests.piano.mouseEvents.verifyKeyStatusOn(piano, releaseEventName, false,
+                message + " : Black key " + keyElm.attr("index"), keyElm, "BLACK", i, soundBox);
         }
-
-        sisiliano.tests.piano.mouseEvents.verifyMouseDownOutsideThePiano(piano, "Click on outside of the piano");
     };
 
+    sisiliano.tests.piano.mouseEvents.verifyKeyStatusOn = function (piano, event, isPressed, message, key, color, index, soundBox) {
+        soundBox.releaseKey = function () {
+            //jqUnit.assert(message + " : soundbox should stop playing when " + event);
+        };
+        soundBox.playKey = function () {
+            //jqUnit.assert(message + " : soundbox should start playing when " + event);
+        };
+        var isActive = sisiliano.tests.piano.isKeyActive(key);
+        key.simulate(event);
+        sisiliano.tests.piano.verifyKeyStatus(piano, key, color,
+            message + " : Key style should be " + (isPressed ? "" : "not") + "changed as clicked, on " + event,
+            isActive, isPressed);
+    };
+
+    /////////////////////////////////////////////////////////
+    /////           Verifying mouse behavior on outside
+    /////////////////////////////////////////////////////////
+    fluid.registerNamespace("sisiliano.tests.piano.mouseEvents.outSide");
+    jqUnit.test("Piano : mouse click on outside", function () {
+        $(".test").empty();
+        var piano = sisiliano.piano(".test", {});
+
+        sisiliano.tests.piano.mouseEvents.verifyMouseDownOutsideThePiano(piano, "Mouse Events on outside");
+    });
+
     sisiliano.tests.piano.mouseEvents.verifyMouseDownOutsideThePiano = function (piano, message) {
+        sisiliano.tests.piano.mouseEvents.outSide.verifyMouseClickWhenThereAreKeysPressed(piano, message);
+        sisiliano.tests.piano.mouseEvents.outSide.verifyMouseClickWhenThereAreNoKeysPressed(piano, message);
+    };
+
+    sisiliano.tests.piano.mouseEvents.outSide.verifyMouseClickWhenThereAreKeysPressed = function (piano, message) {
         //Press all the keys in the piano
         var keys = piano.locate("keys");
         for (var i = 0; i < keys.length; i++) {
@@ -168,30 +196,38 @@
 
         jqUnit.assertEquals(message + " : all keys should have been pressed before the test",
             keys.length, piano.locate("pressedKeys").length);
-
-        //Click outside the piano
         $(document).simulate("mouseup");
-
         jqUnit.assertEquals(message + " : all keys should have been released on outside click",
             0, piano.locate("pressedKeys").length);
+        sisiliano.tests.piano.verifyMouseEvents(piano, message + " : on outside click", {},
+            "mouseover", "mouseleave", false);
     };
 
-    sisiliano.tests.piano.mouseEvents.verifyMouseDown = function (piano, message, key, color, index, soundBox) {
-        soundBox.playKey = function () {
-            jqUnit.assert(message + " : soundbox should start playing when mousedown");
-        };
-        var isActive = sisiliano.tests.piano.isKeyActive(key);
-        key.simulate("mousedown");
-        sisiliano.tests.piano.verifyKeyStatus(piano, key, color, message + " : Key style should be changed as clicked", isActive, true);
+    sisiliano.tests.piano.mouseEvents.outSide.verifyMouseClickWhenThereAreNoKeysPressed = function (piano, message) {
+        var keys = piano.locate("keys");
+        $(keys[0]).simulate("mousedown");
+        $(keys[0]).simulate("mouseleave");
+        $(document).simulate("mouseup");
+        sisiliano.tests.piano.verifyMouseEvents(piano, message + " : on outside click without mouse up on keys", {},
+            "mouseover", "mouseleave", false);
     };
 
-    sisiliano.tests.piano.mouseEvents.verifyMouseUp = function (piano, message, key, color, index, soundBox) {
-        soundBox.releaseKey = function () {
-            jqUnit.assert(message + " : soundbox should stop playing when mouseup");
-        };
-        var isActive = sisiliano.tests.piano.isKeyActive(key);
-        key.simulate("mouseup");
-        sisiliano.tests.piano.verifyKeyStatus(piano, key, color, message + " : Key style should be changed as clicked", isActive, false);
+    /////////////////////////////////////////////////////////
+    /////           Verifying Glissando
+    /////////////////////////////////////////////////////////
+    jqUnit.test("Piano : mouse move (Glissando)", function () {
+        $(".test").empty();
+        var piano = sisiliano.piano(".test", {});
+
+        sisiliano.tests.piano.mouseEvents.verifyGlissando(piano, "Mouse move");
+    });
+
+    sisiliano.tests.piano.mouseEvents.verifyGlissando = function (piano, message) {
+        //Click the first key to start the glissando
+        $(piano.locate("keys")[0]).simulate("mousedown");
+
+        //verify whether they keyborad is working on dragging
+        sisiliano.tests.piano.verifyMouseEvents(piano,message + " : Glissando", {}, "mouseover", "mouseleave", true);
     };
 
     /////////////////////////////////////////////////////////
@@ -280,7 +316,7 @@
     /////           Verifying Key Events
     /////////////////////////////////////////////////////////
     fluid.registerNamespace("sisiliano.tests.piano.keyEvents");
-    jqUnit.test("Piano : active area navigation", function () {
+    jqUnit.test("Piano : key events", function () {
         $(".test").empty();
         var piano = sisiliano.piano(".test");
         sisiliano.tests.piano.verifyKeyEvents(piano, "Verifying key events", {start: 0, end: 10});
