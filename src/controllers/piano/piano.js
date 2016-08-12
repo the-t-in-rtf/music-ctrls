@@ -207,7 +207,6 @@
 
     sisiliano.piano.appendListeners = function (that) {
         var mouseDown = false;
-
         var keyPressHandler = function () {
             mouseDown = true;
             var clickedIndex = d3.select(this).attr("index");
@@ -217,6 +216,8 @@
                 sisiliano.piano.updateKey(that, clickedKey);
                 sisiliano.piano.playKey(that, clickedKey);
             }
+
+            d3.event.preventDefault();
         };
 
         var keyOverHandler = function () {
@@ -254,13 +255,20 @@
 
         d3.select(that.container.get(0)).selectAll(".sisiliano-piano-key")
             .on("mousedown", keyPressHandler)
+            .on("pointerdown", keyPressHandler)
             .on("touchstart", keyPressHandler)
+
             .on("mouseover", keyOverHandler)
+            .on("pointerover", keyOverHandler)
             .on("touchmove", keyOverHandler)
+
             .on("mouseup", keyUpHandler)
+            .on("pointerup", keyUpHandler)
             .on("touchend", keyUpHandler)
-            .on("touchcancel", keyMoveOutHndler)
-            .on("mouseleave", keyMoveOutHndler);
+
+            .on("mouseleave", keyMoveOutHndler)
+            .on("pointerleave", keyMoveOutHndler)
+            .on("touchcancel", keyMoveOutHndler);
 
         d3.select(that.container.get(0)).on("keydown", function () {
             var keyCode = d3.event.keyCode;
@@ -299,10 +307,14 @@
             }
         });
 
-        document.addEventListener("mouseup", function () {
+        var outsideMouseUpHandler = function () {
             mouseDown = false;
             d3.select(that.container.get(0)).selectAll(".sisiliano-piano-key-pressed").each(keyUpHandler);
-        });
+        };
+
+        document.addEventListener("mouseup", outsideMouseUpHandler);
+        document.addEventListener("pointerup", outsideMouseUpHandler);
+        document.addEventListener("touchend", outsideMouseUpHandler);
     };
 
     sisiliano.piano.playKey = function (that, key) {
