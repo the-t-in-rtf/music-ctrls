@@ -286,8 +286,7 @@
                 d3.event.preventDefault();
             }
         };
-
-        document.addEventListener("mousemove", function (evt) {
+        var outsideMouseMoveHandler = function (evt) {
             var svgElm = that.locate("svg");
             if (svgElm && svgElm.length > 0) {
                 var svgPosition = svgElm.offset();
@@ -298,14 +297,16 @@
                     evt.preventDefault(evt);
                 }
             }
-        });
-        document.addEventListener("mouseup", function () {
-            that.applier.change("status.isActive", false);
-        });
+        };
+
+        document.addEventListener("mousemove", outsideMouseMoveHandler);
+        document.addEventListener("pointermove", outsideMouseMoveHandler);
+        document.addEventListener("touchmove", outsideMouseMoveHandler);
 
         d3.select(that.container.get(0))
-            .on("touchmove", mouseMoveHandler)
-            .on("mousemove", mouseMoveHandler);
+            .on("mousemove", mouseMoveHandler)
+            .on("pointermove", mouseMoveHandler)
+            .on("touchmove", mouseMoveHandler);
     };
 
     sisiliano.linearSlider.getNotches = function (that) {

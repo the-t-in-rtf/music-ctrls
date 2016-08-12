@@ -136,36 +136,38 @@
 
     sisiliano.knob.addListeners = function (that) {
         var mouseMoveHandler = function () {
-            var position = d3.mouse(that.container.find("svg").eq(0).get(0));
-            var center = {x: 150, y: 150};
-            var clickedPosition = {x: position[0], y: position[1]};
             if (that.model.status.isActive) {
+                var position = d3.mouse(that.container.find("svg").eq(0).get(0));
+                var center = {x: 150, y: 150};
+                var clickedPosition = {x: position[0], y: position[1]};
                 sisiliano.knob.setValueByAngle(that, center, clickedPosition);
+
                 d3.event.preventDefault();
             }
         };
 
-        document.addEventListener("mousemove", function (evt) {
-            var svgElm = that.locate("svg");
-            if (svgElm && svgElm.length > 0) {
-                var svgPosition = svgElm.offset();
-                var center = {x: svgPosition.left + (svgElm.width() / 2), y: svgPosition.top + (svgElm.height() / 2)};
-                var clickedPosition = {x: evt.pageX, y: evt.pageY};
-                if (that.model.status.isActive) {
+        var outsideMouseMoveHandler = function (evt) {
+            if (that.model.status.isActive) {
+                var svgElm = that.locate("svg");
+                if (svgElm && svgElm.length > 0) {
+                    var svgPosition = svgElm.offset();
+                    var center = {x: svgPosition.left + (svgElm.width() / 2), y: svgPosition.top + (svgElm.height() / 2)};
+                    var clickedPosition = {x: evt.pageX, y: evt.pageY};
                     sisiliano.knob.setValueByAngle(that, center, clickedPosition);
-                    evt.preventDefault(evt);
                 }
+
+                evt.preventDefault(evt);
             }
-        });
-        document.addEventListener("mouseup", sisiliano.knob.setKnobActiveStatus.bind(this, that, false));
+        };
+
+        document.addEventListener("mousemove", outsideMouseMoveHandler);
+        document.addEventListener("pointermove", outsideMouseMoveHandler);
+        document.addEventListener("touchmove", outsideMouseMoveHandler);
 
         d3.select(that.container.get(0))
-            .on("touchmove", mouseMoveHandler)
-            .on("mousemove", mouseMoveHandler);
-    };
-
-    sisiliano.knob.setKnobActiveStatus = function (that, status) {
-        that.applier.change("status.isActive", status);
+            .on("mousemove", mouseMoveHandler)
+            .on("pointermove", mouseMoveHandler)
+            .on("touchmove", mouseMoveHandler);
     };
 
     sisiliano.knob.setValueByAngle = function (that, center, clickedPosition) {

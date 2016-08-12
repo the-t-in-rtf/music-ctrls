@@ -138,10 +138,18 @@
 
         d3.select(that.container.get(0))
             .on("keydown", keyDownHandler)
+
             .on("mousedown", sisiliano.slider.setSliderActiveStatus.bind(this, that, true))
+            .on("pointerdown", sisiliano.slider.setSliderActiveStatus.bind(this, that, true))
             .on("touchstart", sisiliano.slider.setSliderActiveStatus.bind(this, that, true))
+
             .on("mouseup", sisiliano.slider.setSliderActiveStatus.bind(this, that, false))
+            .on("pointerup", sisiliano.slider.setSliderActiveStatus.bind(this, that, false))
             .on("touchend", sisiliano.slider.setSliderActiveStatus.bind(this, that, false));
+
+        document.addEventListener("mouseup", sisiliano.slider.setSliderActiveStatus.bind(this, that, false));
+        document.addEventListener("pointerup", sisiliano.slider.setSliderActiveStatus.bind(this, that, false));
+        document.addEventListener("touchend", sisiliano.slider.setSliderActiveStatus.bind(this, that, false));
     };
 
     sisiliano.slider.setSliderActiveStatus = function (that, status) {
