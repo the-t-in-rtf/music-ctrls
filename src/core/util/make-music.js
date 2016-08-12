@@ -30,7 +30,10 @@
 
     sisiliano.util.makeMusic.onCreate = function (that) {
         var AudioContext = window.AudioContext || window.webkitAudioContext;
-        that.context = new AudioContext();
+        if (AudioContext) {
+            that.context = new AudioContext();
+        }
+
         that.nodes = {};
         if (that.context) {
             that.masterGain = that.context.createGain();
@@ -40,12 +43,14 @@
     };
 
     sisiliano.util.makeMusic.play = function (that, index, frequency) {
-        var oscillator = that.context.createOscillator();
-        oscillator.type = "triangle";
-        oscillator.frequency.value = frequency;
-        oscillator.connect(that.masterGain);
-        oscillator.start(0);
-        that.nodes[index] = oscillator;
+        if (that.context) {
+            var oscillator = that.context.createOscillator();
+            oscillator.type = "triangle";
+            oscillator.frequency.value = frequency;
+            oscillator.connect(that.masterGain);
+            oscillator.start(0);
+            that.nodes[index] = oscillator;
+        }
     };
 
     sisiliano.util.makeMusic.release = function (that, index) {
