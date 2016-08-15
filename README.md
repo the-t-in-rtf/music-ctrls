@@ -23,3 +23,7 @@ http://dinukadesilva.github.io/music-ctrls/demo/knob.html
 http://dinukadesilva.github.io/music-ctrls/demo/piano.html
 
 http://dinukadesilva.github.io/music-ctrls/demo/linear-slider.html
+
+#Wiki
+
+[Click here and navigate to the Project Wiki](https://github.com/dinukadesilva/music-ctrls/wiki)
