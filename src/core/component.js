@@ -48,10 +48,11 @@
         that.container.addClass("sisiliano");
 
         //A fix for https://github.com/dinukadesilva/music-ctrls/issues/59
-        that.locate("svg").mousedown(function (evt) {
-            evt.preventDefault();
-            that.container.focus();
-        });
+        that.locate("svg")
+            .on("mousedown pointerdown touchstart contextmenu", function (evt) {
+                evt.preventDefault();
+                that.container.focus();
+            });
     };
 
     sisiliano.component.onTemplateChange = function (that, template) {
