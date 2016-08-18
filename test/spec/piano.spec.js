@@ -31,7 +31,7 @@
     });
 
     sisiliano.tests.piano.verifyPressedColor = function (piano, expectedColor) {
-        d3.select(piano.container.get(0)).selectAll(".sisiliano-piano-key").each(function () {
+        d3.select(piano.locate("componentDiv").get(0)).selectAll(".sisiliano-piano-key").each(function () {
             var key = d3.select(this);
             var className = key.attr("class");
             key.attr("class", className + " sisiliano-piano-key-pressed");
@@ -43,7 +43,7 @@
 
     sisiliano.tests.piano.verifyActiveArea = function (piano, expectedStart, expectedEnd) {
         var message = "when the active area is (" + expectedStart + "," + expectedEnd + ")";
-        d3.select(piano.container.get(0)).selectAll(".sisiliano-piano-key").each(function () {
+        d3.select(piano.locate("componentDiv").get(0)).selectAll(".sisiliano-piano-key").each(function () {
             var key = d3.select(this);
             var className = key.attr("class");
             var index = parseInt(key.attr("index"), null);
@@ -56,7 +56,7 @@
     };
 
     sisiliano.tests.piano.verifyLength = function (piano, expectedLength) {
-        var numberOfKeys = d3.select(piano.container.get(0)).selectAll(".sisiliano-piano-key")[0].length;
+        var numberOfKeys = d3.select(piano.locate("componentDiv").get(0)).selectAll(".sisiliano-piano-key")[0].length;
         jqUnit.assertEquals("The length should be " + expectedLength, expectedLength, numberOfKeys);
     };
 
@@ -377,7 +377,7 @@
 
     sisiliano.tests.piano.keyEvents.verifyKeyCodeAndKey = function (piano, keyCode, expectedKey, message) {
         //Verifying whether the key press of the specified key code presses the mapped key in the piano
-        piano.container.simulate("keydown", {
+        piano.locate("componentDiv").simulate("keydown", {
             keyCode: keyCode
         });
         sisiliano.tests.piano.verifyKeyStatus(piano, expectedKey,
@@ -385,7 +385,7 @@
             message + " : keydown", true, true);
 
         //Verifying whether the key release of the specified key code releases the mapped key in the piano
-        piano.container.simulate("keyup", {
+        piano.locate("componentDiv").simulate("keyup", {
             keyCode: keyCode
         });
         sisiliano.tests.piano.verifyKeyStatus(piano, expectedKey,
@@ -394,7 +394,7 @@
     };
 
     sisiliano.tests.piano.keyEvents.pressKey = function (piano, keyCode) {
-        piano.container.simulate("keydown", {
+        piano.locate("componentDiv").simulate("keydown", {
             keyCode: keyCode
         });
     };

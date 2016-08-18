@@ -168,7 +168,7 @@
         document.addEventListener("pointermove", outsideMouseMoveHandler);
         document.addEventListener("touchmove", outsideMouseMoveHandler);
 
-        d3.select(that.container.get(0))
+        d3.select(that.locate("componentDiv").get(0))
             .on("mousemove", mouseMoveHandler)
             .on("pointermove", mouseMoveHandler)
             .on("touchmove", mouseMoveHandler);

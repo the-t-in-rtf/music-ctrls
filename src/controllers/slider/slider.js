@@ -77,21 +77,20 @@
     };
 
     sisiliano.slider.onInit = function (that) {
-        that.container.attr("tabindex", 0);
-        that.container.addClass("sisiliano");
-        that.container.attr("role", "slider");
+        that.locate("componentDiv").attr("tabindex", 0);
+        that.locate("componentDiv").attr("role", "slider");
 
         sisiliano.slider.addListeners(that);
     };
 
     sisiliano.slider.onMinValueChange = function (that, min) {
-        that.container.attr("aria-valuemin", min);
+        that.locate("componentDiv").attr("aria-valuemin", min);
         that.applier.change("size", sisiliano.slider.getSize(that));
         sisiliano.slider.onValueChange(that, that.model.value);
     };
 
     sisiliano.slider.onMaxValueChange = function (that, max) {
-        that.container.attr("aria-valuemax", max);
+        that.locate("componentDiv").attr("aria-valuemax", max);
         that.applier.change("size", sisiliano.slider.getSize(that));
         sisiliano.slider.onValueChange(that, that.model.value);
     };
@@ -117,7 +116,7 @@
         }
 
         //Update the aria-valuenow
-        that.container.attr("aria-valuenow", formatedValue);
+        that.locate("componentDiv").attr("aria-valuenow", formatedValue);
 
         //Update the value in the UI
         that.locate("valueLabel").text(formatedValue);
@@ -136,7 +135,7 @@
             }
         };
 
-        d3.select(that.container.get(0))
+        d3.select(that.locate("componentDiv").get(0))
             .on("keydown", keyDownHandler)
 
             .on("mousedown", sisiliano.slider.setSliderActiveStatus.bind(this, that, true))

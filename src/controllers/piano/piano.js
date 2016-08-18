@@ -270,7 +270,7 @@
             .on("pointerleave", keyMoveOutHndler)
             .on("touchcancel", keyMoveOutHndler);
 
-        d3.select(that.container.get(0)).on("keydown", function () {
+        d3.select(that.locate("componentDiv").get(0)).on("keydown", function () {
             var keyCode = d3.event.keyCode;
             var mappedPianoKey = sisiliano.piano.getKeyByComputerKeyCode(keyCode, that.model.keyBoard.keys);
             if (mappedPianoKey) {
@@ -296,7 +296,7 @@
             }
         });
 
-        d3.select(that.container.get(0)).on("keyup", function () {
+        d3.select(that.locate("componentDiv").get(0)).on("keyup", function () {
             var keyCode = d3.event.keyCode;
             var mappedPianoKey = sisiliano.piano.getKeyByComputerKeyCode(keyCode, that.model.keyBoard.keys);
             if (mappedPianoKey) {
