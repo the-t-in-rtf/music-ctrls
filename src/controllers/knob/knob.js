@@ -152,7 +152,11 @@
                 if (svgElm && svgElm.length > 0) {
                     var svgPosition = svgElm.offset();
                     var center = {x: svgPosition.left + (svgElm.width() / 2), y: svgPosition.top + (svgElm.height() / 2)};
-                    var clickedPosition = {x: evt.pageX, y: evt.pageY};
+
+                    //Considering the firstly touched position if there are many touch points
+                    var touchEvt = evt.type === "touchmove" ? evt.touches[0] : evt;
+
+                    var clickedPosition = {x: touchEvt.pageX, y: touchEvt.pageY};
                     sisiliano.knob.setValueByAngle(that, center, clickedPosition);
                 }
 
@@ -164,7 +168,7 @@
         document.addEventListener("pointermove", outsideMouseMoveHandler);
         document.addEventListener("touchmove", outsideMouseMoveHandler);
 
-        d3.select(that.container.get(0))
+        d3.select(that.locate("componentDiv").get(0))
             .on("mousemove", mouseMoveHandler)
             .on("pointermove", mouseMoveHandler)
             .on("touchmove", mouseMoveHandler);

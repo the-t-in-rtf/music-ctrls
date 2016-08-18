@@ -96,10 +96,10 @@
     };
 
     sisiliano.tests.knob.mouseEvents.verifyMouseMoveInsideTheKnob = function (knob) {
-        var svgPosition = knob.container.find("svg").position();
-        var d = Math.min(knob.container.width(), knob.container.height());
-        svgPosition.left += (knob.container.width() - d) / 2;
-        svgPosition.top += (knob.container.height() - d) / 2;
+        var svgPosition = knob.locate("componentDiv").find("svg").position();
+        var d = Math.min(knob.locate("componentDiv").width(), knob.locate("componentDiv").height());
+        svgPosition.left += (knob.locate("componentDiv").width() - d) / 2;
+        svgPosition.top += (knob.locate("componentDiv").height() - d) / 2;
 
         sisiliano.tests.knob.mouseEvents.moveMouseTo(knob, svgPosition.left, svgPosition.top + d);
         sisiliano.tests.knob.verifyValue(knob, "when the mouse pointer has made an angle of 45 degrees",
@@ -119,10 +119,10 @@
     };
 
     sisiliano.tests.knob.mouseEvents.verifyMouseMoveOutsideTheKnob = function (knob) {
-        var svgPosition = knob.container.find("svg").position();
-        var d = Math.min(knob.container.width(), knob.container.height());
-        svgPosition.left += (knob.container.width() - d) / 2;
-        svgPosition.top += (knob.container.height() - d) / 2;
+        var svgPosition = knob.locate("componentDiv").find("svg").position();
+        var d = Math.min(knob.locate("componentDiv").width(), knob.locate("componentDiv").height());
+        svgPosition.left += (knob.locate("componentDiv").width() - d) / 2;
+        svgPosition.top += (knob.locate("componentDiv").height() - d) / 2;
 
         sisiliano.tests.knob.mouseEvents.moveMouseToOutside(-1000, svgPosition.top + d / 2);
         sisiliano.tests.knob.verifyValue(knob, "when the mouse pointer has made an angle of 90 degrees",
@@ -148,7 +148,7 @@
     };
 
     sisiliano.tests.knob.mouseEvents.moveMouseTo = function (knob, x, y) {
-        knob.container.simulate("mousemove", {
+        knob.locate("componentDiv").simulate("mousemove", {
             clientX : x,
             clientY: y
         });
@@ -162,7 +162,7 @@
     };
 
     sisiliano.tests.knob.mouseEvents.pressMouseDown = function (knob) {
-        knob.container.simulate("mousedown");
+        knob.locate("componentDiv").simulate("mousedown");
     };
     
 })(fluid, jqUnit);

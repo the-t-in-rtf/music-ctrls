@@ -31,8 +31,8 @@
     });
 
     sisiliano.tests.linearSlider.verifyMouseEvents = function (message, linearSlider) {
-        var sliderWidth = linearSlider.container.width();
-        var sliderPosition = linearSlider.container.position();
+        var sliderWidth = linearSlider.locate("componentDiv").width();
+        var sliderPosition = linearSlider.locate("componentDiv").position();
 
         var testCases = [
             {
@@ -50,7 +50,7 @@
 
         //Inside the slider
         sisiliano.tests.linearSlider.verifyLinearSliderMouseEventTestCases(message + " : inside the slider",
-            linearSlider.container, linearSlider, testCases);
+            linearSlider.locate("componentDiv"), linearSlider, testCases);
 
         //Outside the slider
         sisiliano.tests.linearSlider.verifyLinearSliderMouseEventTestCases(message + " : outside the slider",
@@ -59,15 +59,15 @@
 
     sisiliano.tests.linearSlider.verifyLinearSliderMouseEventTestCases = function (message, element, linearSlider, testCases) {
         fluid.each(testCases, function (testCase) {
-            sisiliano.tests.util.mouseEvents.mouseUp(linearSlider.container);
+            sisiliano.tests.util.mouseEvents.mouseUp(linearSlider.locate("componentDiv"));
             sisiliano.tests.linearSlider.verifyValueWhenMouseIsMoved(message + " : when mouseup",
                 element, linearSlider, testCase.position, linearSlider.model.value);
 
-            sisiliano.tests.util.mouseEvents.mouseDown(linearSlider.container);
+            sisiliano.tests.util.mouseEvents.mouseDown(linearSlider.locate("componentDiv"));
             sisiliano.tests.linearSlider.verifyValueWhenMouseIsMoved(message + " : when mousedown",
                 element, linearSlider, testCase.position, testCase.expectedValue);
 
-            sisiliano.tests.util.mouseEvents.mouseUp(linearSlider.container);
+            sisiliano.tests.util.mouseEvents.mouseUp(linearSlider.locate("componentDiv"));
         });
     };
 

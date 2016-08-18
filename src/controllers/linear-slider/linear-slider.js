@@ -291,7 +291,11 @@
             if (svgElm && svgElm.length > 0) {
                 var svgPosition = svgElm.offset();
                 var svgWidth = svgElm.width();
-                var clickedPosition = {x: ((evt.pageX - svgPosition.left) / svgWidth) * that.model.viewBox.width, y: 0};
+
+                //Considering the firstly touched position if there are many touch points
+                var touchEvt = evt.type === "touchmove" ? evt.touches[0] : evt;
+                
+                var clickedPosition = {x: ((touchEvt.pageX - svgPosition.left) / svgWidth) * that.model.viewBox.width, y: 0};
                 if (that.model.status.isActive) {
                     sisiliano.linearSlider.setValueByPosition(that, clickedPosition);
                     evt.preventDefault(evt);
@@ -303,7 +307,7 @@
         document.addEventListener("pointermove", outsideMouseMoveHandler);
         document.addEventListener("touchmove", outsideMouseMoveHandler);
 
-        d3.select(that.container.get(0))
+        d3.select(that.locate("componentDiv").get(0))
             .on("mousemove", mouseMoveHandler)
             .on("pointermove", mouseMoveHandler)
             .on("touchmove", mouseMoveHandler);

@@ -7,7 +7,7 @@
         gradeNames: "fluid.component",
         ariaDescription: "",
         listeners: {
-            onCreate: {
+            onReady: {
                 func: "sisiliano.util.ariaDescription.onCreate",
                 args: ["{that}"]
             }
@@ -28,6 +28,6 @@
             descriptionsPane.append(descriptionElementOfTheComponent);
         }
 
-        that.container.attr("aria-describedby", descriptionElementIdOfTheComponent);
+        that.locate("componentDiv").attr("aria-describedby", descriptionElementIdOfTheComponent);
     };
 })(fluid);

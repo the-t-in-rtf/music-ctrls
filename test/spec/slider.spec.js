@@ -13,7 +13,7 @@
     
     sisiliano.tests.slider.createNewSlider = function (options) {
         var slider = sisiliano.slider(".test", options);
-        $(".test").html("<div class='sisiliano-slider-value-text'></div>");
+        slider.locate("componentDiv").append("<div class='sisiliano-slider-value-text'></div>");
 
         return slider;
     };
@@ -71,7 +71,7 @@
         sisiliano.tests.slider.keyEvents.triggerKeyDown(slider, 40);
     };
     sisiliano.tests.slider.keyEvents.triggerKeyDown = function (slider, keyCode) {
-        slider.container.simulate("keydown", {
+        slider.locate("componentDiv").simulate("keydown", {
             keyCode: keyCode
         });
     };
@@ -98,9 +98,9 @@
             var max = slider.model.max;
 
             jqUnit.assertEquals(message + " : aria-valuemax label should have been added", max + "",
-                slider.container.attr("aria-valuemax"));
+                slider.locate("componentDiv").attr("aria-valuemax"));
             jqUnit.assertEquals(message + " : aria-valuemin label should have been added", min + "",
-                slider.container.attr("aria-valuemin"));
+                slider.locate("componentDiv").attr("aria-valuemin"));
         });
     };
 
@@ -158,7 +158,7 @@
         sisiliano.tests.slider.verifyAriaDescription("Slider aria description", slider);
     });
     sisiliano.tests.slider.verifyAriaDescription = function (message, slider) {
-        var ariaDescribebyValue = slider.container.attr("aria-describedby");
+        var ariaDescribebyValue = slider.locate("componentDiv").attr("aria-describedby");
         jqUnit.assertTrue(message + " : aria-describedby should have been defined", ariaDescribebyValue);
         jqUnit.assertEquals(message + " : an element should have been defined for the aria description",
             slider.options.ariaDescription, $("#" + ariaDescribebyValue).html());
