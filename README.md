@@ -6,6 +6,8 @@ A variety of user interface component libraries, such as Nexus UI, jQuery Kontro
 
 This project will involve the creation of a small collection of high-quality, responsive, SVG or DOM-based musical user interface controls such as knobs, sliders, x/y pads, button matrices, envelope editors, waveform viewers.
 
+[Read more...](https://github.com/dinukadesilva/music-ctrls/wiki)
+
 # Getting started
 
 ```
