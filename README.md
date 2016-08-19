@@ -1,4 +1,8 @@
 # music-ctrls
+This project was initiated by [Inclusive Design Institute](http://inclusivedesign.ca/) as a GSOC project 2016. 
+Click [here](https://github.com/dinukadesilva/music-ctrls/wiki) to see the progress of the project
+
+# Introduction
 
 With the introduction of the Web Audio API and music frameworks such as Flocking, it's possible to make music and develop custom instruments entirely using Web technologies.
 

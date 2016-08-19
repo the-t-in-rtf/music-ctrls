@@ -5,7 +5,7 @@
         gradeNames: ["sisiliano.border", "sisiliano.slider"],
         defaultViewBox: [0 ,0, 500, 50],
         ariaDescription: "Linear slider, the value can be adjusted by arrow keys. If you are using the mouse, drag along the slider",
-        template: "src/controllers/linear-slider/linear-slider.html",
+        templateUrl: "src/controllers/linear-slider/linear-slider.html",
         model: {
             styles: {
                 pointer: {
@@ -98,7 +98,7 @@
                 func: "sisiliano.linearSlider.onStatusChange",
                 args: ["{that}", "{that}.model.status.isActive"]
             },
-            onReady: [
+            onCreate: [
                 {
                     func: "sisiliano.linearSlider.onResize",
                     args: ["{that}"]

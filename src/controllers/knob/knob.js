@@ -3,7 +3,7 @@
 
     fluid.defaults("sisiliano.knob", {
         gradeNames: ["sisiliano.slider"],
-        template: "src/controllers/knob/knob.html",
+        templateUrl: "src/controllers/knob/knob.html",
         model: {
             styles: {
                 valueText: {
@@ -50,7 +50,7 @@
             circles: ".sisiliano-knob-circle"
         },
         listeners: {
-            onReady: [
+            onCreate: [
                 {
                     func: "sisiliano.knob.onRadiusChange",
                     args: ["{that}", "{that}.model.styles.valueKnob.r"]

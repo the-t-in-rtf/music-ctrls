@@ -12,8 +12,15 @@
     };
     
     sisiliano.tests.slider.createNewSlider = function (options) {
+        if (!options) {
+            options = {};
+        }
+
+        options.template = function () {
+            return "<div class='sisiliano-slider-value-text'></div>";
+        };
+
         var slider = sisiliano.slider(".test", options);
-        slider.locate("componentDiv").append("<div class='sisiliano-slider-value-text'></div>");
 
         return slider;
     };

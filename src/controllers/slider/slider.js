@@ -35,9 +35,7 @@
                 {
                     func: "sisiliano.slider.onInit",
                     args: ["{that}"]
-                }
-            ],
-            onReady: [
+                },
                 {
                     func: "sisiliano.slider.onMinValueChange",
                     args: ["{that}", "{that}.model.min"]

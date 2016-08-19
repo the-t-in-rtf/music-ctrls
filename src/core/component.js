@@ -5,12 +5,10 @@
     "use strict";
     
     fluid.defaults("sisiliano.component", {
-        gradeNames: ["sisiliano.util.colorable", "sisiliano.util.ariaDescription", "fluid.viewComponent"],
+        gradeNames: ["sisiliano.util.colorable", "fluid.viewComponent"],
         model: {
-            template: ""
-        },
-        events: {
-            onReady: null
+            templateUrl: "",
+            template: null
         },
         selectors: {
             svg: "svg",
@@ -20,17 +18,15 @@
             onCreate: [
                 {
                     func: "sisiliano.component.onTemplateChange",
-                    args: ["{that}", "{that}.options.template"]
+                    args: ["{that}", "{that}.options.template", "{that}.options.templateUrl"]
                 },
                 {
                     func: "sisiliano.component.onInit",
                     args: ["{that}"]
-                }
-            ],
-            onReady: [
+                },
                 {
-                    func: "{that}.events.onColorChange.fire",
-                    args: ["{that}", "{that}.model.color"]
+                    func: "sisiliano.component.addAriaDescription",
+                    args: ["{that}"]
                 }
             ]
         },
@@ -55,20 +51,39 @@
             });
     };
 
-    sisiliano.component.onTemplateChange = function (that, template) {
+    sisiliano.component.addAriaDescription = function (that) {
+        var descriptionsPane = $("#sisiliano-component-guide-descriptions");
+        if (descriptionsPane.length === 0) {
+            descriptionsPane = $("<div id='sisiliano-component-guide-descriptions' style='visibility: hidden'></div>");
+            $("body").append(descriptionsPane);
+        }
+
+        var descriptionElementIdOfTheComponent = (that.typeName.replace(/\./g, "-") + "-guide-description").toLowerCase();
+        var descriptionElementOfTheComponent = $("#" + descriptionElementIdOfTheComponent);
+        if (descriptionElementOfTheComponent.length === 0) {
+            descriptionElementOfTheComponent = $("<div id='" + descriptionElementIdOfTheComponent + "'>" + that.options.ariaDescription + "</div>");
+            descriptionsPane.append(descriptionElementOfTheComponent);
+        }
+
+        that.locate("componentDiv").attr("aria-describedby", descriptionElementIdOfTheComponent);
+    };
+
+    sisiliano.component.onTemplateChange = function (that, template, templateUrl) {
         //Initializing the sisiliano ID
         var sisilianoId = "fluid-sisiliano-id-" + that.id;
         that.applier.change("id", sisilianoId);
+        that.container.html("<div class='sisiliano' id='" + sisilianoId + "'></div>");
 
-        if (!template) {
-            that.container.html("<div class='sisiliano' id='" + sisilianoId + "'></div>");
-            that.events.onReady.fire();
-        } else {
+        if (!template && templateUrl) {
             sisiliano.util.getTemplate(function (template) {
-                var html = template(that.model);
-                that.container.html("<div class='sisiliano' id='" + sisilianoId + "'>" + html + "</div>");
-                that.events.onReady.fire();
-            }, template);
+                that.options.template = template;
+                that.events.onCreate.fire();
+            }, templateUrl);
+
+            return false;
+        } else if (template) {
+            var html = template(that.model);
+            that.locate("componentDiv").html(html);
         }
     };
 
@@ -105,7 +120,7 @@
             border: ".sisiliano-border-div"
         },
         listeners: {
-            onReady: [
+            onCreate: [
                 {
                     func: "sisiliano.border.onControllerStyleChange",
                     args: ["{that}", "{that}.model.styles"]
