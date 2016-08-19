@@ -3,7 +3,7 @@
 
     fluid.defaults("sisiliano.piano", {
         gradeNames: ["sisiliano.border", "sisiliano.component"],
-        template: "src/controllers/piano/piano.html",
+        templateUrl: "src/controllers/piano/piano.html",
         ariaDescription: "Piano keys are accessible by mouse and the keyboad as well. Only the active area of the piano is accessible by the keyboard. If you want to move the active area, use left and right keys.",
         model: {
             color: "#4CAF50",
@@ -50,7 +50,7 @@
             pressedKeys: ".sisiliano-piano-key-pressed"
         },
         listeners: {
-            onReady: [
+            onCreate: [
                 {
                     func: "sisiliano.piano.generateKeyboard",
                     args: ["{that}"]
@@ -142,9 +142,9 @@
     };
 
     sisiliano.piano.onCreate = function (that) {
-        var keyBoardElm = d3.select(that.locate("keyBoard").get(0));
+        that.locate("keyBoard").empty();
 
-        keyBoardElm.empty();
+        var keyBoardElm = d3.select(that.locate("keyBoard").get(0));
         keyBoardElm.append("text")
             .attr("x", 0)
             .attr("y", 0)

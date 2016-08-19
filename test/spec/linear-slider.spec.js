@@ -25,8 +25,6 @@
     jqUnit.test("linearSlider: mouse events", function () {
         $(".test").empty();
         var linearSlider = sisiliano.linearSlider(".test");
-
-        linearSlider.events.onReady.fire();
         sisiliano.tests.linearSlider.verifyMouseEvents("linearSlider: mouse events", linearSlider);
     });
 
