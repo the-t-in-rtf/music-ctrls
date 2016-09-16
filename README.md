@@ -15,16 +15,20 @@ This project will involve the creation of a small collection of high-quality, re
 
 # Getting started
 
+To run the demos included in this package, check out the code and run the following commands.
+
 ```
-bower install
 npm install
-grunt build
 grunt demo
 ```
+Then open the demo server in your browser of choice:
 
 http://localhost:8001/
 
 #Demo
+
+The demos are also available online, you can find them at:
+
 http://dinukadesilva.github.io/music-ctrls/demo/knob.html
 
 http://dinukadesilva.github.io/music-ctrls/demo/piano.html
