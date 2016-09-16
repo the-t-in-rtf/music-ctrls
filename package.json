@@ -3,13 +3,14 @@
   "version": "1.0.0",
   "description": "This project provides a small collection of high-quality, responsive, SVG or DOM-based musical user interface controls.",
   "scripts": {
-    "postinstall": "bower install && grunt build",
+    "postinstall": "node node_modules/bower/bin/bower install && grunt build",
     "test": "grunt build test"
   },
   "author": "Dinuka De Silba",
   "license": "ISC",
   "repository": "https://github.com/dinukadesilva/music-ctrls/",
   "dependencies": {
+    "bower": "1.7.9",
     "grunt": "1.0.1",
     "grunt-cli": "1.0.1",
     "grunt-contrib-clean": "1.0.0",
