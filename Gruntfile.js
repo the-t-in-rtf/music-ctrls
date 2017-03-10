@@ -63,11 +63,7 @@ module.exports = function(grunt) {
             "demo-public": {
                 expand: true,
                 src: [
-                    "bower_components/jquery/dist/**/*.*",
-                    "bower_components/d3/d3.js",
-                    "bower_components/d3/d3.min.js",
-                    "bower_components/ace-builds/src-noconflict/**/*.*",
-                    "lib/**/*.*",
+                    "node_modules/**/*.*",
                     "dist/**/*.*"
                 ],
                 dest: "demo/source"
@@ -75,14 +71,14 @@ module.exports = function(grunt) {
             "test": {
                 expand: true,
                 src: [
-                    "bower_components/qunit/qunit/qunit.js",
-                    "bower_components/qunit/qunit/qunit.css",
-                    "bower_components/jquery-simulate-ext/libs/bililiteRange.js",
-                    "bower_components/jquery-simulate-ext/libs/jquery.simulate.js",
-                    "bower_components/jquery-simulate-ext/src/jquery.simulate.ext.js",
-                    "bower_components/jquery-simulate-ext/src/jquery.simulate.drag-n-drop.js",
-                    "bower_components/jquery-simulate-ext/src/jquery.simulate.key-sequence.js",
-                    "bower_components/jquery-simulate-ext/src/jquery.simulate.key-combo.js"
+                    "node_modules/qunit/qunit/qunit.js",
+                    "node_modules/qunit/qunit/qunit.css",
+                    "node_modules/jquery-simulate-ext/libs/bililiteRange.js",
+                    "node_modules/jquery-simulate-ext/libs/jquery.simulate.js",
+                    "node_modules/jquery-simulate-ext/src/jquery.simulate.ext.js",
+                    "node_modules/jquery-simulate-ext/src/jquery.simulate.drag-n-drop.js",
+                    "node_modules/jquery-simulate-ext/src/jquery.simulate.key-sequence.js",
+                    "node_modules/jquery-simulate-ext/src/jquery.simulate.key-combo.js"
                 ],
                 dest: "test/html/lib"
             }
