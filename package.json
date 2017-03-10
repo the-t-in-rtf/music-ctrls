@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "This project provides a small collection of high-quality, responsive, SVG or DOM-based musical user interface controls.",
   "scripts": {
-    "postinstall": "grunt build",
-    "test": "grunt build test"
+    "build": "grunt build",
+    "test":  "grunt build test"
   },
   "author": "Dinuka De Silba",
   "license": "ISC",
